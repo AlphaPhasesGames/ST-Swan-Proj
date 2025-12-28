@@ -1,0 +1,5 @@
+G:/Unity Projects/Finished Swan Type/.utmp/RelWithDebInfo/3e2c1o4v/arm64-v8a/CMakeFiles/edit_cache.dir
+G:/Unity Projects/Finished Swan Type/.utmp/RelWithDebInfo/3e2c1o4v/arm64-v8a/CMakeFiles/rebuild_cache.dir
+G:/Unity Projects/Finished Swan Type/.utmp/RelWithDebInfo/3e2c1o4v/arm64-v8a/GameActivity/CMakeFiles/game.dir
+G:/Unity Projects/Finished Swan Type/.utmp/RelWithDebInfo/3e2c1o4v/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+G:/Unity Projects/Finished Swan Type/.utmp/RelWithDebInfo/3e2c1o4v/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
