@@ -1,2 +1,0 @@
-G:\Unity Projects\Finished Swan Type\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
-G:\Unity Projects\Finished Swan Type\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
