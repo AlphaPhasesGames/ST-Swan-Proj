@@ -124,4 +124,35 @@ public class DecalShooter : MonoBehaviour
         // Update ONLY values, not array size
         state.mat.SetVectorArray("_PaintPoints", state.points);
     }
+
+
+    public int GetBlobCount(Renderer rend)
+    {
+        if (rend == null)
+            return -1;
+
+        if (paintStates.TryGetValue(rend, out var state))
+            return state.points.Count;
+
+        return 0;
+    }
+
+    public void ClearBlobs(Renderer rend)
+    {
+        if (rend == null)
+            return;
+
+        if (paintStates.TryGetValue(rend, out var state))
+        {
+            int before = state.points.Count;
+
+            state.points.Clear();
+            state.mat.SetInt("_PaintCount", 0);
+
+            Debug.Log(
+                $"[PaintComplete] {rend.name} blobs before: {before}  blobs after: 0"
+            );
+        }
+    }
+
 }

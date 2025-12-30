@@ -33,21 +33,7 @@ public class PaintCoverageMesh : MonoBehaviour, IPaintCoverage
     // ===== Internal =====
     private HashSet<int> paintedTriangles = new HashSet<int>();
     private int totalTriangles;
-    /*
-    private void Awake()
-    {
-        MeshCollider meshCol = GetComponent<MeshCollider>();
-        Debug.Log($"{name} totalTriangles = {totalTriangles}");
-        if (!meshCol || !meshCol.sharedMesh)
-        {
-            Debug.LogError($"{name} needs a MeshCollider with a valid mesh.");
-            enabled = false;
-            return;
-        }
 
-        totalTriangles = meshCol.sharedMesh.triangles.Length / 3;
-    }
-    */
 
     private void Awake()
     {
@@ -94,39 +80,7 @@ public class PaintCoverageMesh : MonoBehaviour, IPaintCoverage
         }
     }
 
-    /*
-    /// <summary>
-    /// Call this when a paint ray hits this object
-    /// </summary>
-    public void RegisterPaintHit(RaycastHit hit)
-    {
-      
 
-        int triIndex = hit.triangleIndex;
-        if (triIndex < 0)
-            return;
-        Debug.Log($"Hit triangle {hit.triangleIndex}");
-        if (paintedTriangles.Add(triIndex))
-        {
-            UpdateCoverage();
-            Debug.Log($"Coverage now: {CoveragePercent:F1}%");
-        }
-    }
-    
-    private void UpdateCoverage()
-    {
-        CoveragePercent =
-            (float)paintedTriangles.Count / totalTriangles * 250f;
-
-        if (!IsComplete && CoveragePercent >= 10f)
-        {
-            IsComplete = true;
-            Debug.Log($"{name} PAINT COMPLETE");
-
-            OnPaintCompleted();
-        }
-    }
-*/
     private void UpdateCoverage()
     {
         CoveragePercent =
@@ -143,15 +97,29 @@ public class PaintCoverageMesh : MonoBehaviour, IPaintCoverage
 
     private void OnPaintCompleted()
     {
-        //Renderer r = GetComponent<Renderer>();
-
-        // Visual state = UI 100%
-        // r.material.color = Color.black;
+        // Force full black
         shader.SetFloat("_PaintStength", 1);
-        //r.shadowCastingMode = ShadowCastingMode.On;
-        //r.receiveShadows = true;
-        Debug.Log("Painted 100 text");
-       
+        shader.SetInt("_PaintCount", 0);
+
+        //  DEBUG blob counts
+        DecalShooter shooter = FindObjectOfType<DecalShooter>();
+        Renderer rend = GetComponent<Renderer>();
+
+
+        if (shooter != null && rend != null)
+        {
+            int before = shooter.GetBlobCount(rend);
+            shooter.ClearBlobs(rend);
+            int after = shooter.GetBlobCount(rend);
+
+            Debug.Log(
+                $"[PaintComplete] {name} blobs before: {before}  blobs after: {after}"
+            );
+        }
+        else
+        {
+            Debug.LogWarning("[PaintComplete] Shooter or Renderer missing");
+        }
     }
 
 
@@ -180,5 +148,9 @@ public class PaintCoverageMesh : MonoBehaviour, IPaintCoverage
     {
         paintedThisClick = false;
     }
+
+
+
+
 }
 
