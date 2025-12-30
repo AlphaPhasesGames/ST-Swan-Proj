@@ -35,7 +35,7 @@ public class MeshSplatShooter : MonoBehaviour
             // Surface facing the player  DECAL
             if (facingAngle < decalFacingThreshold)
             {
-                decalShooter.SpawnDecal(hit, transform.forward);
+               // decalShooter.SpawnDecal(hit, transform.forward);
             }
             // Surface turning away / curved  MESH SPLAT
             else

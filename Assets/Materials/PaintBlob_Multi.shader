@@ -1,17 +1,18 @@
-Shader "Custom/PaintBlob_World"
+Shader "Custom/PaintBlob_Multi"
 {
     Properties
     {
         _BaseColor("Base Color", Color) = (1,1,1,1)
         _PaintColor("Paint Color", Color) = (0,0,0,1)
-        _PaintPos("Paint Position", Vector) = (0,0,0,0)
         _PaintRadius("Paint Radius", Float) = 0.25
+
+        //  add this so PaintCoverageMesh can SetFloat/GetFloat it
+        _PaintStength("Paint Strength", Float) = 0
     }
 
         SubShader
     {
         Tags { "RenderType" = "Opaque" }
-        LOD 100
 
         Pass
         {
@@ -19,6 +20,9 @@ Shader "Custom/PaintBlob_World"
             #pragma vertex vert
             #pragma fragment frag
             #include "UnityCG.cginc"
+
+            //  raise this to 150 (or whatever you want)
+            #define MAX_PAINT_POINTS 150
 
             struct appdata
             {
@@ -33,8 +37,11 @@ Shader "Custom/PaintBlob_World"
 
             float4 _BaseColor;
             float4 _PaintColor;
-            float3 _PaintPos;
             float _PaintRadius;
+
+            float _PaintStength;                  //   matches your typo
+            float4 _PaintPoints[MAX_PAINT_POINTS];
+            int _PaintCount;
 
             v2f vert(appdata v)
             {
@@ -46,10 +53,19 @@ Shader "Custom/PaintBlob_World"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float dist = distance(i.worldPos, _PaintPos);
-                float mask = step(dist, _PaintRadius);
+                float mask = 0;
 
-                return lerp(_BaseColor, _PaintColor, mask);
+                for (int p = 0; p < _PaintCount; p++)
+                {
+                    float dist = distance(i.worldPos, _PaintPoints[p].xyz);
+                    mask = max(mask, step(dist, _PaintRadius));
+                }
+
+                // blob paint result
+                fixed4 painted = lerp(_BaseColor, _PaintColor, mask);
+
+                //  completion override: strength=1 forces black (or paint color)
+                return lerp(painted, _PaintColor, saturate(_PaintStength));
             }
             ENDCG
         }

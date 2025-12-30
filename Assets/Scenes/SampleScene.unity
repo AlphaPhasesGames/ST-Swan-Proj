@@ -619,12 +619,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65bd63b216f4ed142901a5f7f3f1f3d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decalPrefab: {fileID: 4496304645387207159, guid: 3c9472693f9620746930b3a0fd5eef89, type: 3}
   range: 100
-  surfaceOffset: 0.01
-  angleOffset: 6
-  decalPool: {fileID: 1749292456}
-  paintRadius: 0.2
+  paintRadius: 0.4
+  sprayRays: 3
+  sprayAngle: 4
 --- !u!114 &330585551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36386,7 +36384,7 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: 7ad2d20c6b4da104a812b4b263408cd9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: c6b4f44361d344a4d98dabe32b6a380b, type: 2}
+      objectReference: {fileID: 2100000, guid: 8a0a5e73b7834cd429f2c14655077026, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36755,7 +36753,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1179268491}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d16198f5269f28419d3b1264b1918b6, type: 3}
   m_Name: 
