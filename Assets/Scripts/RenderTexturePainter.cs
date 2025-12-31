@@ -12,65 +12,88 @@ public class RenderTexturePainter : MonoBehaviour
     [Header("Input")]
     public Camera cam;
 
-    private RenderTexture paintRT;
-    private Material blitMat;
-    private Texture2D brushTex;
-    private Material paintMat;
+    RenderTexture paintRT;
+    Material blitMat;
+    Texture2D brushTex;
+    Material paintMat;
 
-    void Start()
+    void Awake()
     {
-        if (cam == null) cam = Camera.main;
+        if (cam == null)
+            cam = Camera.main;
 
-        // Get the object's paint material (must use Custom/PaintRT_Mask)
+        // Get LIVE material instance
         paintMat = GetComponent<Renderer>().material;
 
-        // Create RT
-        paintRT = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.R8);
+        // ----- CREATE RENDER TEXTURE (BUILD SAFE) -----
+        paintRT = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
         paintRT.wrapMode = TextureWrapMode.Clamp;
         paintRT.filterMode = FilterMode.Bilinear;
+        paintRT.useMipMap = false;
+        paintRT.autoGenerateMips = false;
         paintRT.Create();
 
         // Clear RT to black
-        var active = RenderTexture.active;
+        RenderTexture prev = RenderTexture.active;
         RenderTexture.active = paintRT;
         GL.Clear(false, true, Color.black);
-        RenderTexture.active = active;
+        RenderTexture.active = prev;
 
-        // Blit material for additive draw
-        blitMat = new Material(Shader.Find("Hidden/AdditiveBlit"));
+        // ----- BLIT MATERIAL -----
+        Shader blitShader = Shader.Find("Unlit/AdditiveBlit");
+        if (blitShader == null)
+        {
+            Debug.LogError("Unlit/AdditiveBlit shader NOT FOUND (will not paint in build)");
+            enabled = false;
+            return;
+        }
 
-        // Cache brush texture (don’t recreate per click)
+        blitMat = new Material(blitShader);
+
+        // ----- BRUSH TEXTURE -----
         brushTex = CreateDotTexture(brushSize);
 
-        // Hook RT into the shader
+        // ----- ASSIGN RT TO PAINT SHADER -----
         if (paintMat.HasProperty("_PaintMask"))
+        {
             paintMat.SetTexture("_PaintMask", paintRT);
+        }
         else
-            Debug.LogError("Paint material does not have _PaintMask. Assign Custom/PaintRT_Mask shader.");
+        {
+            Debug.LogError("Material does not have _PaintMask (wrong shader?)");
+            enabled = false;
+        }
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        bool mouseFire = Input.GetMouseButtonDown(0);
+        bool controllerFire = Input.GetButtonDown("Fire1");
+
+        if (!mouseFire && !controllerFire)
+            return;
+
+        Vector3 screenPos = mouseFire
+            ? Input.mousePosition
+            : new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
+
+        Ray ray = cam.ScreenPointToRay(screenPos);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (!hit.collider.transform.IsChildOf(transform))
+                return;
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                // Only paint THIS object (or its children)
-                if (!hit.collider.transform.IsChildOf(transform))
-                    return;
-
-                DrawDotAtUV(hit.textureCoord);
-            }
+            DrawDotAtUV(hit.textureCoord);
         }
     }
 
     void DrawDotAtUV(Vector2 uv)
     {
         int px = Mathf.RoundToInt(uv.x * paintRT.width);
-        int py = Mathf.RoundToInt((1f - uv.y) * paintRT.height); // Y flip
+        int py = Mathf.RoundToInt((1f - uv.y) * paintRT.height);
 
+        RenderTexture prev = RenderTexture.active;
         RenderTexture.active = paintRT;
 
         GL.PushMatrix();
@@ -83,24 +106,29 @@ public class RenderTexturePainter : MonoBehaviour
         );
 
         GL.PopMatrix();
-        RenderTexture.active = null;
+        RenderTexture.active = prev;
     }
 
     Texture2D CreateDotTexture(int size)
     {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.R8, false);
+        Texture2D tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.filterMode = FilterMode.Bilinear;
+
         Vector2 center = new Vector2(size / 2f, size / 2f);
         float radius = size / 2f;
 
         for (int y = 0; y < size; y++)
+        {
             for (int x = 0; x < size; x++)
             {
                 float dist = Vector2.Distance(new Vector2(x, y), center);
                 float value = dist <= radius ? 1f : 0f;
-                tex.SetPixel(x, y, new Color(value, value, value, 1));
+                tex.SetPixel(x, y, new Color(value, value, value, 1f));
             }
+        }
 
-        tex.Apply();
+        tex.Apply(false, true);
         return tex;
     }
 }

@@ -1,0 +1,5 @@
+G:/ST Swan Proj/.utmp/RelWithDebInfo/2i5i3m6s/arm64-v8a/CMakeFiles/edit_cache.dir
+G:/ST Swan Proj/.utmp/RelWithDebInfo/2i5i3m6s/arm64-v8a/CMakeFiles/rebuild_cache.dir
+G:/ST Swan Proj/.utmp/RelWithDebInfo/2i5i3m6s/arm64-v8a/GameActivity/CMakeFiles/game.dir
+G:/ST Swan Proj/.utmp/RelWithDebInfo/2i5i3m6s/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+G:/ST Swan Proj/.utmp/RelWithDebInfo/2i5i3m6s/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

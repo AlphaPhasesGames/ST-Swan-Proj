@@ -1,4 +1,4 @@
-Shader "Hidden/AdditiveBlit"
+Shader "Unlit/AdditiveBlit"
 {
     SubShader
     {

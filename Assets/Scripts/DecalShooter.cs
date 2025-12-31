@@ -29,10 +29,10 @@ public class DecalShooter : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
-        {
-            Shoot();
-        }
+      //  if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
+      //  {
+      //      Shoot();
+      //  }
     }
 
     void Shoot()

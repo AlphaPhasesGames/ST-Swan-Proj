@@ -614,7 +614,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65bd63b216f4ed142901a5f7f3f1f3d5, type: 3}
   m_Name: 
@@ -650,6 +650,7 @@ GameObject:
   - component: {fileID: 368350090}
   - component: {fileID: 368350094}
   - component: {fileID: 368350095}
+  - component: {fileID: 368350096}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -719,7 +720,7 @@ Transform:
   m_GameObject: {fileID: 368350087}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.3, y: 0.81, z: 3.1}
+  m_LocalPosition: {x: -18.92, y: 0.81, z: 3.1}
   m_LocalScale: {x: 2.0872, y: 2.0872, z: 2.0872}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -762,6 +763,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &368350096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368350087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c985e9039366e8479b560596b45bd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textureSize: 512
 --- !u!43 &377406244
 Mesh:
   m_ObjectHideFlags: 0
@@ -38338,7 +38352,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749292453}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b0ab5acc9d73dd4c9f0a7f8ca4baebc, type: 3}
   m_Name: 
@@ -38587,7 +38601,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9f2b64f6deacca6478576d824e8ea0a0, type: 2}
+  - {fileID: 2100000, guid: 7b8dfe397509a8b4b848d5f78911de83, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -38626,8 +38640,8 @@ Transform:
   m_GameObject: {fileID: 1915636776}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0008070615, y: -0.008320707, z: -0.0025076964, w: 0.9999619}
-  m_LocalPosition: {x: -13.19, y: -0.07, z: -0.31}
-  m_LocalScale: {x: 2.1262102, y: 2.1262102, z: 2.1262102}
+  m_LocalPosition: {x: -18.7755, y: 0.25, z: 5.06}
+  m_LocalScale: {x: 6.8557405, y: 6.5261164, z: 2.1262102}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
