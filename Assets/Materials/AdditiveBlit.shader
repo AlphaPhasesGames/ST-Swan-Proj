@@ -1,8 +1,8 @@
-Shader "Unlit/AdditiveBlit"
+Shader "Hidden/AdditiveBlit"
 {
     SubShader
     {
-        Tags { "RenderType" = "Opaque" }
+        Tags { "RenderType" = "Transparent" }
         Pass
         {
             ZTest Always Cull Off ZWrite Off
