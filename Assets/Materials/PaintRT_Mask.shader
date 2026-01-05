@@ -51,7 +51,10 @@ Shader "Custom/PaintRT_Mask"
                 fixed4 frag(v2f i) : SV_Target
                 {
                     // Mask is 0..1 (black..white)
-                    float m = tex2D(_PaintMask, i.uv).r;
+                    //float m = tex2D(_PaintMask, i.uv).r;
+
+                    float m = tex2D(_PaintMask, i.uv).a;
+                    m = step(0.5, m); // hard threshold
 
                 // Normal paint from mask
                 fixed4 painted = lerp(_BaseColor, _PaintColor, saturate(m));
