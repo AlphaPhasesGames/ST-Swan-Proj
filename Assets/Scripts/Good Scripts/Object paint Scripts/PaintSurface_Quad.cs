@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PaintSurface_Quad : PaintSurfaceBase
 {
-    public override bool TryGetPaintUV(RaycastHit hit, out Vector2 uv)
+    public override bool CanPaintHit(RaycastHit hit, Vector3 rayDir)
     {
-        uv = hit.textureCoord;
-        return true;
+        // Flat surfaces: simple facing check
+        return Vector3.Dot(hit.normal, -rayDir) > 0f;
     }
 }

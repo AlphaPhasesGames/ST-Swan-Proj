@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class PaintSurface_Sphere : PaintSurfaceBase
 {
-    public override bool TryGetPaintUV(RaycastHit hit, out Vector2 uv)
+    [Range(0f, 1f)]
+    public float facingThreshold = 0.15f;
+
+    public override bool CanPaintHit(RaycastHit hit, Vector3 rayDir)
     {
-        uv = hit.textureCoord;
-        return true;
+        float facing = Vector3.Dot(hit.normal, -rayDir);
+        return facing > facingThreshold;
     }
 }
