@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
-//[RequireComponent(typeof(Collider))]
-public class RenderTexturePainter : MonoBehaviour
+[RequireComponent(typeof(Collider))]
+public class RenderTexturePainterBackUp : MonoBehaviour
 {
     [Header("RT")]
     public int textureSize = 512;
@@ -12,7 +12,7 @@ public class RenderTexturePainter : MonoBehaviour
     public int brushSize = 64;
 
     [Header("Input")]
-   // public Camera cam;
+    public Camera cam;
 
     private RenderTexture paintRT;
     private Texture2D brushTex;
@@ -33,7 +33,7 @@ public class RenderTexturePainter : MonoBehaviour
 
 
 
-       // if (cam == null) cam = Camera.main;
+        if (cam == null) cam = Camera.main;
 
         paintMat = GetComponent<Renderer>().material;
 
@@ -63,7 +63,7 @@ public class RenderTexturePainter : MonoBehaviour
         else
             Debug.LogError("Paint material does not have _PaintMask. Assign Custom/PaintRT_Mask.");
     }
-    /*
+
     void Update()
     {
         // Toggle fire mode (RMB / Fire2)
@@ -95,7 +95,7 @@ public class RenderTexturePainter : MonoBehaviour
 
         DrawDotAtUV(hit.textureCoord);
     }
-    */
+
     void DrawDotAtUV(Vector2 uv)
     {
         // Safety clamp

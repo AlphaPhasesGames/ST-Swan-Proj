@@ -10,6 +10,16 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     protected RenderTexture paintRT;
     protected Material paintMat;
 
+      
+    public float legacyBrushSize = 64f;
+    public float legacyMinSize = 1f;
+    public float legacyMaxSize = 256f;
+    [Header("Legacy Paint")]
+   
+
+    public bool allowLegacyPaint = true;
+    public bool allowSprayPaint = true;
+
     protected virtual void Awake()
     {
         paintMat = GetComponent<Renderer>().material;
@@ -30,6 +40,12 @@ public abstract class PaintSurfaceBase : MonoBehaviour
             paintMat.SetTexture("_PaintMask", paintRT);
         else
             Debug.LogError($"{name} material missing _PaintMask");
+    }
+
+    public virtual float GetLegacyBrushSize()
+    {
+        return Mathf.Clamp(legacyBrushSize, legacyMinSize, legacyMaxSize);
+        //return legacyBrushSize;
     }
 
     public abstract bool CanPaintHit(RaycastHit hit, Vector3 rayDir);
