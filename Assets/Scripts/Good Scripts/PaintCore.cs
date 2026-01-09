@@ -30,21 +30,21 @@ public class PaintCore : MonoBehaviour
     [Header("System")]
     public PaintSystem paintSystem = PaintSystem.SprayCone;
 
-    [Header("Spray Behaviour")]
-    public SpraySizeMode spraySizeMode = SpraySizeMode.Distance;
+    //  [Header("Spray Behaviour")] // redundant code to make a shotgun but i'm alreayd doing this with hard and soft and just named them wrong
+    // public SpraySizeMode spraySizeMode = SpraySizeMode.Distance;
 
     public enum PaintSystem
     {
         LegacyStamp,
         SprayCone
     }
-
-    public enum SpraySizeMode
-    {
+    /*
+     public enum SpraySizeMode // redundant code to make a shotgun but i'm alreayd doing this with hard and soft and just named them wrong
+      {
         Constant,   // same size no matter distance
         Distance    // grows with distance (shotgun)
-    }
-
+      }
+    */
 
     void Start()
     {
@@ -148,12 +148,12 @@ public class PaintCore : MonoBehaviour
                 if (!surface.TryGetPaintUV(hit, out Vector2 uv))
                     continue;
 
-                //float size = CalculateBrushSizeFromWorld(hit); //  change size of paint at distance
-
+                float size = CalculateBrushSizeFromWorld(hit); //  change size of paint at distance
+/*
                 float size = spraySizeMode == SpraySizeMode.Distance
                 ? CalculateBrushSizeFromWorld(hit)   // shotgun
                 : baseBrushSize;                     // normal gun
-
+*/
                 // allow negative sprayWorldSize, but never draw invalid rects
                 float safeSize = Mathf.Max(1f, Mathf.Abs(size));
 

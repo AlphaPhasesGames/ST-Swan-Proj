@@ -10,19 +10,25 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     protected RenderTexture paintRT;
     protected Material paintMat;
 
-      
+    [Header("Legacy Paint")]
     public float legacyBrushSize = 64f;
     public float legacyMinSize = 1f;
     public float legacyMaxSize = 256f;
-    [Header("Legacy Paint")]
-   
+
+    [Header("Paint Colour")]
+    [SerializeField]
+   // protected Color paintColor = Color.black;
 
     public bool allowLegacyPaint = true;
     public bool allowSprayPaint = true;
-
+    public static Color GlobalPaintColor = Color.black;
     protected virtual void Awake()
     {
         paintMat = GetComponent<Renderer>().material;
+
+        //paintMat.SetColor("_PaintColor", paintColor);
+
+        paintMat.SetColor("_PaintColor", GlobalPaintColor);
 
         paintRT = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
         paintRT.wrapMode = TextureWrapMode.Clamp;
@@ -78,4 +84,18 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         GL.PopMatrix();
         RenderTexture.active = prev;
     }
+
+    public static void SetGlobalPaintColor(Color c)
+    {
+        GlobalPaintColor = c;
+
+        foreach (var surface in FindObjectsOfType<PaintSurfaceBase>())
+            surface.paintMat.SetColor("_PaintColor", c);
+    }
+
+    public static Color GetCurrentPaintColor()
+    {
+        return GlobalPaintColor;
+    }
+
 }

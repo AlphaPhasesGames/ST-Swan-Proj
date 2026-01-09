@@ -12,7 +12,11 @@ public class SpraySettingsUI : MonoBehaviour
     public TextMeshProUGUI legacySize;
     public TextMeshProUGUI spraySize;
 
-    public TextMeshProUGUI gunType; // Shotgun / Rifle
+    public GameObject colourWheel;
+
+    public bool wheelIsOpen;
+    public MouseLook mLook;
+  //  public TextMeshProUGUI gunType; // Shotgun / Rifle
 
     private void Update()
     {
@@ -34,9 +38,27 @@ public class SpraySettingsUI : MonoBehaviour
         ? "Single Shot"
         : "Automatic";
 
-       // gunType.text = paintCore.spraySizeMode == PaintCore.SpraySizeMode.Constant
+        // gunType.text = paintCore.spraySizeMode == PaintCore.SpraySizeMode.Constant
         //? "Rifle"
-       // : "Shotgun";
+        // : "Shotgun";
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            wheelIsOpen = !wheelIsOpen;
+
+        }
+
+        if (!wheelIsOpen)
+        {
+            OpenColourWheel();
+        }
+
+        else if (wheelIsOpen) 
+            {
+            CloseColourWheel();
+            } 
+            
+       
     }
 
 
@@ -73,7 +95,21 @@ public class SpraySettingsUI : MonoBehaviour
 
     }
 
+    void OpenColourWheel()
+    {
+        colourWheel.gameObject.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        mLook.enabled = false;
+    }
 
+    void CloseColourWheel()
+    {
+        colourWheel.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        mLook.enabled = true;
+    }
 
 }
 

@@ -39,7 +39,7 @@ public class PaintballGun : MonoBehaviour
        
         // ---- MOVE IT ----
         Rigidbody rb = ball.GetComponent<Rigidbody>();
-        rb.linearVelocity = firePoint.forward * fireForce;
+        rb.velocity = firePoint.forward * fireForce;
 
         // ---- OPTION A: INJECT BRUSH DATA ----
         PaintBallObject pbo = ball.GetComponent<PaintBallObject>();
