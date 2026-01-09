@@ -4,32 +4,56 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class PaintSurfaceBase : MonoBehaviour
 {
-    [Header("Surface Paint")]
+    // --------------------------------------------------
+    // PAINT RT (OPTION A)
+    // --------------------------------------------------
+
+    [Header("Paint RT")]
     public int textureSize = 512;
 
     protected RenderTexture paintRT;
-    protected Material paintMat;
+    protected Material surfaceMat;
+    protected Material drawMat;
+
+    // --------------------------------------------------
+    // LEGACY SUPPORT (DO NOT REMOVE)
+    // --------------------------------------------------
 
     [Header("Legacy Paint")]
     public float legacyBrushSize = 64f;
     public float legacyMinSize = 1f;
     public float legacyMaxSize = 256f;
 
-    [Header("Paint Colour")]
-    [SerializeField]
-   // protected Color paintColor = Color.black;
-
     public bool allowLegacyPaint = true;
     public bool allowSprayPaint = true;
-    public static Color GlobalPaintColor = Color.black;
+
+    public virtual float GetLegacyBrushSize()
+    {
+        return Mathf.Clamp(legacyBrushSize, legacyMinSize, legacyMaxSize);
+    }
+
+    // --------------------------------------------------
+    // COLOUR SYSTEM (INDEX + COLOR)
+    // --------------------------------------------------
+
+    // Existing code still uses indices
+    public static int CurrentColourIndex = 0;
+
+    // Actual paint colour used by Option A
+    public static Color CurrentPaintColor = Color.red;
+
+    // Optional palette (assign in Inspector or elsewhere)
+    public static Color[] GlobalPalette;
+
+    // --------------------------------------------------
+    // UNITY LIFECYCLE
+    // --------------------------------------------------
+
     protected virtual void Awake()
     {
-        paintMat = GetComponent<Renderer>().material;
+        surfaceMat = GetComponent<Renderer>().material;
 
-        //paintMat.SetColor("_PaintColor", paintColor);
-
-        paintMat.SetColor("_PaintColor", GlobalPaintColor);
-
+        // Create RenderTexture
         paintRT = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
         paintRT.wrapMode = TextureWrapMode.Clamp;
         paintRT.filterMode = FilterMode.Bilinear;
@@ -37,22 +61,22 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         paintRT.autoGenerateMips = false;
         paintRT.Create();
 
+        // Clear RT ONCE
         var prev = RenderTexture.active;
         RenderTexture.active = paintRT;
         GL.Clear(false, true, Color.clear);
         RenderTexture.active = prev;
 
-        if (paintMat.HasProperty("_PaintMask"))
-            paintMat.SetTexture("_PaintMask", paintRT);
-        else
-            Debug.LogError($"{name} material missing _PaintMask");
+        // Bind RT to surface shader
+        surfaceMat.SetTexture("_PaintTex", paintRT);
+
+        // Create draw material
+        drawMat = new Material(Shader.Find("Custom/PaintRT_DrawColor"));
     }
 
-    public virtual float GetLegacyBrushSize()
-    {
-        return Mathf.Clamp(legacyBrushSize, legacyMinSize, legacyMaxSize);
-        //return legacyBrushSize;
-    }
+    // --------------------------------------------------
+    // PAINTING
+    // --------------------------------------------------
 
     public abstract bool CanPaintHit(RaycastHit hit, Vector3 rayDir);
 
@@ -64,11 +88,14 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     public void PaintAtUV(Vector2 uv, Texture2D brush, float size)
     {
-        uv = new Vector2(Mathf.Clamp01(uv.x), Mathf.Clamp01(uv.y));
+        uv.x = Mathf.Clamp01(uv.x);
+        uv.y = Mathf.Clamp01(uv.y);
 
         int px = Mathf.RoundToInt(uv.x * paintRT.width);
         int py = Mathf.RoundToInt(uv.y * paintRT.height);
         int drawSize = Mathf.RoundToInt(size);
+
+        drawMat.SetColor("_Color", CurrentPaintColor);
 
         var prev = RenderTexture.active;
         RenderTexture.active = paintRT;
@@ -77,25 +104,41 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         GL.LoadPixelMatrix(0, paintRT.width, 0, paintRT.height);
 
         Graphics.DrawTexture(
-            new Rect(px - drawSize * 0.5f, py - drawSize * 0.5f, drawSize, drawSize),
-            brush
+            new Rect(
+                px - drawSize * 0.5f,
+                py - drawSize * 0.5f,
+                drawSize,
+                drawSize
+            ),
+            brush,
+            drawMat
         );
 
         GL.PopMatrix();
         RenderTexture.active = prev;
     }
 
-    public static void SetGlobalPaintColor(Color c)
-    {
-        GlobalPaintColor = c;
+    // --------------------------------------------------
+    // COMPATIBILITY API (IMPORTANT)
+    // --------------------------------------------------
 
-        foreach (var surface in FindObjectsOfType<PaintSurfaceBase>())
-            surface.paintMat.SetColor("_PaintColor", c);
+    // Called by ColorWheelSelectorOuter
+    public static void SetColourIndex(int index)
+    {
+        CurrentColourIndex = index;
+
+        // If a palette exists, map index  color
+        if (GlobalPalette != null &&
+            index >= 0 &&
+            index < GlobalPalette.Length)
+        {
+            CurrentPaintColor = GlobalPalette[index];
+        }
     }
 
-    public static Color GetCurrentPaintColor()
+    // Optional direct colour set (newer code can use this)
+    public static void SetPaintColor(Color c)
     {
-        return GlobalPaintColor;
+        CurrentPaintColor = c;
     }
-
 }
