@@ -33,6 +33,9 @@ public class PaintCore : MonoBehaviour
     //  [Header("Spray Behaviour")] // redundant code to make a shotgun but i'm alreayd doing this with hard and soft and just named them wrong
     // public SpraySizeMode spraySizeMode = SpraySizeMode.Distance;
 
+    [Header("Raycast")]
+    public LayerMask paintMask;
+
     public enum PaintSystem
     {
         LegacyStamp,
@@ -51,7 +54,9 @@ public class PaintCore : MonoBehaviour
         if (!cam) cam = Camera.main;
 
         // brushTex = CreateBlobTexture(baseBrushSize);
-        brushTex = CreateBlobTexture(256); // high-res master brush
+        //brushTex = CreateBlobTexture(256); // high-res master brush
+        brushTex = CreateHardBrush(256);
+
     }
 
     void Update()
@@ -59,13 +64,13 @@ public class PaintCore : MonoBehaviour
 
 
         // Switch paint system
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetButtonDown("Fire5"))
         {
             paintSystem = PaintSystem.LegacyStamp;
             Debug.Log("Paint System: LEGACY STAMP");
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetButtonDown("Fire6"))
         {
             paintSystem = PaintSystem.SprayCone;
             Debug.Log("Paint System: SPRAY CONE");
@@ -132,8 +137,7 @@ public class PaintCore : MonoBehaviour
             Vector3 dir = GetRandomConeDirection(centerRay.direction, sprayAngle);
             Ray sprayRay = new Ray(centerRay.origin, dir);
 
-            RaycastHit[] hits = Physics.RaycastAll(sprayRay, sprayDistance);
-
+            RaycastHit[] hits = Physics.RaycastAll(sprayRay,sprayDistance,paintMask);
             System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
             foreach (RaycastHit hit in hits)
@@ -221,6 +225,34 @@ public class PaintCore : MonoBehaviour
         return tex;
     }
 
+    Texture2D CreateHardBrush(int size)
+    {
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.filterMode = FilterMode.Point; // IMPORTANT: no bilinear blur
+
+        Vector2 center = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        float radius = size * 0.5f;
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float dist = Vector2.Distance(new Vector2(x, y), center);
+
+                // Binary alpha (hard edge)
+                float alpha = dist <= radius ? 1f : 0f;
+
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
+            }
+        }
+
+        tex.Apply(false, false);
+        return tex;
+    }
+
+
+
     Vector3 GetRandomConeDirection(Vector3 forward, float angle)
     {
         float rad = angle * Mathf.Deg2Rad;
@@ -236,8 +268,8 @@ public class PaintCore : MonoBehaviour
     {
         bool paintInput =
             fireMode == FireMode.Once
-                ? Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")
-                : Input.GetMouseButton(0) || Input.GetButton("Fire1");
+                ? Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire4")
+                : Input.GetMouseButton(0) || Input.GetButton("Fire4");
 
         if (!paintInput) return;
 
@@ -260,7 +292,7 @@ public class PaintCore : MonoBehaviour
 
     void FireLegacy(Ray ray)
     {
-        RaycastHit[] hits = Physics.RaycastAll(ray, sprayDistance);
+        RaycastHit[] hits = Physics.RaycastAll(ray, sprayDistance, paintMask);
 
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
@@ -302,7 +334,7 @@ public class PaintCore : MonoBehaviour
             new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f)
         );
 
-        if (Physics.Raycast(ray, out RaycastHit hit, sprayDistance))
+        if (Physics.Raycast(ray, out RaycastHit hit, sprayDistance,paintMask))
             return hit.collider.GetComponent<PaintSurfaceBase>();
 
         return null;

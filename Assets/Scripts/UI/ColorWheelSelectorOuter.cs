@@ -75,10 +75,11 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
         if (wheelRect == null)
             wheelRect = GetComponent<RectTransform>();
 
+        wheelRect.gameObject.SetActive(false);
+
         if (highlightRect != null)
             highlightRect.gameObject.SetActive(false);
 
-        // Safety check
         if (wheelColours == null || wheelColours.Length != outerSegmentCount)
         {
             Debug.LogError(

@@ -13,7 +13,7 @@ public class PaintballGun : MonoBehaviour
     {
         if(paintCore.fireMode == PaintCore.FireMode.Once)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Fire4"))
             {
                 Fire();
             }
@@ -21,7 +21,7 @@ public class PaintballGun : MonoBehaviour
 
         if (paintCore.fireMode == PaintCore.FireMode.Spray)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetButton("Fire4"))
             {
                 Fire();
             }

@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 52716199}
   - component: {fileID: 52716200}
   - component: {fileID: 52716201}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7b8dfe397509a8b4b848d5f78911de83, type: 2}
+  - {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -258,19 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -292,6 +280,18 @@ PrefabInstance:
     - target: {fileID: 738054708460673503, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589956014435110884, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: maxJetpackSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589956014435110884, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: groundMask.m_Bits
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 2589956014435110884, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: jetpackAcceleration
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3940195732681867511, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
       propertyPath: m_LocalScale.x
@@ -392,19 +392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -448,6 +436,9 @@ MonoBehaviour:
   cam: {fileID: 1808863918}
   fireMode: 0
   paintSystem: 1
+  paintMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!4 &98916396
 Transform:
   m_ObjectHideFlags: 0
@@ -809,7 +800,7 @@ GameObject:
   - component: {fileID: 248707302}
   - component: {fileID: 248707301}
   - component: {fileID: 248707307}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +890,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+  - {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1026,19 +1017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -1100,6 +1079,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1131,19 +1114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -1354,19 +1325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 32
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -1403,6 +1362,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1419418099278728037, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
     - target: {fileID: 1653279870211149408, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -19.88
@@ -1446,6 +1409,10 @@ PrefabInstance:
     - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Name
       value: Quad
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
@@ -1579,10 +1546,14 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: c3587a1bffb58b7409a3b24ac79b41dc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+      objectReference: {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
     - target: {fileID: 919132149155446097, guid: c3587a1bffb58b7409a3b24ac79b41dc, type: 3}
       propertyPath: m_Name
       value: Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c3587a1bffb58b7409a3b24ac79b41dc, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1607,7 +1578,7 @@ GameObject:
   - component: {fileID: 483119795}
   - component: {fileID: 483119794}
   - component: {fileID: 483119793}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1760,6 +1731,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -1791,19 +1766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -1864,6 +1827,10 @@ PrefabInstance:
     - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Name
       value: Quad (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
@@ -2031,7 +1998,7 @@ GameObject:
   - component: {fileID: 718127160}
   - component: {fileID: 718127159}
   - component: {fileID: 718127165}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2121,7 +2088,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+  - {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2248,19 +2215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -2284,19 +2239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -2494,6 +2437,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2525,19 +2472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -2736,6 +2671,10 @@ PrefabInstance:
     - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Name
       value: Quad (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
@@ -2978,10 +2917,14 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: a8796cf6a4f1e0a4cb3aed456638fdcf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+      objectReference: {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
     - target: {fileID: 919132149155446097, guid: a8796cf6a4f1e0a4cb3aed456638fdcf, type: 3}
       propertyPath: m_Name
       value: House5
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a8796cf6a4f1e0a4cb3aed456638fdcf, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3045,10 +2988,14 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: d414d70c3a0de7c448d7e4d59d34694e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+      objectReference: {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
     - target: {fileID: 919132149155446097, guid: d414d70c3a0de7c448d7e4d59d34694e, type: 3}
       propertyPath: m_Name
       value: New Cactus WDL
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d414d70c3a0de7c448d7e4d59d34694e, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3079,19 +3026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -3152,6 +3087,10 @@ PrefabInstance:
     - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Name
       value: Quad (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
@@ -3327,6 +3266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -3494,19 +3437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 16
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -3552,19 +3483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -3588,19 +3507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -3622,7 +3529,7 @@ GameObject:
   - component: {fileID: 1233278082}
   - component: {fileID: 1233278081}
   - component: {fileID: 1233278087}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3712,7 +3619,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+  - {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3839,19 +3746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -3875,19 +3770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -3949,6 +3832,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -3978,7 +3865,7 @@ GameObject:
   - component: {fileID: 1338098204}
   - component: {fileID: 1338098203}
   - component: {fileID: 1338098209}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4068,7 +3955,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+  - {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4195,19 +4082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -4222,7 +4097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1375949138}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Quad Pro Builder Cube Faces Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4534,6 +4409,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -4794,19 +4673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -5249,6 +5116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quad (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -5283,7 +5154,7 @@ GameObject:
   - component: {fileID: 1777894154}
   - component: {fileID: 1777894153}
   - component: {fileID: 1777894159}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5373,7 +5244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77f41c9a7c317ba4c8e774b2f6859c86, type: 2}
+  - {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5500,19 +5371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -5573,19 +5432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -5646,6 +5493,10 @@ PrefabInstance:
     - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Name
       value: Quad (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
@@ -5790,6 +5641,10 @@ PrefabInstance:
     - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Name
       value: Quad (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8203529307658658039, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
       propertyPath: m_Enabled
@@ -6000,6 +5855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardSoftSettings: {fileID: 1570111642}
   stampSpraySettings: {fileID: 1692000265}
+  playerCont: {fileID: 2009481144}
   paintCore: {fileID: 98916395}
   legacySize: {fileID: 1155954354}
   spraySize: {fileID: 824918506}
@@ -6251,24 +6107,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
   allowLegacyPaint: 1
   allowSprayPaint: 1
+--- !u!114 &2009481144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2589956014435110884, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+  m_PrefabInstance: {fileID: 77434910}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f48136575373743a0419f99a6b6c64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2085460925
 GameObject:
   m_ObjectHideFlags: 0
@@ -6287,7 +6142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2085460926
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6375,19 +6230,6 @@ MonoBehaviour:
   - {r: 0.5921569, g: 0.06666667, b: 0.75294125, a: 0}
   - {r: 0.78823537, g: 0.08627451, b: 0.17254902, a: 0}
   - {r: 0.9921569, g: 0.1137255, b: 0.11764707, a: 0}
-  palette:
-  - {r: 0.8117648, g: 0.3137255, b: 0.08235294, a: 1}
-  - {r: 0.8117648, g: 0.56078434, b: 0.050980397, a: 1}
-  - {r: 0.81568635, g: 0.7019608, b: 0.007843138, a: 1}
-  - {r: 0.81568635, g: 0.80392164, b: 0.18823531, a: 1}
-  - {r: 0.52156866, g: 0.6745098, b: 0.2509804, a: 1}
-  - {r: 0.37254903, g: 0.5137255, b: 0.62352943, a: 1}
-  - {r: 0.09411766, g: 0.32156864, b: 0.77647066, a: 1}
-  - {r: 0.2784314, g: 0.04705883, b: 0.6509804, a: 1}
-  - {r: 0.2784314, g: 0.050980397, b: 0.6117647, a: 1}
-  - {r: 0.5647059, g: 0.16862746, b: 0.67058825, a: 1}
-  - {r: 0.7058824, g: 0.09019608, b: 0.1764706, a: 1}
-  - {r: 0.80392164, g: 0.11764707, b: 0.121568635, a: 1}
 --- !u!1 &2119187568 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3886779641297277449, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
@@ -6406,19 +6248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -6442,19 +6272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
+  paintRT: {fileID: 0}
   legacyBrushSize: 128
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -6473,17 +6291,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3607783065640681999, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3997970975638067280, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 1808863918}
     - target: {fileID: 4914897646379646129, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.410666
+      value: -19.46
       objectReference: {fileID: 0}
     - target: {fileID: 4914897646379646129, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 4914897646379646129, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6521,6 +6343,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ' Blender Cube Box Uv Unwrapped'
       objectReference: {fileID: 0}
+    - target: {fileID: 5332508279761175740, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270980403006246040, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 98e173aa6ff27044ca302564d67de7f1, type: 2}
     m_RemovedComponents:
     - {fileID: 3997970975638067280, guid: aeae1bc604b061f4c9cc0f82005fffca, type: 3}
     m_RemovedGameObjects: []
@@ -6604,20 +6434,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureSize: 512
-  palette:
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  - {r: 0, g: 0, b: 0, a: 0}
-  legacyBrushSize: 32
+  paintRT: {fileID: 0}
+  legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
   allowLegacyPaint: 1

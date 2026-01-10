@@ -11,7 +11,7 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     [Header("Paint RT")]
     public int textureSize = 512;
 
-    protected RenderTexture paintRT;
+    public RenderTexture paintRT;
     protected Material surfaceMat;
     protected Material drawMat;
 
@@ -56,7 +56,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         // Create RenderTexture
         paintRT = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
         paintRT.wrapMode = TextureWrapMode.Clamp;
-        paintRT.filterMode = FilterMode.Bilinear;
+        //paintRT.filterMode = FilterMode.Bilinear;
+        paintRT.filterMode = FilterMode.Point;
         paintRT.useMipMap = false;
         paintRT.autoGenerateMips = false;
         paintRT.Create();
@@ -79,12 +80,21 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     // --------------------------------------------------
 
     public abstract bool CanPaintHit(RaycastHit hit, Vector3 rayDir);
-
+    /*
+    public void SetPaintFilterMode(FilterMode mode)
+    {
+        if (paintRT != null)
+            paintRT.filterMode = mode;
+    }
+    */
     public virtual bool TryGetPaintUV(RaycastHit hit, out Vector2 uv)
     {
         uv = hit.textureCoord;
         return true;
     }
+
+
+
 
     public void PaintAtUV(Vector2 uv, Texture2D brush, float size)
     {

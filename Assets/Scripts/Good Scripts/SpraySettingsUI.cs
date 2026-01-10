@@ -3,10 +3,11 @@ using UnityEngine.UI;
 using TMPro;
 public class SpraySettingsUI : MonoBehaviour
 {
-
+   // [SerializeField] private PaintSurfaceBase paintBase;
     public TextMeshProUGUI hardSoftSettings;
     public TextMeshProUGUI stampSpraySettings;
 
+    public FPSPlayerController playerCont;
     public PaintCore paintCore;
 
     public TextMeshProUGUI legacySize;
@@ -16,7 +17,12 @@ public class SpraySettingsUI : MonoBehaviour
 
     public bool wheelIsOpen;
     public MouseLook mLook;
-  //  public TextMeshProUGUI gunType; // Shotgun / Rifle
+    //  public TextMeshProUGUI gunType; // Shotgun / Rifle
+
+    private void Awake()
+    {
+      //  paintBase = FindAnyObjectByType<PaintSurfaceBase>();
+    }
 
     private void Update()
     {
@@ -42,7 +48,7 @@ public class SpraySettingsUI : MonoBehaviour
         //? "Rifle"
         // : "Shotgun";
 
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetButtonDown("Fire3"))
         {
             wheelIsOpen = !wheelIsOpen;
 
@@ -53,14 +59,13 @@ public class SpraySettingsUI : MonoBehaviour
             OpenColourWheel();
         }
 
-        else if (wheelIsOpen) 
-            {
+        else if (wheelIsOpen)
+        {
             CloseColourWheel();
-            } 
-            
-       
-    }
+        }
 
+
+    }
 
     public void SetPaintToHard()
     {
@@ -97,6 +102,8 @@ public class SpraySettingsUI : MonoBehaviour
 
     void OpenColourWheel()
     {
+        playerCont.enabled = false;
+        paintCore.enabled = false;
         colourWheel.gameObject.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -105,6 +112,8 @@ public class SpraySettingsUI : MonoBehaviour
 
     void CloseColourWheel()
     {
+        playerCont.enabled = true;
+        paintCore.enabled = true;
         colourWheel.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
