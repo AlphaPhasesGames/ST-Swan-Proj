@@ -6,6 +6,9 @@ public class PaintBallObject : MonoBehaviour
     public float worldBrushSize = 0.25f;
     public int textureSize = 512;
 
+    [Header("Paint")]
+    public Color paintColor = Color.black;
+
     void Start()
     {
         Destroy(gameObject, 5f);
@@ -50,7 +53,7 @@ public class PaintBallObject : MonoBehaviour
 
         float pixelSize = CalculatePixelSize(surface, hit);
 
-        surface.PaintAtUV(uv, brushTex, pixelSize);
+        surface.PaintAtUV(uv, brushTex, pixelSize, paintColor);
 
         Destroy(gameObject);
     }

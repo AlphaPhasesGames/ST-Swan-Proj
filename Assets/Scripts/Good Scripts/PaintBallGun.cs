@@ -13,15 +13,15 @@ public class PaintballGun : MonoBehaviour
     {
         if(paintCore.fireMode == PaintCore.FireMode.Once)
         {
-            if (Input.GetButtonDown("Fire4"))
+            if (Input.GetMouseButtonDown(0))
             {
                 Fire();
             }
         }
 
-        if (paintCore.fireMode == PaintCore.FireMode.Spray)
+        if (paintCore.fireMode == PaintCore.FireMode.Hold)
         {
-            if (Input.GetButton("Fire4"))
+            if (Input.GetMouseButton(0))
             {
                 Fire();
             }
@@ -39,7 +39,7 @@ public class PaintballGun : MonoBehaviour
        
         // ---- MOVE IT ----
         Rigidbody rb = ball.GetComponent<Rigidbody>();
-        rb.velocity = firePoint.forward * fireForce;
+        rb.linearVelocity = firePoint.forward * fireForce;
 
         // ---- OPTION A: INJECT BRUSH DATA ----
         PaintBallObject pbo = ball.GetComponent<PaintBallObject>();

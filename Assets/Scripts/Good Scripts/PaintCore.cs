@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PaintCore : MonoBehaviour
@@ -11,123 +10,125 @@ public class PaintCore : MonoBehaviour
     [Header("RT")]
     public int textureSize = 512;
 
-    [Header("Brush")]
-    public int baseBrushSize = 64;
-
-    [Header("World Brush")]
+    [Header("World Brush Size")]
     public float brushWorldSize = 0.25f;
 
     [Header("Input")]
     public Camera cam;
 
-    //  private RenderTexture paintRT;
-    private Texture2D brushTex;
-    //  private Material paintMat;
+    public enum PaintMode
+    {
+        Spray,
+        Precision
+    }
 
-    public enum FireMode { Spray, Once }
-    public FireMode fireMode = FireMode.Spray;
+    public PaintMode paintMode = PaintMode.Spray;
 
-    [Header("System")]
-    public PaintSystem paintSystem = PaintSystem.SprayCone;
+    public enum FireMode
+    {
+        Hold,
+        Once
+    }
 
-    //  [Header("Spray Behaviour")] // redundant code to make a shotgun but i'm alreayd doing this with hard and soft and just named them wrong
-    // public SpraySizeMode spraySizeMode = SpraySizeMode.Distance;
+    public FireMode fireMode = FireMode.Hold;
 
-    [Header("Raycast")]
-    public LayerMask paintMask;
+    [Header("Paint Colour")]
+    public Color CurrentPaintColor { get; private set; } = Color.black;
 
+    public void SetPaintColor(Color c)
+    {
+        CurrentPaintColor = c;
+    }
+
+    // Legacy UI compatibility
     public enum PaintSystem
     {
-        LegacyStamp,
-        SprayCone
+        SprayCone,
+        Precision
     }
-    /*
-     public enum SpraySizeMode // redundant code to make a shotgun but i'm alreayd doing this with hard and soft and just named them wrong
-      {
-        Constant,   // same size no matter distance
-        Distance    // grows with distance (shotgun)
-      }
-    */
+
+    public PaintSystem paintSystem =>
+        paintMode == PaintMode.Precision
+            ? PaintSystem.Precision
+            : PaintSystem.SprayCone;
+
+    Texture2D brushTex;
 
     void Start()
     {
         if (!cam) cam = Camera.main;
 
-        // brushTex = CreateBlobTexture(baseBrushSize);
-        //brushTex = CreateBlobTexture(256); // high-res master brush
-        brushTex = CreateHardBrush(256);
-
+        // Same brush for both modes – hardness comes from texture
+        brushTex = CreateBlobTexture(256);
     }
 
     void Update()
     {
-
-
-        // Switch paint system
-        if (Input.GetButtonDown("Fire5"))
-        {
-            paintSystem = PaintSystem.LegacyStamp;
-            Debug.Log("Paint System: LEGACY STAMP");
-        }
-
-        if (Input.GetButtonDown("Fire6"))
-        {
-            paintSystem = PaintSystem.SprayCone;
-            Debug.Log("Paint System: SPRAY CONE");
-        }
-
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        if (scroll > 0f)
-        {
-            if (paintSystem == PaintSystem.SprayCone)
-            {
-                brushWorldSize += 0.05f;
-                brushWorldSize = Mathf.Clamp(brushWorldSize, -20f, 2f);
-            }
-
-            if (paintSystem == PaintSystem.LegacyStamp)
-            {
-                PaintSurfaceBase surface = GetSurfaceUnderCrosshair();
-                if (surface)
-                {
-                    surface.legacyBrushSize += 1f;
-                    surface.legacyBrushSize = Mathf.Clamp(surface.legacyBrushSize, 1f, 512f);
-                }
-            }
-        }
-        else if (scroll < 0f)
-        {
-            if (paintSystem == PaintSystem.SprayCone)
-            {
-                brushWorldSize -= 0.05f;
-                brushWorldSize = Mathf.Clamp(brushWorldSize, -20f, 2f);
-            }
-
-            if (paintSystem == PaintSystem.LegacyStamp)
-            {
-                PaintSurfaceBase surface = GetSurfaceUnderCrosshair();
-                if (surface)
-                {
-                    surface.legacyBrushSize -= 1f;   //  THIS WAS THE BUG
-                    surface.legacyBrushSize = Mathf.Clamp(surface.legacyBrushSize, 1f, 512f);
-                }
-            }
-        }
-        /* // redundant code to make a shotgun but i'm alreayd doing this with hard and soft and just named them wrong
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            spraySizeMode =
-                spraySizeMode == SpraySizeMode.Distance
-                    ? SpraySizeMode.Constant
-                    : SpraySizeMode.Distance;
-
-            Debug.Log("Spray Size Mode: " + spraySizeMode);
-        }
-        */
-        HandleFireModeToggle();
+       // HandleModeKeys();
+       // HandleFireModeToggle();
+        HandleBrushSizing();
         HandlePaint();
+    }
 
+    void HandleModeKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            paintMode = PaintMode.Precision;
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            paintMode = PaintMode.Spray;
+    }
+
+    void HandleFireModeToggle()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            fireMode = fireMode == FireMode.Hold
+                ? FireMode.Once
+                : FireMode.Hold;
+        }
+    }
+
+    void HandlePaint()
+    {
+        bool paintInput =
+            fireMode == FireMode.Once
+                ? Input.GetMouseButtonDown(0)
+                : Input.GetMouseButton(0);
+
+        if (!paintInput) return;
+
+        Ray ray = cam.ScreenPointToRay(
+            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f)
+        );
+
+        switch (paintMode)
+        {
+            case PaintMode.Precision:
+                FirePrecision(ray);
+                break;
+
+            case PaintMode.Spray:
+                FireSprayCone(ray);
+                break;
+        }
+    }
+
+    void FirePrecision(Ray ray)
+    {
+        if (!Physics.Raycast(ray, out RaycastHit hit, sprayDistance))
+            return;
+
+        PaintSurfaceBase surface =
+            hit.collider.GetComponentInParent<PaintSurfaceBase>();
+
+        if (!surface) return;
+        if (!surface.CanPaintHit(hit, ray.direction)) return;
+
+        float size = brushWorldSize * surface.textureSize;
+        size = Mathf.Clamp(size, 1f, surface.textureSize * 0.25f);
+
+        surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
     }
 
     void FireSprayCone(Ray centerRay)
@@ -137,121 +138,34 @@ public class PaintCore : MonoBehaviour
             Vector3 dir = GetRandomConeDirection(centerRay.direction, sprayAngle);
             Ray sprayRay = new Ray(centerRay.origin, dir);
 
-            RaycastHit[] hits = Physics.RaycastAll(sprayRay,sprayDistance,paintMask);
+            RaycastHit[] hits = Physics.RaycastAll(sprayRay, sprayDistance);
             System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
             foreach (RaycastHit hit in hits)
             {
-                PaintSurfaceBase surface = hit.collider.GetComponent<PaintSurfaceBase>();
-                if (!surface)
-                    continue;
+                PaintSurfaceBase surface =
+                    hit.collider.GetComponentInParent<PaintSurfaceBase>();
 
-                if (!surface.CanPaintHit(hit, sprayRay.direction))
-                    continue;
+                if (!surface) continue;
+                if (!surface.CanPaintHit(hit, sprayRay.direction)) continue;
 
-                if (!surface.TryGetPaintUV(hit, out Vector2 uv))
-                    continue;
+                float size = brushWorldSize * surface.textureSize * 0.5f;
+                size = Mathf.Max(1f, size);
 
-                float size = CalculateBrushSizeFromWorld(hit); //  change size of paint at distance
-/*
-                float size = spraySizeMode == SpraySizeMode.Distance
-                ? CalculateBrushSizeFromWorld(hit)   // shotgun
-                : baseBrushSize;                     // normal gun
-*/
-                // allow negative sprayWorldSize, but never draw invalid rects
-                float safeSize = Mathf.Max(1f, Mathf.Abs(size));
-
-                surface.PaintAtUV(uv, brushTex, safeSize);
-
-                break; // THIS IS THE IMPORTANT PART
+                surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
+                break;
             }
         }
     }
 
-
-
-    float CalculateBrushSizeFromWorld(RaycastHit hit)
+    void HandleBrushSizing()
     {
-        MeshCollider mc = hit.collider as MeshCollider;
-        if (!mc || !mc.sharedMesh) return baseBrushSize;
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scroll) < 0.001f) return;
 
-        Mesh m = mc.sharedMesh;
-        int tri = hit.triangleIndex * 3;
-        if (tri + 2 >= m.triangles.Length) return baseBrushSize;
-
-        Transform t = hit.collider.transform;
-
-        Vector3 v0 = t.TransformPoint(m.vertices[m.triangles[tri]]);
-        Vector3 v1 = t.TransformPoint(m.vertices[m.triangles[tri + 1]]);
-        Vector3 v2 = t.TransformPoint(m.vertices[m.triangles[tri + 2]]);
-
-        Vector2 uv0 = m.uv[m.triangles[tri]];
-        Vector2 uv1 = m.uv[m.triangles[tri + 1]];
-        Vector2 uv2 = m.uv[m.triangles[tri + 2]];
-
-        float worldArea = Vector3.Cross(v1 - v0, v2 - v0).magnitude * 0.5f;
-        float uvArea = Mathf.Abs(
-            (uv1.x - uv0.x) * (uv2.y - uv0.y) -
-            (uv2.x - uv0.x) * (uv1.y - uv0.y)
-        ) * 0.5f;
-
-        if (uvArea < 0.00001f) return baseBrushSize;
-
-        float worldPerUV = Mathf.Sqrt(worldArea / uvArea);
-        // brushWorldSiz how big the spray should be in world units - worldPerUV is how much world space one UV unit covers and this changes with distance and surface orientation
-        float pixelSize = (brushWorldSize / worldPerUV) * textureSize; 
-
-        return Mathf.Clamp(pixelSize, 4f, textureSize * 0.5f);
+        brushWorldSize += scroll * 0.05f;
+        brushWorldSize = Mathf.Clamp(brushWorldSize, 0.01f, 2f);
     }
-
-    Texture2D CreateBlobTexture(int size)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
-        tex.wrapMode = TextureWrapMode.Clamp;
-        tex.filterMode = FilterMode.Bilinear;
-
-        Vector2 c = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
-        float r = size * 0.5f;
-
-        for (int y = 0; y < size; y++)
-            for (int x = 0; x < size; x++)
-            {
-                float t = Mathf.Clamp01(Vector2.Distance(new Vector2(x, y), c) / r);
-                float a = Mathf.SmoothStep(1f, 0f, t);
-                tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
-            }
-
-        tex.Apply(false, false);
-        return tex;
-    }
-
-    Texture2D CreateHardBrush(int size)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
-        tex.wrapMode = TextureWrapMode.Clamp;
-        tex.filterMode = FilterMode.Point; // IMPORTANT: no bilinear blur
-
-        Vector2 center = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
-        float radius = size * 0.5f;
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float dist = Vector2.Distance(new Vector2(x, y), center);
-
-                // Binary alpha (hard edge)
-                float alpha = dist <= radius ? 1f : 0f;
-
-                tex.SetPixel(x, y, new Color(1f, 1f, 1f, alpha));
-            }
-        }
-
-        tex.Apply(false, false);
-        return tex;
-    }
-
-
 
     Vector3 GetRandomConeDirection(Vector3 forward, float angle)
     {
@@ -263,129 +177,56 @@ public class PaintCore : MonoBehaviour
         return Quaternion.LookRotation(forward) * new Vector3(x, y, z);
     }
 
-
-    void HandlePaint()
+    //  THIS IS THE ONLY CHANGE 
+    Texture2D CreateBlobTexture(int size)
     {
-        bool paintInput =
-            fireMode == FireMode.Once
-                ? Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire4")
-                : Input.GetMouseButton(0) || Input.GetButton("Fire4");
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.filterMode = FilterMode.Point;
 
-        if (!paintInput) return;
+        Vector2 c = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        float r = size * 0.5f;
 
-        Ray ray = cam.ScreenPointToRay(
-            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f)
-        );
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float t = Vector2.Distance(new Vector2(x, y), c) / r;
 
-        switch (paintSystem)
-        {
-            case PaintSystem.LegacyStamp:
-                FireLegacy(ray);
-                break;
+                // Tight, crisp edge but NOT aliased
+                float edge = 0.9f; // tweak 0.88 – 0.95
+                float a = Mathf.SmoothStep(1f, 0f,
+                    Mathf.InverseLerp(edge, 1f, t));
 
-            case PaintSystem.SprayCone:
-                FireSprayCone(ray);
-                break;
-        }
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
+            }
+
+        tex.Apply(false, false);
+        return tex;
     }
 
-
-    void FireLegacy(Ray ray)
-    {
-        RaycastHit[] hits = Physics.RaycastAll(ray, sprayDistance, paintMask);
-
-        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
-        foreach (RaycastHit hit in hits)
-        {
-            PaintSurfaceBase surface = hit.collider.GetComponent<PaintSurfaceBase>();
-            if (!surface)
-                continue;
-
-            //  LEGACY GUARD
-            if (!surface.allowLegacyPaint)
-                continue;
-
-            if (!surface.CanPaintHit(hit, ray.direction))
-                continue;
-
-            if (!surface.TryGetPaintUV(hit, out Vector2 uv))
-                continue;
-
-            surface.PaintAtUV(uv, brushTex, surface.GetLegacyBrushSize());
-        }
-
-    }
-
-    void HandleFireModeToggle()
-    {
-        if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2"))
-        {
-            fireMode = fireMode == FireMode.Spray
-                ? FireMode.Once
-                : FireMode.Spray;
-
-            Debug.Log("Fire Mode: " + fireMode);
-        }
-    }
-    PaintSurfaceBase GetSurfaceUnderCrosshair()
-    {
-        Ray ray = cam.ScreenPointToRay(
-            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f)
-        );
-
-        if (Physics.Raycast(ray, out RaycastHit hit, sprayDistance,paintMask))
-            return hit.collider.GetComponent<PaintSurfaceBase>();
-
-        return null;
-    }
+    public Texture2D GetBrushTexture() => brushTex;
 
     public PaintSurfaceBase GetSurfaceUnderCrosshairPublic()
     {
         Ray ray = cam.ScreenPointToRay(
-            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f)
+            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f)
         );
 
         if (Physics.Raycast(ray, out RaycastHit hit, sprayDistance))
-            return hit.collider.GetComponentInParent<PaintSurfaceBase>(); // IMPORTANT
+            return hit.collider.GetComponentInParent<PaintSurfaceBase>();
 
         return null;
     }
 
-    public Texture2D GetBrushTexture()
+    public void SetPaintMode(PaintMode mode)
     {
-        return brushTex;
+        paintMode = mode;
     }
 
-
-    public float CalculateBrushSizeFromWorldPublic(RaycastHit hit)
+    public void ToggleFireMode()
     {
-        return CalculateBrushSizeFromWorld(hit);
+        fireMode = fireMode == FireMode.Hold
+            ? FireMode.Once
+            : FireMode.Hold;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

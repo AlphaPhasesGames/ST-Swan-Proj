@@ -14,12 +14,18 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
     [Header("Highlight")]
     public RectTransform highlightRect;
 
+    //public GameObject blackButton;
+    //public GameObject whiteButton;
+
     // -----------------------------
     // OUTPUT / EVENTS (optional)
     // -----------------------------
 
     // Still index-based for UI / sound if you want it
-    public System.Action<int> OnColourSelected;
+    public System.Action<int> OnColourIndexSelected;
+
+    // Actual colour output (for paint system)
+    public System.Action<Color> OnColourSelected;
 
     // -----------------------------
     // WHEEL SETUP
@@ -86,6 +92,8 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
                 "ColorWheelSelectorOuter: wheelColours must contain EXACTLY 12 colours."
             );
         }
+
+
     }
 
     // -----------------------------
@@ -95,6 +103,7 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         EvaluatePointer(eventData);
+        highlightRect.gameObject.SetActive(true);
     }
 
     // -----------------------------
@@ -133,9 +142,7 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
         int index = Mathf.FloorToInt(angle / segmentAngle);
         index = Mathf.Clamp(index, 0, outerSegmentCount - 1);
 
-        if (index == lastIndex)
-            return;
-
+       
         lastIndex = index;
 
         // -----------------------------
@@ -148,6 +155,8 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
                 new Vector3(0f, 0f, -index * segmentAngle);
 
             highlightRect.gameObject.SetActive(true);
+           // whiteButton.gameObject.SetActive(false);
+            //blackButton.gameObject.SetActive(false);
         }
 
         // -----------------------------
@@ -155,13 +164,17 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
         // -----------------------------
 
         Color selected = wheelColours[index];
-        PaintSurfaceBase.SetPaintColor(selected);
 
-        Debug.Log($"Paint colour set to: {selected}");
+        // Fire colour event (paint system listens)
+        OnColourSelected?.Invoke(selected);
 
         // Optional index event (UI / sound etc.)
-        OnColourSelected?.Invoke(index);
+        OnColourIndexSelected?.Invoke(index);
+
+      
     }
+
+
 
 #if UNITY_EDITOR
     // -----------------------------

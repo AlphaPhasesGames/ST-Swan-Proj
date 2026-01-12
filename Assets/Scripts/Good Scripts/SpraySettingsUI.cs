@@ -3,26 +3,18 @@ using UnityEngine.UI;
 using TMPro;
 public class SpraySettingsUI : MonoBehaviour
 {
-   // [SerializeField] private PaintSurfaceBase paintBase;
+
     public TextMeshProUGUI hardSoftSettings;
     public TextMeshProUGUI stampSpraySettings;
 
-    public FPSPlayerController playerCont;
     public PaintCore paintCore;
 
     public TextMeshProUGUI legacySize;
     public TextMeshProUGUI spraySize;
 
-    public GameObject colourWheel;
 
-    public bool wheelIsOpen;
-    public MouseLook mLook;
-    //  public TextMeshProUGUI gunType; // Shotgun / Rifle
 
-    private void Awake()
-    {
-      //  paintBase = FindAnyObjectByType<PaintSurfaceBase>();
-    }
+   // public TextMeshProUGUI gunType; // Shotgun / Rifle
 
     private void Update()
     {
@@ -36,7 +28,7 @@ public class SpraySettingsUI : MonoBehaviour
         spraySize.text = paintCore.brushWorldSize.ToString("0.00");
 
         stampSpraySettings.text =
-        paintCore.paintSystem == PaintCore.PaintSystem.LegacyStamp
+        paintCore.paintSystem == PaintCore.PaintSystem.Precision
         ? "Rifle"
         : "Shotgun";
 
@@ -44,32 +36,15 @@ public class SpraySettingsUI : MonoBehaviour
         ? "Single Shot"
         : "Automatic";
 
-        // gunType.text = paintCore.spraySizeMode == PaintCore.SpraySizeMode.Constant
+       // gunType.text = paintCore.spraySizeMode == PaintCore.SpraySizeMode.Constant
         //? "Rifle"
-        // : "Shotgun";
-
-        if (Input.GetButtonDown("Fire3"))
-        {
-            wheelIsOpen = !wheelIsOpen;
-
-        }
-
-        if (!wheelIsOpen)
-        {
-            OpenColourWheel();
-        }
-
-        else if (wheelIsOpen)
-        {
-            CloseColourWheel();
-        }
-
-
+       // : "Shotgun";
     }
+
 
     public void SetPaintToHard()
     {
-        if (paintCore.paintSystem == PaintCore.PaintSystem.LegacyStamp)
+        if (paintCore.paintSystem == PaintCore.PaintSystem.Precision)
         {
 
             hardSoftSettings.text = ("Hard paint");
@@ -92,7 +67,7 @@ public class SpraySettingsUI : MonoBehaviour
             stampSpraySettings.text = ("Stamp");
         }
 
-        if (paintCore.fireMode == PaintCore.FireMode.Spray)
+        if (paintCore.fireMode == PaintCore.FireMode.Hold)
         {
 
             stampSpraySettings.text = ("Spray");
@@ -100,25 +75,7 @@ public class SpraySettingsUI : MonoBehaviour
 
     }
 
-    void OpenColourWheel()
-    {
-        playerCont.enabled = false;
-        paintCore.enabled = false;
-        colourWheel.gameObject.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        mLook.enabled = false;
-    }
 
-    void CloseColourWheel()
-    {
-        playerCont.enabled = true;
-        paintCore.enabled = true;
-        colourWheel.gameObject.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        mLook.enabled = true;
-    }
 
 }
 

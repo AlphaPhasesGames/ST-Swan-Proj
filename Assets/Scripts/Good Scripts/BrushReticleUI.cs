@@ -57,7 +57,7 @@ public class BrushReticleUI : MonoBehaviour
 
         if (paintCore.paintSystem == PaintCore.PaintSystem.SprayCone)
         {
-            pixelSize = paintCore.CalculateBrushSizeFromWorldPublic(hit);
+           // pixelSize = paintCore.CalculateBrushSizeFromWorldPublic(hit);
         }
         else
         {
@@ -74,10 +74,10 @@ public class BrushReticleUI : MonoBehaviour
         distanceScale = Mathf.Clamp(distanceScale, 0.25f, 1.5f);
 
         // Apply distance scaling
-        pixelSize *= distanceScale;
+       // pixelSize *= distanceScale;
 
-        reticleRect.sizeDelta =
-            Vector2.one * Mathf.Clamp(pixelSize, minSize, maxSize);
+       // reticleRect.sizeDelta =
+       //     Vector2.one * Mathf.Clamp(pixelSize, minSize, maxSize);
     }
 
     /*
