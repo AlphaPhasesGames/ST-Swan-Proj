@@ -116,19 +116,22 @@ public class PaintCore : MonoBehaviour
 
     void FirePrecision(Ray ray)
     {
-        if (!Physics.Raycast(ray, out RaycastHit hit, sprayDistance))
-            return;
+        Vector3 origin = ray.origin;
+        Vector3 forward = ray.direction;
 
-        PaintSurfaceBase surface =
-            hit.collider.GetComponentInParent<PaintSurfaceBase>();
+        float offset = 0.01f; // seam sensitivity (tweak later)
 
-        if (!surface) return;
-        if (!surface.CanPaintHit(hit, ray.direction)) return;
+        Vector3 right = cam.transform.right * offset;
+        Vector3 up = cam.transform.up * offset;
 
-        float size = brushWorldSize * surface.textureSize;
-        size = Mathf.Clamp(size, 1f, surface.textureSize * 0.25f);
+        // Main ray
+        FirePrecisionRay(origin, forward);
 
-        surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
+        // Seam helper rays
+        FirePrecisionRay(origin, forward + right);
+        FirePrecisionRay(origin, forward - right);
+        FirePrecisionRay(origin, forward + up);
+        FirePrecisionRay(origin, forward - up);
     }
 
     void FireSprayCone(Ray centerRay)
@@ -229,4 +232,22 @@ public class PaintCore : MonoBehaviour
             ? FireMode.Once
             : FireMode.Hold;
     }
+
+    void FirePrecisionRay(Vector3 origin, Vector3 dir)
+    {
+        if (!Physics.Raycast(origin, dir, out RaycastHit hit, sprayDistance))
+            return;
+
+        PaintSurfaceBase surface =
+            hit.collider.GetComponentInParent<PaintSurfaceBase>();
+
+        if (!surface) return;
+        if (!surface.CanPaintHit(hit, dir)) return;
+
+        float size = brushWorldSize * surface.textureSize;
+        size = Mathf.Clamp(size, 1f, surface.textureSize * 0.25f);
+
+        surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
+    }
+
 }
