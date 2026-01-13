@@ -159,59 +159,100 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     public void PaintAtWorld(Vector3 worldPos, Vector3 normal, Texture2D brush, float size, Color paintColor)
     {
-        Vector3 n = normal.normalized;
+        //  LOCAL normal so rotation is respected AND matches shader
+        Vector3 nL = transform.InverseTransformDirection(normal).normalized;
 
-        float wx = Mathf.Abs(n.x);
-        float wy = Mathf.Abs(n.y);
-        float wz = Mathf.Abs(n.z);
+        float ax = Mathf.Abs(nL.x);
+        float ay = Mathf.Abs(nL.y);
+        float az = Mathf.Abs(nL.z);
 
-        float sum = wx + wy + wz;
-        if (sum < 0.0001f) return;
+        // Pick dominant LOCAL axis
+        if (ax >= ay && ax >= az)
+        {
+            PaintOnPlane(
+                nL.x >= 0 ? paintRT_PosX : paintRT_NegX,
+                worldPos,
+                Axis.X,
+                nL, // pass local normal for mirroring
+                brush,
+                size,
+                paintColor
+            );
+        }
+        else if (ay >= ax && ay >= az)
+        {
+            PaintOnPlane(
+                nL.y >= 0 ? paintRT_PosY : paintRT_NegY,
+                worldPos,
+                Axis.Y,
+                nL,
+                brush,
+                size,
+                paintColor
+            );
+        }
+        else
+        {
+            PaintOnPlane(
+                nL.z >= 0 ? paintRT_PosZ : paintRT_NegZ,
+                worldPos,
+                Axis.Z,
+                nL,
+                brush,
+                size,
+                paintColor
+            );
+        }
+    }
 
-        wx /= sum;
-        wy /= sum;
-        wz /= sum;
+ 
 
-        Vector3 local = transform.InverseTransformPoint(worldPos) * triplanarTiling;
+    //  IMPORTANT: mirroring here MUST MATCH YOUR SHADER
+    void PaintOnPlane(RenderTexture rt, Vector3 worldPos, Axis axis, Vector3 localNormal,
+                      Texture2D brush, float size, Color color)
+    {
+        Vector3 localPos = transform.InverseTransformPoint(worldPos);
         Bounds b = GetComponent<Renderer>().localBounds;
 
-        Vector3 normalized = local - b.min;
-        normalized.x /= b.size.x;
-        normalized.y /= b.size.y;
-        normalized.z /= b.size.z;
+        Vector2 uv;
 
-        // ----- X AXIS -----
-        if (wx > 0.001f)
+        switch (axis)
         {
-            RenderTexture rt = n.x >= 0 ? paintRT_PosX : paintRT_NegX;
-            Vector2 uv = new Vector2(normalized.z, normalized.y);
-            if (n.x < 0) uv.x = 1f - uv.x;
-            Color c = paintColor;
-            c.a *= wx;
-            Stamp(rt, uv, brush, size, c);
+            case Axis.X:
+                // shader uses uvX = p.zy
+                uv = new Vector2(
+                    Mathf.InverseLerp(b.min.z, b.max.z, localPos.z),
+                    Mathf.InverseLerp(b.min.y, b.max.y, localPos.y)
+                );
+
+                // shader mirrors NEG X: float2(1 - uvX.x, uvX.y)
+                if (localNormal.x < 0) uv.x = 1f - uv.x;
+                break;
+
+            case Axis.Y:
+                // shader uses uvY = p.xz
+                uv = new Vector2(
+                    Mathf.InverseLerp(b.min.x, b.max.x, localPos.x),
+                    Mathf.InverseLerp(b.min.z, b.max.z, localPos.z)
+                );
+
+                // shader mirrors NEG Y: float2(uvY.x, 1 - uvY.y)
+                if (localNormal.y < 0) uv.y = 1f - uv.y;
+                break;
+
+            default: // Z
+                     // shader uses uvZ = p.xy
+                uv = new Vector2(
+                    Mathf.InverseLerp(b.min.x, b.max.x, localPos.x),
+                    Mathf.InverseLerp(b.min.y, b.max.y, localPos.y)
+                );
+
+                // shader mirrors NEG Z: float2(1 - uvZ.x, uvZ.y)
+                if (localNormal.z < 0) uv.x = 1f - uv.x;
+                break;
         }
 
-        // ----- Y AXIS -----
-        if (wy > 0.001f)
-        {
-            RenderTexture rt = n.y >= 0 ? paintRT_PosY : paintRT_NegY;
-            Vector2 uv = new Vector2(normalized.x, normalized.z);
-            if (n.y < 0) uv.y = 1f - uv.y;
-            Color c = paintColor;
-            c.a *= wy;
-            Stamp(rt, uv, brush, size, c);
-        }
-
-        // ----- Z AXIS -----
-        if (wz > 0.001f)
-        {
-            RenderTexture rt = n.z >= 0 ? paintRT_PosZ : paintRT_NegZ;
-            Vector2 uv = new Vector2(normalized.x, normalized.y);
-            if (n.z < 0) uv.x = 1f - uv.x;
-            Color c = paintColor;
-            c.a *= wz;
-            Stamp(rt, uv, brush, size, c);
-        }
+        Stamp(rt, uv, brush, size, color);
     }
 
 
@@ -225,9 +266,9 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         int drawSize = Mathf.RoundToInt(size);
         float half = drawSize * 0.5f;
 
-
-        float x = px - half;
-        float y = py - half;
+        //  clamp inside RT
+        float x = Mathf.Clamp(px - half, -half, targetRT.width - half);
+        float y = Mathf.Clamp(py - half, -half, targetRT.height - half);
 
         Rect rect = new Rect(x, y, drawSize, drawSize);
 
@@ -272,4 +313,44 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     public RenderTexture GetPaintNegY() => paintRT_NegY;
     public RenderTexture GetPaintPosZ() => paintRT_PosZ;
     public RenderTexture GetPaintNegZ() => paintRT_NegZ;
+
+
+
+    enum Axis { X, Y, Z }
+
+    void PaintOnPlane(RenderTexture rt, Vector3 worldPos, Axis axis,
+                      Texture2D brush, float size, Color color)
+    {
+        Vector3 local = transform.InverseTransformPoint(worldPos);
+        Bounds b = GetComponent<Renderer>().localBounds;
+
+        Vector2 uv;
+
+        switch (axis)
+        {
+            case Axis.X:
+                uv = new Vector2(
+                    Mathf.InverseLerp(b.min.z, b.max.z, local.z),
+                    Mathf.InverseLerp(b.min.y, b.max.y, local.y)
+                );
+                break;
+
+            case Axis.Y:
+                uv = new Vector2(
+                    Mathf.InverseLerp(b.min.x, b.max.x, local.x),
+                    Mathf.InverseLerp(b.min.z, b.max.z, local.z)
+                );
+                break;
+
+            default: // Z
+                uv = new Vector2(
+                    Mathf.InverseLerp(b.min.x, b.max.x, local.x),
+                    Mathf.InverseLerp(b.min.y, b.max.y, local.y)
+                );
+                break;
+        }
+
+        Stamp(rt, uv, brush, size, color);
+    }
+
 }

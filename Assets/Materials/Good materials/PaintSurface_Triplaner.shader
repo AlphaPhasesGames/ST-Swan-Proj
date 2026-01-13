@@ -38,7 +38,8 @@ Shader "Custom/PaintSurface_Triplanar"
                 // -------------------------------------------------
                 float2 SafeUV(float2 uv, float4 texelSize)
                 {
-                    float2 inset = texelSize.xy * 0.5;
+                    float2 inset = texelSize.xy * 0.25;
+                    //float2 inset = texelSize.xy * 0.5;
                     return clamp(uv, inset, 1.0 - inset);
                 }
 
@@ -52,7 +53,7 @@ Shader "Custom/PaintSurface_Triplanar"
                 {
                     float4 pos : SV_POSITION;
                     float3 localPos : TEXCOORD0;
-                    float3 worldNormal : TEXCOORD1;
+                    float3 localNormal : TEXCOORD1;
                 };
 
                 fixed4 _BaseColor;
@@ -69,7 +70,7 @@ Shader "Custom/PaintSurface_Triplanar"
                     v2f o;
                     o.pos = UnityObjectToClipPos(v.vertex);
                     o.localPos = v.vertex.xyz;
-                    o.worldNormal = UnityObjectToWorldNormal(v.normal);
+                    o.localNormal = normalize(v.normal);
                     return o;
                 }
 
@@ -78,7 +79,7 @@ Shader "Custom/PaintSurface_Triplanar"
                     // ---------------------------------------------
                     // Triplanar blend weights from normal
                     // ---------------------------------------------
-                    float3 n = normalize(i.worldNormal);
+                    float3 n = normalize(i.localNormal);
                     float3 w = abs(n);
                     w /= (w.x + w.y + w.z + 1e-5);
 
