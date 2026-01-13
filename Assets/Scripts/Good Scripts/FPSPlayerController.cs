@@ -17,7 +17,7 @@ public class FPSPlayerController : MonoBehaviour
     private float xInput;
     private float zInput;
     private bool isGrounded;
-
+    public GrappleSystem grapple;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -47,17 +47,20 @@ public class FPSPlayerController : MonoBehaviour
 
     void Move()
     {
+        // If swinging, do NOT overwrite velocity
+        if (grapple != null && grapple.IsSwinging)
+            return;
+
         Vector3 moveDir = transform.right * xInput + transform.forward * zInput;
 
         if (moveDir.sqrMagnitude > 0.01f)
         {
             Vector3 velocity = moveDir.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(velocity.x,rb.linearVelocity.y,velocity.z);
+            rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
         }
         else
         {
-            
-            rb.linearVelocity = new Vector3(0f,rb.linearVelocity.y,0f);
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
         }
     }
 

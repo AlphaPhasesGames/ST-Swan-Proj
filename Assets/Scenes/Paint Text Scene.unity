@@ -132,10 +132,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 738054708460673503, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: mouseSensitivity
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 738054708460673503, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: controllerSensitivity
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1177087078418822259, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 9d6045c2e38c164498160f50be9156a3, type: 2}
+    - target: {fileID: 2589956014435110884, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: grapple
+      value: 
+      objectReference: {fileID: 1456966551}
+    - target: {fileID: 2589956014435110884, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: jumpForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928020737610252428, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928020737610252428, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2928020737610252428, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3940195732681867511, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.58457
@@ -195,6 +223,10 @@ PrefabInstance:
     - target: {fileID: 5651385872064327148, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
       propertyPath: m_ClearFlags
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5651385872064327148, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
+      propertyPath: far clip plane
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5651385872064327148, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
       propertyPath: near clip plane
@@ -958,7 +990,7 @@ GameObject:
   - component: {fileID: 292453138}
   - component: {fileID: 292453137}
   - component: {fileID: 292453136}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: r (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1794,7 +1826,7 @@ GameObject:
   - component: {fileID: 462299610}
   - component: {fileID: 462299609}
   - component: {fileID: 462299608}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: r (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2898,7 +2930,7 @@ GameObject:
   - component: {fileID: 699040141}
   - component: {fileID: 699040140}
   - component: {fileID: 699040139}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: r (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6161,7 +6193,7 @@ GameObject:
   - component: {fileID: 1320716874}
   - component: {fileID: 1320716873}
   - component: {fileID: 1320716872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: r (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7081,13 +7113,14 @@ MonoBehaviour:
   cam: {fileID: 1808863918}
   firePoint: {fileID: 426729496}
   line: {fileID: 426729495}
-  maxDistance: 100
+  maxDistance: 4
   grappleMask:
     serializedVersion: 2
     m_Bits: 128
   pullForce: 200
   maxPullSpeed: 250
   pullKey: 102
+  ropeDamping: 0.98
 --- !u!1 &1492605957 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 94f4c896a806dd94faec963048a944b2, type: 3}
@@ -7930,7 +7963,7 @@ GameObject:
   - component: {fileID: 1681136590}
   - component: {fileID: 1681136589}
   - component: {fileID: 1681136588}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9273,7 +9306,7 @@ GameObject:
   - component: {fileID: 1952543892}
   - component: {fileID: 1952543891}
   - component: {fileID: 1952543890}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: r (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9471,7 +9504,7 @@ Transform:
   m_GameObject: {fileID: 1987147582}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.84, y: 3.25, z: 16.43}
+  m_LocalPosition: {x: -23.84, y: 4.88, z: 16.43}
   m_LocalScale: {x: 0.14263, y: 0.14263, z: 0.14263}
   m_ConstrainProportionsScale: 0
   m_Children: []
