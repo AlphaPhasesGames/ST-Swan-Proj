@@ -85,7 +85,10 @@ public class GrappleSystem : MonoBehaviour
             grappleMask))
         {
             grapplePoint = hit.point;
-            ropeLength = Vector3.Distance(rb.position, grapplePoint);
+            ropeLength = Mathf.Max(
+    Vector3.Distance(rb.position, grapplePoint),
+    0.5f
+);
             ropeAttached = true;
             ropeWasSlack = true;
             isGrappling = true;
@@ -93,6 +96,8 @@ public class GrappleSystem : MonoBehaviour
             line.enabled = true;
             line.SetPosition(0, firePoint.position);
             line.SetPosition(1, grapplePoint);
+
+            GetLineLength();
         }
     }
 
@@ -229,4 +234,50 @@ public class GrappleSystem : MonoBehaviour
 
         rb.constraints = defaultConstraints;
     }
+
+    float GetLineLength()
+    {
+        float length = 0f;
+
+        for (int i = 0; i < line.positionCount - 1; i++)
+        {
+            length += Vector3.Distance(
+                line.GetPosition(i),
+                line.GetPosition(i + 1)
+            );
+        }
+
+        return length;
+    }
+
+    /*
+    void OnGUI()
+    {
+        if (line == null || line.positionCount < 2) return;
+
+        float length = Vector3.Distance(
+            line.GetPosition(0),
+            line.GetPosition(1)
+        );
+
+        GUI.Label(
+            new Rect(20, 20, 1500, 1000),
+            $"Rope Length: {length:F2}"
+        );
+    }
+    */
+    void OnGUI()
+    {
+        if (!ropeAttached) return;
+
+        float physicsDist = Vector3.Distance(rb.position, grapplePoint);
+
+        GUI.Label(
+            new Rect(20, 20, 1500, 1000),
+            $"ropeLength (stored): {ropeLength:F3}\n" +
+            $"physics distance: {physicsDist:F3}\n" +
+            $"delta: {(physicsDist - ropeLength):F4}"
+        );
+    }
+
 }
