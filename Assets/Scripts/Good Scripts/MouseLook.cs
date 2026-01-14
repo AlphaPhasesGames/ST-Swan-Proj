@@ -6,31 +6,28 @@ public class MouseLook : MonoBehaviour
     public float mouseSensitivity = 150f;
     public float controllerSensitivity = 120f;
 
+    [Header("References")]
     public Transform playerBody;
+    public Camera cam;
 
     private float xRotation = 0f;
 
     void Start()
     {
-        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
     {
-        if (Cursor.lockState != CursorLockMode.Locked &&
-            Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
         Look();
     }
 
     void Look()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        // --- Input ---
+        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         float stickX = Input.GetAxis("Cont X") * controllerSensitivity * Time.deltaTime;
         float stickY = Input.GetAxis("Cont Y") * controllerSensitivity * Time.deltaTime;
@@ -38,10 +35,12 @@ public class MouseLook : MonoBehaviour
         float lookX = mouseX + stickX;
         float lookY = mouseY + stickY;
 
+        // --- Pitch (camera only) ---
         xRotation -= lookY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -85f, 85f);
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        // --- Yaw (player body only) ---
         playerBody.Rotate(Vector3.up * lookX);
     }
 }
