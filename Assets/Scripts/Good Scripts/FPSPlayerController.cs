@@ -30,7 +30,7 @@ public class FPSPlayerController : MonoBehaviour
         xInput = Input.GetAxisRaw("Horizontal"); // using GetAxisRaw becuse using GetAxis was not zeroing out on stop.
         zInput = Input.GetAxisRaw("Vertical");
 
-        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance,groundMask);
+        
 
         // Jump 
         if (Input.GetButtonDown("Jump") && isGrounded)
@@ -42,25 +42,41 @@ public class FPSPlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        isGrounded = Physics.CheckSphere(
+            groundCheck.position,
+            groundDistance,
+            groundMask
+        );
+
         Move();
     }
 
     void Move()
     {
-        // If swinging, do NOT overwrite velocity
-        if (grapple != null && grapple.IsSwinging)
-            return;
-
         Vector3 moveDir = transform.right * xInput + transform.forward * zInput;
 
-        if (moveDir.sqrMagnitude > 0.01f)
+        // Grounded = snappy control
+        if (isGrounded && !grapple.IsSwinging)
         {
-            Vector3 velocity = moveDir.normalized * moveSpeed;
-            rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-        }
-        else
-        {
-            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            if (moveDir.sqrMagnitude > 0.01f)
+            {
+                Vector3 targetVel = moveDir.normalized * moveSpeed;
+                rb.linearVelocity = new Vector3(
+                    targetVel.x,
+                    rb.linearVelocity.y,
+                    targetVel.z
+                );
+            }
+            else
+            {
+                // HARD STOP when grounded
+                rb.linearVelocity = new Vector3(
+                    0f,
+                    rb.linearVelocity.y,
+                    0f
+                );
+            }
+            return;
         }
     }
 
