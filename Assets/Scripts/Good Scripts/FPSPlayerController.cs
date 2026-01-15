@@ -19,6 +19,12 @@ public class FPSPlayerController : MonoBehaviour
     public float normalGravity = -9.8f;
     public float jetpackGravity = -2f;
 
+    [Header("Air Control")]
+    public float airControlForce = 25f;
+    public float airMaxHorizontalSpeed = 4f;
+    public float airDamping = 0.98f;
+
+
     private Rigidbody rb;
     private float xInput;
     private float zInput;
@@ -61,11 +67,15 @@ public class FPSPlayerController : MonoBehaviour
     {
         Vector3 moveDir = transform.right * xInput + transform.forward * zInput;
 
-        if (isGrounded && !grapple.IsSwinging)
+        if (grapple.IsSwinging) return;
+
+        if (isGrounded)
         {
+            // GROUND — snappy and decisive
             if (moveDir.sqrMagnitude > 0.01f)
             {
                 Vector3 targetVel = moveDir.normalized * moveSpeed;
+
                 rb.linearVelocity = new Vector3(
                     targetVel.x,
                     rb.linearVelocity.y,
@@ -75,13 +85,42 @@ public class FPSPlayerController : MonoBehaviour
             else
             {
                 rb.linearVelocity = new Vector3(
-                    0f,
+                    rb.linearVelocity.x * 0.75f,
                     rb.linearVelocity.y,
-                    0f
+                    rb.linearVelocity.z * 0.75f
                 );
             }
         }
+        else
+        {
+            // AIR / JETPACK — soft, controlled
+            if (moveDir.sqrMagnitude > 0.01f)
+            {
+                rb.AddForce(moveDir.normalized * airControlForce, ForceMode.Acceleration);
+            }
+
+            // Cap horizontal air speed
+            Vector3 horizVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            if (horizVel.magnitude > airMaxHorizontalSpeed)
+            {
+                horizVel = horizVel.normalized * airMaxHorizontalSpeed;
+                rb.linearVelocity = new Vector3(
+                    horizVel.x,
+                    rb.linearVelocity.y,
+                    horizVel.z
+                );
+            }
+
+            // Gentle air damping
+            rb.linearVelocity = new Vector3(
+                rb.linearVelocity.x * airDamping,
+                rb.linearVelocity.y,
+                rb.linearVelocity.z * airDamping
+            );
+        }
     }
+
+
 
     void Jump()
     {
@@ -94,12 +133,11 @@ public class FPSPlayerController : MonoBehaviour
     // =========================
     void HandleJetpack()
     {
-        if (!playerHasJetPack || isGrounded)
+        if (!playerHasJetPack)
         {
             Physics.gravity = Vector3.up * normalGravity;
             return;
         }
-
         bool jetpackTrigger = false;
 
 #if UNITY_EDITOR
@@ -119,14 +157,15 @@ public class FPSPlayerController : MonoBehaviour
             Physics.gravity = Vector3.up * normalGravity;
         }
     }
-
     void JetpackFly()
     {
-        Physics.gravity = Vector3.up * jetpackGravity;
+        Vector3 antiGravity = -Physics.gravity;
+        rb.AddForce(antiGravity, ForceMode.Acceleration);
 
         if (rb.linearVelocity.y < maxJetpackSpeed)
         {
             rb.AddForce(Vector3.up * jetpackForce, ForceMode.Acceleration);
         }
     }
+
 }
