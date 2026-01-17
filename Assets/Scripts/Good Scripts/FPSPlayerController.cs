@@ -4,8 +4,8 @@ using UnityEngine;
 public class FPSPlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed = 6f;
-    public float jumpForce = 5f;
+    public float moveSpeed; //= 6f;
+    public float jumpForce; //= 5f;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -24,6 +24,17 @@ public class FPSPlayerController : MonoBehaviour
     public float airMaxHorizontalSpeed = 4f;
     public float airDamping = 0.98f;
 
+    [Header("Jetpack Ramping")]
+    public float jetpackRampUp = 12f;
+    public float jetpackRampDown = 18f;
+
+    [Header("Input")]
+    public string horizontalAxis = "Horizontal2";
+    public string verticalAxis = "Vertical2";
+    public string jumpButton = "Jump";
+    public string jetpackButton = "Jetpack";
+
+    private float currentJetpackForce = 0f;
 
     private Rigidbody rb;
     private float xInput;
@@ -41,10 +52,10 @@ public class FPSPlayerController : MonoBehaviour
 
     void Update()
     {
-        xInput = Input.GetAxisRaw("Horizontal");
-        zInput = Input.GetAxisRaw("Vertical");
+        xInput = Input.GetAxisRaw(horizontalAxis);
+        zInput = Input.GetAxisRaw(verticalAxis);
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown(jumpButton) && isGrounded)
         {
             Jump();
         }
@@ -65,13 +76,12 @@ public class FPSPlayerController : MonoBehaviour
 
     void Move()
     {
-        Vector3 moveDir = transform.right * xInput + transform.forward * zInput;
+        if (grapple && grapple.IsSwinging) return;
 
-        if (grapple.IsSwinging) return;
+        Vector3 moveDir = transform.right * xInput + transform.forward * zInput;
 
         if (isGrounded)
         {
-            // GROUND — snappy and decisive
             if (moveDir.sqrMagnitude > 0.01f)
             {
                 Vector3 targetVel = moveDir.normalized * moveSpeed;
@@ -93,13 +103,11 @@ public class FPSPlayerController : MonoBehaviour
         }
         else
         {
-            // AIR / JETPACK — soft, controlled
             if (moveDir.sqrMagnitude > 0.01f)
             {
                 rb.AddForce(moveDir.normalized * airControlForce, ForceMode.Acceleration);
             }
 
-            // Cap horizontal air speed
             Vector3 horizVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             if (horizVel.magnitude > airMaxHorizontalSpeed)
             {
@@ -111,7 +119,6 @@ public class FPSPlayerController : MonoBehaviour
                 );
             }
 
-            // Gentle air damping
             rb.linearVelocity = new Vector3(
                 rb.linearVelocity.x * airDamping,
                 rb.linearVelocity.y,
@@ -119,8 +126,6 @@ public class FPSPlayerController : MonoBehaviour
             );
         }
     }
-
-
 
     void Jump()
     {
@@ -138,34 +143,40 @@ public class FPSPlayerController : MonoBehaviour
             Physics.gravity = Vector3.up * normalGravity;
             return;
         }
-        bool jetpackTrigger = false;
 
-#if UNITY_EDITOR
-        jetpackTrigger = Input.GetKey(KeyCode.LeftShift);
-#elif UNITY_ANDROID
-        jetpackTrigger = Input.GetButton("JetpackAndroid");
-#else
-        jetpackTrigger = Input.GetButton("Jetpack");
-#endif
+        bool jetpackHeld =
+            Input.GetButton(jetpackButton) ||
+            Input.GetKey(KeyCode.LeftShift); // dev fallback
 
-        if (jetpackTrigger)
+        if (jetpackHeld)
         {
             JetpackFly();
         }
         else
         {
             Physics.gravity = Vector3.up * normalGravity;
+
+            currentJetpackForce = Mathf.MoveTowards(
+                currentJetpackForce,
+                0f,
+                jetpackRampDown * Time.fixedDeltaTime
+            );
         }
     }
+
     void JetpackFly()
     {
-        Vector3 antiGravity = -Physics.gravity;
-        rb.AddForce(antiGravity, ForceMode.Acceleration);
+        Physics.gravity = Vector3.up * jetpackGravity;
+
+        currentJetpackForce = Mathf.MoveTowards(
+            currentJetpackForce,
+            jetpackForce,
+            jetpackRampUp * Time.fixedDeltaTime
+        );
 
         if (rb.linearVelocity.y < maxJetpackSpeed)
         {
-            rb.AddForce(Vector3.up * jetpackForce, ForceMode.Acceleration);
+            rb.AddForce(Vector3.up * currentJetpackForce, ForceMode.Acceleration);
         }
     }
-
 }

@@ -7,36 +7,42 @@ public class InputControllerForPaint : MonoBehaviour
     public MouseLook mLook;
     public GameObject colourWheelUI;
 
-    [Header("Debug Keys")]
+    [Header("Keyboard Keys")]
     public KeyCode toggleWheelKey = KeyCode.Tab;
     public KeyCode precisionKey = KeyCode.Alpha1;
     public KeyCode sprayKey = KeyCode.Alpha2;
     public KeyCode fireModeKey = KeyCode.Mouse1;
 
+    [Header("Controller Inputs")]
+    public string toggleWheelButton = "ToggleWheel";
+    public string precisionButton = "PrecisionMode";
+    public string sprayButton = "SprayMode";
+    public string fireButton = "Fire";
+
     bool wheelOpen;
 
     void Start()
     {
-        ApplyWheelState(false); // start in gameplay mode
+        ApplyWheelState(false);
     }
 
     void Update()
     {
         if (!paintCore) return;
 
-        // --- Paint mode ---
-        if (Input.GetKeyDown(precisionKey))
+        // --- Paint modes ---
+        if (Input.GetKeyDown(precisionKey) || Input.GetButtonDown(precisionButton))
             paintCore.SetPaintMode(PaintCore.PaintMode.Precision);
 
-        if (Input.GetKeyDown(sprayKey))
+        if (Input.GetKeyDown(sprayKey) || Input.GetButtonDown(sprayButton))
             paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
 
         // --- Fire mode ---
-        if (Input.GetKeyDown(fireModeKey))
+        if (Input.GetKeyDown(fireModeKey) || Input.GetButtonDown(fireButton))
             paintCore.ToggleFireMode();
 
-        // --- Colour wheel toggle ---
-        if (Input.GetKeyDown(toggleWheelKey))
+        // --- Colour wheel ---
+        if (Input.GetKeyDown(toggleWheelKey) || Input.GetButtonDown(toggleWheelButton))
             ToggleColourWheel();
     }
 
