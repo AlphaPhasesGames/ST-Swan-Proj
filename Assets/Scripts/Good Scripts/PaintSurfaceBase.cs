@@ -92,7 +92,7 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     RenderTexture CreatePaintRT()
     {
         var rt = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
-        rt.wrapMode = TextureWrapMode.Clamp;
+        rt.wrapMode = TextureWrapMode.Repeat;
         rt.filterMode = FilterMode.Bilinear;
         rt.useMipMap = false;
         rt.autoGenerateMips = false;
@@ -159,27 +159,35 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     public void PaintAtWorld(Vector3 worldPos, Vector3 normal, Texture2D brush, float size, Color paintColor)
     {
-        //  LOCAL normal so rotation is respected AND matches shader
         Vector3 nL = transform.InverseTransformDirection(normal).normalized;
 
-        float ax = Mathf.Abs(nL.x);
-        float ay = Mathf.Abs(nL.y);
-        float az = Mathf.Abs(nL.z);
+        float wx = Mathf.Abs(nL.x);
+        float wy = Mathf.Abs(nL.y);
+        float wz = Mathf.Abs(nL.z);
 
-        // Pick dominant LOCAL axis
-        if (ax >= ay && ax >= az)
+        float sum = wx + wy + wz;
+        if (sum < 0.0001f) return;
+
+        wx /= sum;
+        wy /= sum;
+        wz /= sum;
+
+        const float minWeight = 0.15f;
+
+        if (wx > minWeight)
         {
             PaintOnPlane(
                 nL.x >= 0 ? paintRT_PosX : paintRT_NegX,
                 worldPos,
                 Axis.X,
-                nL, // pass local normal for mirroring
+                nL,
                 brush,
-                size,
+                size * wx,
                 paintColor
             );
         }
-        else if (ay >= ax && ay >= az)
+
+        if (wy > minWeight)
         {
             PaintOnPlane(
                 nL.y >= 0 ? paintRT_PosY : paintRT_NegY,
@@ -187,11 +195,12 @@ public abstract class PaintSurfaceBase : MonoBehaviour
                 Axis.Y,
                 nL,
                 brush,
-                size,
+                size * wy,
                 paintColor
             );
         }
-        else
+
+        if (wz > minWeight)
         {
             PaintOnPlane(
                 nL.z >= 0 ? paintRT_PosZ : paintRT_NegZ,
@@ -199,13 +208,13 @@ public abstract class PaintSurfaceBase : MonoBehaviour
                 Axis.Z,
                 nL,
                 brush,
-                size,
+                size * wz,
                 paintColor
             );
         }
     }
 
- 
+
 
     //  IMPORTANT: mirroring here MUST MATCH YOUR SHADER
     void PaintOnPlane(RenderTexture rt, Vector3 worldPos, Axis axis, Vector3 localNormal,

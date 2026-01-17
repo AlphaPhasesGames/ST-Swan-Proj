@@ -52,25 +52,29 @@ Shader "Paint/PaintRT_Triplanar_Local"
 
                 half4 frag(Varyings IN) : SV_Target
                 {
-                    // Normalize & absolutize local normal
+                    //  Proper normal (REQUIRED)
                     float3 n = abs(normalize(IN.objectNormal));
 
-                    // Local-space projected UVs
-                    float2 uvX = IN.objectPos.zy * _PaintScale;
-                    float2 uvY = IN.objectPos.xz * _PaintScale;
-                    float2 uvZ = IN.objectPos.xy * _PaintScale;
+                    //  Normalised object position (matches C stamping)
+                    float3 p = (IN.objectPos - _BoundsMin) / _BoundsSize;
 
-                    // Sample paint texture
+                    float2 uvX = p.zy * _PaintScale;
+                    float2 uvY = p.xz * _PaintScale;
+                    float2 uvZ = p.xy * _PaintScale;
+
+                    //  Sample paint textures
                     float px = SAMPLE_TEXTURE2D(_PaintRT, sampler_PaintRT, uvX).r;
                     float py = SAMPLE_TEXTURE2D(_PaintRT, sampler_PaintRT, uvY).r;
                     float pz = SAMPLE_TEXTURE2D(_PaintRT, sampler_PaintRT, uvZ).r;
 
-                    // Triplanar blend
-                    float paint = px * n.x + py * n.y + pz * n.z;
+                    //  Proper triplanar blend (NO PATCHES)
+                    float w = n.x + n.y + n.z + 1e-5;
+                    float paint = (px * n.x + py * n.y + pz * n.z) / w;
 
-                    // Output (bold black paint on base color)
+                    // 5 Optional confidence boost (recommended)
+                    paint = saturate(paint * 1.25);
+
                     float3 color = lerp(_BaseColor.rgb, float3(0,0,0), paint);
-
                     return half4(color, 1);
                 }
                 ENDHLSL

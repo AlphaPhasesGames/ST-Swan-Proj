@@ -152,8 +152,11 @@ public class PaintCore : MonoBehaviour
                 if (!surface) continue;
                 if (!surface.CanPaintHit(hit, sprayRay.direction)) continue;
 
+                // float size = brushWorldSize * surface.textureSize * 0.5f;
+                // size = Mathf.Max(1f, size);
+
                 float size = brushWorldSize * surface.textureSize * 0.5f;
-                size = Mathf.Max(1f, size);
+                size *= 1.2f; // spray bias 
 
                 surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
                 break;
