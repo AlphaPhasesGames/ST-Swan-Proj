@@ -157,7 +157,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         PaintAtWorld(hit.point, hit.normal, brush, size, paintColor);
     }
 
-    public void PaintAtWorld(Vector3 worldPos, Vector3 normal, Texture2D brush, float size, Color paintColor)
+    public void PaintAtWorld(Vector3 worldPos, Vector3 normal,
+                         Texture2D brush, float size, Color paintColor)
     {
         Vector3 nL = transform.InverseTransformDirection(normal).normalized;
 
@@ -172,47 +173,23 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         wy /= sum;
         wz /= sum;
 
-        const float minWeight = 0.15f;
+        //  OPTION A: ALWAYS stamp all three axes
+        PaintOnPlane(
+            nL.x >= 0 ? paintRT_PosX : paintRT_NegX,
+            worldPos, Axis.X, nL, brush, size * wx, paintColor
+        );
 
-        if (wx > minWeight)
-        {
-            PaintOnPlane(
-                nL.x >= 0 ? paintRT_PosX : paintRT_NegX,
-                worldPos,
-                Axis.X,
-                nL,
-                brush,
-                size * wx,
-                paintColor
-            );
-        }
+        PaintOnPlane(
+            nL.y >= 0 ? paintRT_PosY : paintRT_NegY,
+            worldPos, Axis.Y, nL, brush, size * wy, paintColor
+        );
 
-        if (wy > minWeight)
-        {
-            PaintOnPlane(
-                nL.y >= 0 ? paintRT_PosY : paintRT_NegY,
-                worldPos,
-                Axis.Y,
-                nL,
-                brush,
-                size * wy,
-                paintColor
-            );
-        }
-
-        if (wz > minWeight)
-        {
-            PaintOnPlane(
-                nL.z >= 0 ? paintRT_PosZ : paintRT_NegZ,
-                worldPos,
-                Axis.Z,
-                nL,
-                brush,
-                size * wz,
-                paintColor
-            );
-        }
+        PaintOnPlane(
+            nL.z >= 0 ? paintRT_PosZ : paintRT_NegZ,
+            worldPos, Axis.Z, nL, brush, size * wz, paintColor
+        );
     }
+
 
 
 
