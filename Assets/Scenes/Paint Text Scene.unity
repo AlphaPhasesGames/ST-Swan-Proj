@@ -9471,6 +9471,7 @@ GameObject:
   - component: {fileID: 1909777658}
   - component: {fileID: 1909777657}
   - component: {fileID: 1909777659}
+  - component: {fileID: 1909777660}
   m_Layer: 0
   m_Name: Game manager
   m_TagString: Untagged
@@ -9533,6 +9534,20 @@ MonoBehaviour:
   precisionButton: PrecisionMode
   sprayButton: SprayMode
   fireButton: Fire
+--- !u!114 &1909777660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909777656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3057773bdcb78a44a62d39bfbc53c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  canvasSurface: {fileID: 619504455}
+  paintFileName: CanvasPainting.png
 --- !u!4 &1916564909 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7602251976753911248, guid: f34d7ce5fc6a10f46b535d78c6f7e147, type: 3}

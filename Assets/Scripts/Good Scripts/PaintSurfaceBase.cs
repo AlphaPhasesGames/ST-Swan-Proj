@@ -152,12 +152,12 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
 
     // New: triplanar stamping entry point using hit info
-    public void PaintAtWorld(RaycastHit hit, Texture2D brush, float size, Color paintColor)
+    public virtual void PaintAtWorld(RaycastHit hit, Texture2D brush, float size, Color paintColor)
     {
         PaintAtWorld(hit.point, hit.normal, brush, size, paintColor);
     }
 
-    public void PaintAtWorld(Vector3 worldPos, Vector3 normal,
+    public virtual void PaintAtWorld(Vector3 worldPos, Vector3 normal,
                          Texture2D brush, float size, Color paintColor)
     {
         Vector3 nL = transform.InverseTransformDirection(normal).normalized;
