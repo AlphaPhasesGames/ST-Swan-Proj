@@ -141,8 +141,13 @@ public class PaintCore : MonoBehaviour
             Vector3 dir = GetRandomConeDirection(centerRay.direction, sprayAngle);
             Ray sprayRay = new Ray(centerRay.origin, dir);
 
+            // DEBUG: draw the ray in the Scene view (magenta baseline)
+            Debug.DrawRay(sprayRay.origin, sprayRay.direction * sprayDistance, Color.magenta, 0.1f);
+
             RaycastHit[] hits = Physics.RaycastAll(sprayRay, sprayDistance);
             System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            bool paintedThisRay = false;
 
             foreach (RaycastHit hit in hits)
             {
@@ -152,14 +157,23 @@ public class PaintCore : MonoBehaviour
                 if (!surface) continue;
                 if (!surface.CanPaintHit(hit, sprayRay.direction)) continue;
 
-                // float size = brushWorldSize * surface.textureSize * 0.5f;
-                // size = Mathf.Max(1f, size);
+                // DEBUG: show successful paint ray (green) and the hit normal (cyan)
+                Debug.DrawRay(sprayRay.origin, sprayRay.direction * hit.distance, Color.green, 0.2f);
+                Debug.DrawRay(hit.point, hit.normal * 0.25f, Color.cyan, 0.2f);
 
                 float size = brushWorldSize * surface.textureSize * 0.5f;
-                size *= 1.2f; // spray bias 
+                size *= 1.2f; // spray bias
 
                 surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
+
+                paintedThisRay = true;
                 break;
+            }
+
+            // DEBUG: if this ray never painted anything, tint it red so it stands out
+            if (!paintedThisRay)
+            {
+                Debug.DrawRay(sprayRay.origin, sprayRay.direction * sprayDistance, Color.red, 0.2f);
             }
         }
     }
@@ -240,6 +254,9 @@ public class PaintCore : MonoBehaviour
     {
         if (!Physics.Raycast(origin, dir, out RaycastHit hit, sprayDistance))
             return;
+
+        Debug.DrawRay(origin, dir.normalized * hit.distance, Color.green, 0.2f);
+        Debug.DrawRay(hit.point, hit.normal * 0.25f, Color.cyan, 0.2f);
 
         PaintSurfaceBase surface =
             hit.collider.GetComponentInParent<PaintSurfaceBase>();

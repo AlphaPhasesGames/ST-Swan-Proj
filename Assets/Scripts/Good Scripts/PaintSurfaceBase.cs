@@ -92,8 +92,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     RenderTexture CreatePaintRT()
     {
         var rt = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
-        rt.wrapMode = TextureWrapMode.Repeat;
-        rt.filterMode = FilterMode.Bilinear;
+        rt.wrapMode = TextureWrapMode.Clamp;   //  REQUIRED
+        rt.filterMode = FilterMode.Bilinear;   //  Soft brushes behave correctly
         rt.useMipMap = false;
         rt.autoGenerateMips = false;
         rt.Create();
@@ -105,6 +105,7 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
         return rt;
     }
+
 
     public virtual float GetLegacyBrushSize()
     {
@@ -124,14 +125,17 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     {
         uv = new Vector2(Mathf.Clamp01(uv.x), Mathf.Clamp01(uv.y));
 
-        int px = Mathf.RoundToInt(uv.x * paintRT.width);
-        int py = Mathf.RoundToInt(uv.y * paintRT.height);
+        //nt px = Mathf.RoundToInt(uv.x * paintRT.width);
+        //int py = Mathf.RoundToInt(uv.y * paintRT.height);
+        int px = Mathf.FloorToInt(uv.x * (paintRT.width - 1));
+        int py = Mathf.FloorToInt(uv.y * (paintRT.height - 1));
         int drawSize = Mathf.RoundToInt(size);
         float half = drawSize * 0.5f;
 
-        float x = Mathf.Clamp(px - half, 0, paintRT.width - drawSize);
-        float y = Mathf.Clamp(py - half, 0, paintRT.height - drawSize);
-
+        // float x = Mathf.Clamp(px - half, 0, paintRT.width - drawSize);
+        //float y = Mathf.Clamp(py - half, 0, paintRT.height - drawSize);
+        float x = px - half;
+        float y = py - half;
         Rect rect = new Rect(x, y, drawSize, drawSize);
 
         var prev = RenderTexture.active;
@@ -149,6 +153,10 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         GL.PopMatrix();
         RenderTexture.active = prev;
     }
+
+
+
+
 
 
     // New: triplanar stamping entry point using hit info
@@ -338,5 +346,35 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
         Stamp(rt, uv, brush, size, color);
     }
+
+    public void PaintAtUV_Expanded(Vector2 uv, Texture2D brush, float size, Color color)
+    {
+        PaintAtUV(uv, brush, size, color);
+
+        float halfUV = (size * 0.5f) / paintRT.width;
+
+        // Horizontal spill
+        if (uv.x < halfUV)
+            PaintAtUV(new Vector2(0f, uv.y), brush, size, color);
+        if (uv.x > 1f - halfUV)
+            PaintAtUV(new Vector2(1f, uv.y), brush, size, color);
+
+        // Vertical spill
+        if (uv.y < halfUV)
+            PaintAtUV(new Vector2(uv.x, 0f), brush, size, color);
+        if (uv.y > 1f - halfUV)
+            PaintAtUV(new Vector2(uv.x, 1f), brush, size, color);
+
+        // Corner spill (THIS is what you're missing)
+        if (uv.x < halfUV && uv.y < halfUV)
+            PaintAtUV(Vector2.zero, brush, size, color);
+        if (uv.x > 1f - halfUV && uv.y < halfUV)
+            PaintAtUV(new Vector2(1f, 0f), brush, size, color);
+        if (uv.x < halfUV && uv.y > 1f - halfUV)
+            PaintAtUV(new Vector2(0f, 1f), brush, size, color);
+        if (uv.x > 1f - halfUV && uv.y > 1f - halfUV)
+            PaintAtUV(Vector2.one, brush, size, color);
+    }
+
 
 }

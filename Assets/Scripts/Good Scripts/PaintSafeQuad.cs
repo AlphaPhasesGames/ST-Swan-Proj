@@ -4,25 +4,17 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class PaintSafeQuad : MonoBehaviour
 {
-    [Tooltip("Must match the paint RenderTexture resolution")]
-    public int textureSize = 512;
-
     void Awake()
     {
         Generate();
     }
 
-
-
     void Generate()
     {
         MeshFilter mf = GetComponent<MeshFilter>();
         Mesh mesh = new Mesh();
-        mesh.name = "PaintSafeQuad";
+        mesh.name = "PaintQuad";
 
-        float eps = 0.5f / textureSize;
-
-        // Vertices (unit quad)
         Vector3[] verts =
         {
             new Vector3(-0.5f, -0.5f, 0),
@@ -31,13 +23,13 @@ public class PaintSafeQuad : MonoBehaviour
             new Vector3( 0.5f,  0.5f, 0),
         };
 
-        // UVs inset by half a texel
+        //  FULL UV RANGE — corners EXIST again
         Vector2[] uvs =
         {
-            new Vector2(eps, eps),
-            new Vector2(1f - eps, eps),
-            new Vector2(eps, 1f - eps),
-            new Vector2(1f - eps, 1f - eps),
+            new Vector2(0f, 0f),
+            new Vector2(1f, 0f),
+            new Vector2(0f, 1f),
+            new Vector2(1f, 1f),
         };
 
         int[] tris =

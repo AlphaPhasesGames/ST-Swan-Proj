@@ -937,7 +937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!1 &267074813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,7 +1280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!4 &303721396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1653279870211149408, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
@@ -2746,7 +2744,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!4 &558870301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1653279870211149408, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
@@ -2968,7 +2965,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!4 &619504464 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1653279870211149408, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
@@ -3466,7 +3462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!4 &735969573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6010610585098116136, guid: dd4f72c45615c2749a57fb718a568c67, type: 3}
@@ -3720,7 +3715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!114 &758680667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5922,7 +5916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!4 &1187476297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1653279870211149408, guid: d74e7ee2814b73645aa094d39d3e73b5, type: 3}
@@ -5945,7 +5938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!114 &1202405063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6285,7 +6277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!1 &1275747951 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 276745643566531732, guid: 5ebeba4347c2cb44a9e22bf4158d81f8, type: 3}
@@ -6906,7 +6897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!1001 &1357191963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9187,7 +9177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de43c0ee496b834085869cd5c0ac7f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureSize: 512
 --- !u!20 &1808863918 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 5651385872064327148, guid: 70f104e9b7e52684bbef34bd72712645, type: 3}
