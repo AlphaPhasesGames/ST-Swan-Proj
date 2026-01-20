@@ -21,6 +21,9 @@ public class PaintManagerSaveLoad : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F5))
             SavePaint();
+
+        if (Input.GetKeyDown(KeyCode.F9))
+            LoadPaint();
     }
 
 
@@ -86,6 +89,36 @@ public class PaintManagerSaveLoad : MonoBehaviour
         File.WriteAllBytes(path, pngData);
 
         Debug.Log("Paint saved to: " + path);
+    }
+
+    public void LoadPaint()
+    {
+        StartCoroutine(LoadAfterFrame());
+    }
+
+    IEnumerator LoadAfterFrame()
+    {
+        yield return new WaitForEndOfFrame();
+
+        string path = Path.Combine(Application.persistentDataPath, paintFileName);
+
+        if (!File.Exists(path))
+        {
+            Debug.Log("No saved paint found at: " + path);
+            yield break;
+        }
+
+        byte[] pngData = File.ReadAllBytes(path);
+
+        Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        tex.LoadImage(pngData);
+
+        RenderTexture rt = canvasSurface.GetPaintRT();
+
+        // Copy texture into the paint RT
+        Graphics.Blit(tex, rt);
+
+        Debug.Log("Paint loaded from: " + path);
     }
 
 }
