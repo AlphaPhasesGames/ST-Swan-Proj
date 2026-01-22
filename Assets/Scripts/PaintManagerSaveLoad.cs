@@ -19,10 +19,10 @@ public class PaintManagerSaveLoad : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
             TestRTCopy();
 
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.I))
             SavePaint();
 
-        if (Input.GetKeyDown(KeyCode.F9))
+        if (Input.GetKeyDown(KeyCode.O))
             LoadPaint();
     }
 
