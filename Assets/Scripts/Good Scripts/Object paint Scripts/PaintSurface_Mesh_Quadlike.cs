@@ -32,6 +32,6 @@ public class PaintSurface_Mesh_QuadLike : PaintSurfaceBase
         Color paintColor
     )
     {
-        PaintAtUV(hit.textureCoord, brush, size, paintColor);
+        PaintAtUV(hit.textureCoord2, brush, size, paintColor);
     }
 }
