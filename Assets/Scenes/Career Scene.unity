@@ -346,6 +346,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1524623911339791663, guid: 960194d236630d84d80ce1983fba31d6, type: 3}
+      propertyPath: canvasSurface
+      value: 
+      objectReference: {fileID: 1433380527}
     - target: {fileID: 2789851642322967937, guid: 960194d236630d84d80ce1983fba31d6, type: 3}
       propertyPath: paintCore
       value: 
@@ -370,8 +374,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game manager
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1524623911339791663, guid: 960194d236630d84d80ce1983fba31d6, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

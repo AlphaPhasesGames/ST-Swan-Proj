@@ -5,11 +5,12 @@ public class ChangeScenes : MonoBehaviour
 {
     public Button devScene1;
     public Button careerPaintScene;
-
+    public Button creativePaintScene;
     private void Awake()
     {
         devScene1.onClick.AddListener(MoveToDevScene1);
         careerPaintScene.onClick.AddListener(MoveToCareerPaintScene);
+        creativePaintScene.onClick.AddListener(MoveToCreativePaintScene);
     }
 
     public void MoveToDevScene1()
@@ -22,5 +23,8 @@ public class ChangeScenes : MonoBehaviour
         SceneManager.LoadScene("Career Scene");
     }
 
-
+    public void MoveToCreativePaintScene()
+    {
+        SceneManager.LoadScene("Creatiive Scene");
+    }
 }
