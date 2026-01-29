@@ -6,7 +6,7 @@ public class MeshSplatShooter : MonoBehaviour
     public GameObject splatPrefab;
 
     [Header("Decal")]
-    public DecalShooter decalShooter;
+    //public DecalShooter decalShooter;
 
     [Header("Settings")]
     public float range = 100f;

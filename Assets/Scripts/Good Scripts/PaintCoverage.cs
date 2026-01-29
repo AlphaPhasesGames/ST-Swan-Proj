@@ -1,180 +1,157 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+
+[RequireComponent(typeof(MeshCollider))]
 public class PaintCoverage : MonoBehaviour, IPaintCoverage
 {
-    [Range(0f, 1f)]
-    public float completionThreshold = 0.95f;
-    [Header("Tuning")]
-    public float coverageScale;
-    public float sampleSpacing = 0.25f;
+    [Header("Completion")]
+    [Range(0f, 100f)]
+    public float completionThreshold = 95f;
 
-    public bool IsComplete => IsFullyPainted;
+    [Header("Sub-Triangle Grid")]
+    [Range(2, 10)]
+    public int gridSize = 3;   // 3×3 feels great
 
-    // Sample point + which face it belongs to
-    private List<(Vector3 point, Vector3 normal)> samplePoints
-        = new List<(Vector3, Vector3)>();
+    [Header("Debug")]
+    public bool logDebug = true;
 
-    private HashSet<int> paintedSamples = new HashSet<int>();
+    public bool IsComplete { get; private set; }
 
-    public bool IsFullyPainted =>
-       paintedSamples.Count >= (samplePoints.Count * coverageScale) * completionThreshold;
+    // ===== Internal =====
+    private Dictionary<int, bool[]> triangleCells = new();
 
+    private int totalTriangles;
+    private int cellsPerTriangle;
+    private int totalCells;
+
+    [Header("Coverage Tuning")]
+    [Tooltip("Scales how much coverage contributes ( >1 = faster, <1 = slower )")]
+    public float coverageWeight = 1f;
+
+    // =============================
+    // UNITY
+    // =============================
 
     void Awake()
     {
-        GenerateSamplePoints();
-    }
+        MeshCollider mc = GetComponent<MeshCollider>();
 
-    // =============================
-    // SAMPLE GENERATION
-    // =============================
-
-    void GenerateSamplePoints()
-    {
-        samplePoints.Clear();
-
-        Bounds b = GetComponent<Collider>().bounds;
-
-        Vector3 min = b.min;
-        Vector3 max = b.max;
-
-        GenerateFace(min, max, Vector3.right);
-        GenerateFace(min, max, Vector3.left);
-        GenerateFace(min, max, Vector3.up);
-        GenerateFace(min, max, Vector3.down);
-        GenerateFace(min, max, Vector3.forward);
-        GenerateFace(min, max, Vector3.back);
-    }
-
-    void GenerateFace(Vector3 min, Vector3 max, Vector3 normal)
-    {
-        Vector3 size = max - min;
-
-        int axisA = normal.x != 0 ? 1 : 0;
-        int axisB = normal.z != 0 ? 1 : 2;
-
-        for (float a = 0; a <= size[axisA]; a += sampleSpacing)
-            for (float b = 0; b <= size[axisB]; b += sampleSpacing)
-            {
-                Vector3 point = min;
-                point[axisA] += a;
-                point[axisB] += b;
-
-                if (normal.x > 0) point.x = max.x;
-                if (normal.x < 0) point.x = min.x;
-                if (normal.y > 0) point.y = max.y;
-                if (normal.y < 0) point.y = min.y;
-                if (normal.z > 0) point.z = max.z;
-                if (normal.z < 0) point.z = min.z;
-
-                samplePoints.Add((point, normal));
-            }
-    }
-
-    // =============================
-    // PAINT REGISTRATION
-    // =============================
-
-    public void RegisterPaint(Vector3 hitPoint, Vector3 hitNormal, float radius)
-    {
-        float sqrRadius = radius * radius;
-        bool newlyPainted = false;
-
-        for (int i = 0; i < samplePoints.Count; i++)
+        if (!mc || !mc.sharedMesh)
         {
-            if (paintedSamples.Contains(i))
-                continue;
+            Debug.LogError($"{name} needs a MeshCollider with a mesh.");
+            enabled = false;
+            return;
+        }
 
-            //  Only paint samples on the hit face
-            if (Vector3.Dot(samplePoints[i].normal, hitNormal) < 0.9f)
-                continue;
+        totalTriangles = mc.sharedMesh.triangles.Length / 3;
+        cellsPerTriangle = gridSize * gridSize;
+        totalCells = totalTriangles * cellsPerTriangle;
 
-            if ((samplePoints[i].point - hitPoint).sqrMagnitude <= sqrRadius)
+        if (logDebug)
+        {
+            Debug.Log(
+                $"{name} | {totalTriangles} triangles | " +
+                $"{cellsPerTriangle} cells/tri | {totalCells} total cells"
+            );
+        }
+    }
+
+    // =============================
+    // PAINT REGISTRATION (OPTION B)
+    // =============================
+
+    public void RegisterPaintHit(RaycastHit hit)
+    {
+        if (IsComplete)
+            return;
+
+        int triIndex = hit.triangleIndex;
+        if (triIndex < 0)
+            return;
+
+        if (!triangleCells.TryGetValue(triIndex, out var cells))
+        {
+            cells = new bool[cellsPerTriangle];
+            triangleCells[triIndex] = cells;
+        }
+
+        Vector3 bc = hit.barycentricCoordinate;
+
+        float x = bc.y;
+        float y = bc.z;
+
+        int gx = Mathf.Clamp(Mathf.FloorToInt(x * gridSize), 0, gridSize - 1);
+        int gy = Mathf.Clamp(Mathf.FloorToInt(y * gridSize), 0, gridSize - 1);
+
+        int cellIndex = gy * gridSize + gx;
+
+        if (!cells[cellIndex])
+        {
+            cells[cellIndex] = true;
+            UpdateCoverage();
+        }
+    }
+
+    // =============================
+    // COVERAGE
+    // =============================
+
+    void UpdateCoverage()
+    {
+        int painted = 0;
+
+        foreach (var kvp in triangleCells)
+        {
+            var cells = kvp.Value;
+            for (int i = 0; i < cells.Length; i++)
             {
-                paintedSamples.Add(i);
-                newlyPainted = true;
+                if (cells[i])
+                    painted++;
             }
         }
 
-        if (newlyPainted)
+        CoveragePercent =
+     Mathf.Clamp01(((float)painted / totalCells) * coverageWeight) * 100f;
+
+
+        if (logDebug)
         {
-            Debug.Log($"{name} coverage: {CoveragePercent:F1}%");
+            Debug.Log(
+                $"[PaintCoverage] {name} | " +
+                $"{CoveragePercent:F1}% | {painted}/{totalCells} cells"
+            );
         }
 
-        if (IsFullyPainted)
+        if (!IsComplete && CoveragePercent >= completionThreshold)
         {
-            Debug.Log($"{name} FULLY PAINTED ({CoveragePercent:F1}%)");
+            IsComplete = true;
             OnPaintCompleted();
         }
     }
 
     // =============================
-    // INTERFACE
+    // COMPLETION
     // =============================
-    /*
-    public float CoveragePercent
-    {
-        get
-        {
-            if (samplePoints.Count == 0) return 0f;
-            return (float)paintedSamples.Count / samplePoints.Count * 100f;
-        }
-    }*/
 
-    private void OnPaintCompleted()
+    void OnPaintCompleted()
     {
         Renderer r = GetComponent<Renderer>();
 
-        // Visual state = UI 100%
-        r.material.color = Color.black;
+        if (r)
+        {
+            r.material.color = Color.black;
+            r.shadowCastingMode = ShadowCastingMode.On;
+            r.receiveShadows = true;
+        }
 
-        r.shadowCastingMode = ShadowCastingMode.On;
-        r.receiveShadows = true;
-        Debug.Log("Painted 100 text");
-
+        Debug.Log($"{name} FULLY PAINTED");
     }
 
-    public float CoveragePercent
-    {
-        get
-        {
-            float requiredSamples =
-                (samplePoints.Count * coverageScale) * completionThreshold;
+    // =============================
+    // INTERFACE
+    // =============================
 
-            if (requiredSamples <= 0f)
-                return 0f;
-
-            float progress =
-                paintedSamples.Count / requiredSamples;
-
-            return Mathf.Clamp01(progress) * 100f;
-        }
-    }
-
-    public float DisplayPercent
-    {
-        get
-        {
-            float requiredSamples =
-                (samplePoints.Count * coverageScale) * completionThreshold;
-
-            if (requiredSamples <= 0f)
-                return 0f;
-
-            float progress =
-                paintedSamples.Count / requiredSamples;
-
-            return Mathf.Clamp01(progress) * 100f;
-        }
-    }
-
-    /*
-    public float DisplayPercent
-    {
-        get
-        {
-            return CoveragePercent;
-        }
-    }'*/
+    public float CoveragePercent { get; private set; }
+    public float DisplayPercent => CoveragePercent;
 }

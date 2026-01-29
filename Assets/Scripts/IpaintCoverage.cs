@@ -2,7 +2,9 @@ using UnityEngine;
 
 public interface IPaintCoverage
 {
-    float CoveragePercent { get; }   // internal / real
-    float DisplayPercent { get; }    // what UI should show
+    float CoveragePercent { get; }
+    float DisplayPercent { get; }
     bool IsComplete { get; }
+
+    void RegisterPaintHit(RaycastHit hit);
 }

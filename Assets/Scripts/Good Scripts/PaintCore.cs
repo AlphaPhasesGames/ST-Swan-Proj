@@ -16,6 +16,14 @@ public class PaintCore : MonoBehaviour
     [Header("Input")]
     public Camera cam;
 
+
+    [Header("Brush Size Mode")]
+    public bool useFixedWorldBrushSize = false;
+
+    [Tooltip("Used when Fixed World Brush Size is enabled")]
+    public float fixedWorldBrushSize = 0.25f;
+
+
     public enum PaintMode
     {
         Spray,
@@ -161,10 +169,20 @@ public class PaintCore : MonoBehaviour
                 Debug.DrawRay(sprayRay.origin, sprayRay.direction * hit.distance, Color.green, 0.2f);
                 Debug.DrawRay(hit.point, hit.normal * 0.25f, Color.cyan, 0.2f);
 
-                float size = brushWorldSize * surface.textureSize * 0.5f;
-                size *= 1.2f; // spray bias
+                float worldSize = GetBrushSizeForSurface(surface);
+                float size = worldSize * surface.textureSize * 0.5f;
+                size *= 1.2f;
 
                 surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
+
+                //  Notify coverage system
+                IPaintCoverage coverage =
+    hit.collider.GetComponentInParent<IPaintCoverage>();
+
+                if (coverage != null)
+                {
+                    coverage.RegisterPaintHit(hit);
+                }
 
                 paintedThisRay = true;
                 break;
@@ -264,10 +282,25 @@ public class PaintCore : MonoBehaviour
         if (!surface) return;
         if (!surface.CanPaintHit(hit, dir)) return;
 
-        float size = brushWorldSize * surface.textureSize;
+        float worldSize = GetBrushSizeForSurface(surface);
+        float size = worldSize * surface.textureSize;
         size = Mathf.Clamp(size, 1f, surface.textureSize * 0.25f);
 
         surface.PaintAtWorld(hit, brushTex, size, CurrentPaintColor);
+    }
+
+    float GetBrushSizeForSurface(PaintSurfaceBase surface)
+    {
+        //  Per-surface override wins
+        if (surface.overrideBrushSize)
+            return surface.GetSurfaceBrushSize();
+
+        //  Global fixed mode
+        if (useFixedWorldBrushSize)
+            return fixedWorldBrushSize;
+
+        //  Default adaptive behaviour (your current logic)
+        return brushWorldSize;
     }
 
 }

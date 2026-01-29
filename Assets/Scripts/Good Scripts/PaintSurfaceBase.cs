@@ -36,6 +36,11 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     [Header("Triplanar Scale")]
     public float triplanarTiling = 1f; // try 1..4
 
+    [Header("Brush Size Override")]
+    public bool overrideBrushSize = false;
+
+    [Tooltip("World-space brush size for this object")]
+    public float surfaceBrushWorldSize = 0.25f;
     protected virtual void Awake()
     {
         if (!stampMat)
@@ -93,7 +98,7 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     {
         var rt = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.ARGB32);
         rt.wrapMode = TextureWrapMode.Clamp;   //  REQUIRED
-        rt.filterMode = FilterMode.Bilinear;   //  Soft brushes behave correctly
+        rt.filterMode = FilterMode.Trilinear;   //  Soft brushes behave correctly
         rt.useMipMap = false;
         rt.autoGenerateMips = false;
         rt.Create();
@@ -376,5 +381,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
             PaintAtUV(Vector2.one, brush, size, color);
     }
 
-
+    public float GetSurfaceBrushSize()
+    {
+        return Mathf.Max(0.001f, surfaceBrushWorldSize);
+    }
 }

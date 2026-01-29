@@ -49,6 +49,6 @@ public class PaintballGun : MonoBehaviour
             pbo.worldBrushSize = paintCore.brushWorldSize;
             pbo.textureSize = paintCore.textureSize;
         }
-        Debug.Log(paintCore.GetBrushTexture());
+      //  Debug.Log(paintCore.GetBrushTexture());
     }
 }

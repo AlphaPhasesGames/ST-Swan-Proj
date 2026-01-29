@@ -1,156 +1,147 @@
-
-
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using UnityEngine.Rendering;
+
 [RequireComponent(typeof(MeshCollider))]
 public class PaintCoverageMesh : MonoBehaviour, IPaintCoverage
 {
-
-    // ===== Coverage =====
-    public float CoveragePercent { get; private set; }
-
     [Header("Completion")]
     [Range(0f, 100f)]
-    public float completionThreshold = 80f;
-    private bool paintedThisClick;
+    public float completionThreshold = 95f;
+
+    [Header("Sub-Triangle Grid")]
+    [Range(2, 6)]
+    public int gridSize = 3; // 3×3 feels great, 4×4 for polish
+
+    [Header("Debug")]
+    public bool logDebug = true;
+
     public bool IsComplete { get; private set; }
-    public Material shader;
-    [Header("Tuning")]
-    [SerializeField] private float coverageMultiplier = 230f;
-    /*
-    public float DisplayCoveragePercent
-    {
-        get
-        {
-            return IsComplete ? 100f : CoveragePercent;
-        }
-    }
-    */
+    public float CoveragePercent { get; private set; }
+    public float DisplayPercent => CoveragePercent;
 
-    // ===== Internal =====
-    private HashSet<int> paintedTriangles = new HashSet<int>();
+    // triangleIndex  grid cells
+    private Dictionary<int, bool[]> triangleCells = new();
+
     private int totalTriangles;
+    private int cellsPerTriangle;
+    private int totalCells;
 
+    // =============================
+    // UNITY
+    // =============================
 
-    private void Awake()
+    void Awake()
     {
-        MeshCollider meshCol = GetComponentInParent<MeshCollider>();
+        MeshCollider mc = GetComponent<MeshCollider>();
 
-        if (!meshCol || !meshCol.sharedMesh)
+        if (!mc || !mc.sharedMesh)
         {
-            Debug.LogError($"{name} needs a MeshCollider with a valid mesh.");
+            Debug.LogError($"{name} requires a MeshCollider with a mesh.");
             enabled = false;
             return;
         }
 
-        totalTriangles = meshCol.sharedMesh.triangles.Length / 3;
-        shader = GetComponent<Renderer>().material;
-        Debug.Log($"{name} totalTriangles = {totalTriangles}");
+        totalTriangles = mc.sharedMesh.triangles.Length / 3;
+        cellsPerTriangle = gridSize * gridSize;
+        totalCells = totalTriangles * cellsPerTriangle;
+
+        if (logDebug)
+        {
+            Debug.Log(
+                $"{name} | {totalTriangles} triangles | " +
+                $"{cellsPerTriangle} cells/tri | {totalCells} total cells"
+            );
+        }
     }
 
-    private void Start()
-    {
-        Debug.Log($"PaintCoverageMesh STARTED on {name}");
-       
-    }
-
-
-    private void Update()
-    {
-        Debug.Log("paint material is at " + shader.GetFloat("_PaintStength"));
-    }
+    // =============================
+    // PAINT REGISTRATION (OPTION B)
+    // =============================
 
     public void RegisterPaintHit(RaycastHit hit)
     {
-        if (paintedThisClick)
+        if (IsComplete)
             return;
 
         int triIndex = hit.triangleIndex;
         if (triIndex < 0)
             return;
 
-        if (paintedTriangles.Add(triIndex))
+        if (!triangleCells.TryGetValue(triIndex, out var cells))
         {
-            paintedThisClick = true;
+            cells = new bool[cellsPerTriangle];
+            triangleCells[triIndex] = cells;
+        }
+
+        // Barycentric  2D triangle space
+        Vector3 bc = hit.barycentricCoordinate;
+
+        float x = bc.y;
+        float y = bc.z;
+
+        int gx = Mathf.Clamp(Mathf.FloorToInt(x * gridSize), 0, gridSize - 1);
+        int gy = Mathf.Clamp(Mathf.FloorToInt(y * gridSize), 0, gridSize - 1);
+
+        int cellIndex = gy * gridSize + gx;
+
+        if (!cells[cellIndex])
+        {
+            cells[cellIndex] = true;
             UpdateCoverage();
-            Debug.Log($"Coverage now: {CoveragePercent:F1}%");
         }
     }
 
+    // =============================
+    // COVERAGE
+    // =============================
 
-    private void UpdateCoverage()
+    void UpdateCoverage()
     {
-        CoveragePercent =
-            (float)paintedTriangles.Count / totalTriangles * coverageMultiplier;
+        int painted = 0;
+
+        foreach (var kvp in triangleCells)
+        {
+            var cells = kvp.Value;
+            for (int i = 0; i < cells.Length; i++)
+            {
+                if (cells[i])
+                    painted++;
+            }
+        }
+
+        CoveragePercent = (float)painted / totalCells * 100f;
+
+        if (logDebug)
+        {
+            Debug.Log(
+                $"[PaintCoverage] {name} | " +
+                $"{CoveragePercent:F1}% | {painted}/{totalCells} cells"
+            );
+        }
 
         if (!IsComplete && CoveragePercent >= completionThreshold)
         {
             IsComplete = true;
-           
             OnPaintCompleted();
         }
     }
 
+    // =============================
+    // COMPLETION
+    // =============================
 
-    private void OnPaintCompleted()
+    void OnPaintCompleted()
     {
-        // Force full black
-        shader.SetFloat("_PaintStength", 1);
-        shader.SetInt("_PaintCount", 0);
+        Renderer r = GetComponent<Renderer>();
 
-        //  DEBUG blob counts
-        DecalShooter shooter = FindObjectOfType<DecalShooter>();
-        Renderer rend = GetComponent<Renderer>();
-
-
-        if (shooter != null && rend != null)
+        if (r)
         {
-            int before = shooter.GetBlobCount(rend);
-            shooter.ClearBlobs(rend);
-            int after = shooter.GetBlobCount(rend);
-
-            Debug.Log(
-                $"[PaintComplete] {name} blobs before: {before}  blobs after: {after}"
-            );
+            r.material.color = Color.black;
+            r.shadowCastingMode = ShadowCastingMode.On;
+            r.receiveShadows = true;
         }
-        else
-        {
-            Debug.LogWarning("[PaintComplete] Shooter or Renderer missing");
-        }
+
+        Debug.Log($"{name} FULLY PAINTED");
     }
-
-
-    public float DisplayPercent
-    {
-        get
-        {
-            // 10% real coverage == 100% UI (by design)
-            const float fullAt = 10f;
-            return Mathf.Clamp01(CoveragePercent / fullAt) * 100f;
-        }
-    }
-    /*
-    public float DisplayPercent
-    {
-        get
-        {
-            // Example: 10% real coverage == 100% UI
-            const float fullAt = 10f;
-
-            return Mathf.Clamp01(CoveragePercent / fullAt) * 100f;
-        }
-    }
-    */
-    public void ResetPaintClick()
-    {
-        paintedThisClick = false;
-    }
-
-
-
-
 }
-
