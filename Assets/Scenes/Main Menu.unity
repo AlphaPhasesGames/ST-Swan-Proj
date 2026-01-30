@@ -399,7 +399,7 @@ MonoBehaviour:
   devScene1: {fileID: 720489764}
   careerPaintScene: {fileID: 2141493553}
   creativePaintScene: {fileID: 30919512}
-  arcadePaintScene: {fileID: 0}
+  arcadePaintScene: {fileID: 942876321}
 --- !u!4 &243462558
 Transform:
   m_ObjectHideFlags: 0

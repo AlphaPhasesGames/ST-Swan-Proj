@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Arcade.unity
     guid: 01bb68db63b1dd54fb3c399a1617a48e
+  - enabled: 1
+    path: Assets/Scenes/Creatiive Scene.unity
+    guid: 64c064d4ad5a586468a8991ca9d02c3c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
