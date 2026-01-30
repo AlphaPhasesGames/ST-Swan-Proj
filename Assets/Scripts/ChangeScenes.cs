@@ -6,11 +6,13 @@ public class ChangeScenes : MonoBehaviour
     public Button devScene1;
     public Button careerPaintScene;
     public Button creativePaintScene;
+    public Button arcadePaintScene;
     private void Awake()
     {
         devScene1.onClick.AddListener(MoveToDevScene1);
         careerPaintScene.onClick.AddListener(MoveToCareerPaintScene);
         creativePaintScene.onClick.AddListener(MoveToCreativePaintScene);
+        arcadePaintScene.onClick.AddListener(MoveToArcadePaintScene);
     }
 
     public void MoveToDevScene1()
@@ -26,5 +28,10 @@ public class ChangeScenes : MonoBehaviour
     public void MoveToCreativePaintScene()
     {
         SceneManager.LoadScene("Creatiive Scene");
+    }
+
+    public void MoveToArcadePaintScene()
+    {
+        SceneManager.LoadScene("Arcade");
     }
 }

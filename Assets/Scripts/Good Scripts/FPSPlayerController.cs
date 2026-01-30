@@ -43,6 +43,9 @@ public class FPSPlayerController : MonoBehaviour
 
     public GrappleSystem grapple;
 
+    public Transform paintingHoldPoint;
+    HoldablePainting heldPainting;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -61,6 +64,19 @@ public class FPSPlayerController : MonoBehaviour
         }
 
         HandleJetpack();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (heldPainting == null)
+            {
+                TryPickUp();
+            }
+            else
+            {
+                heldPainting.Drop();
+                heldPainting = null;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -179,4 +195,23 @@ public class FPSPlayerController : MonoBehaviour
             rb.AddForce(Vector3.up * currentJetpackForce, ForceMode.Acceleration);
         }
     }
+
+    void TryPickUp()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
+        {
+            HoldablePainting painting =
+                hit.collider.GetComponentInParent<HoldablePainting>();
+
+            if (painting != null)
+            {
+                painting.PickUp(paintingHoldPoint);
+                heldPainting = painting;
+            }
+        }
+    }
+
+
+
 }

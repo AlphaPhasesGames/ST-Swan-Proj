@@ -55,6 +55,8 @@ public class PaintCore : MonoBehaviour
         Precision
     }
 
+
+
     public PaintSystem paintSystem =>
         paintMode == PaintMode.Precision
             ? PaintSystem.Precision

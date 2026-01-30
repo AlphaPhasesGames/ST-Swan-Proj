@@ -41,6 +41,48 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     [Tooltip("World-space brush size for this object")]
     public float surfaceBrushWorldSize = 0.25f;
+
+    public RenderTexture GetUVPaintRT() => paintRT;
+
+    public bool UsesUVPaint()
+    {
+        return paintMat != null && paintMat.HasProperty("_UseUVPaint") && paintMat.GetFloat("_UseUVPaint") > 0.5f;
+    }
+
+    public void CopyPaintFrom(PaintSurfaceBase source, bool copyTriplanar = true, bool copyUV = true)
+    {
+        if (source == null)
+        {
+            Debug.LogError($"{name}: CopyPaintFrom source is null");
+            return;
+        }
+
+        // --- UV RT copy ---
+        if (copyUV && source.paintRT != null && paintRT != null)
+        {
+            if (!paintRT.IsCreated()) paintRT.Create();
+            Graphics.Blit(source.paintRT, paintRT);
+        }
+
+        // --- Triplanar RT copy ---
+        if (copyTriplanar)
+        {
+            BlitSafe(source.paintRT_PosX, paintRT_PosX);
+            BlitSafe(source.paintRT_NegX, paintRT_NegX);
+            BlitSafe(source.paintRT_PosY, paintRT_PosY);
+            BlitSafe(source.paintRT_NegY, paintRT_NegY);
+            BlitSafe(source.paintRT_PosZ, paintRT_PosZ);
+            BlitSafe(source.paintRT_NegZ, paintRT_NegZ);
+        }
+    }
+
+    static void BlitSafe(RenderTexture src, RenderTexture dst)
+    {
+        if (src == null || dst == null) return;
+        if (!dst.IsCreated()) dst.Create();
+        Graphics.Blit(src, dst);
+    }
+
     protected virtual void Awake()
     {
         if (!stampMat)
