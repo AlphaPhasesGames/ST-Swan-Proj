@@ -27,6 +27,10 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
     // Actual colour output (for paint system)
     public System.Action<Color> OnColourSelected;
 
+    // PaintColor output (new system)
+    public System.Action<PaintColour> OnPaintColorSelected;
+
+
     // -----------------------------
     // WHEEL SETUP
     // -----------------------------
@@ -165,13 +169,18 @@ public class ColorWheelSelectorOuter : MonoBehaviour, IPointerDownHandler
 
         Color selected = wheelColours[index];
 
-        // Fire colour event (paint system listens)
+        // OLD system (keep this!)
         OnColourSelected?.Invoke(selected);
 
-        // Optional index event (UI / sound etc.)
+        // NEW system
+        PaintColour paintColor = new PaintColour(selected, $"Wheel {index}");
+        OnPaintColorSelected?.Invoke(paintColor);
+
+        // Optional index event
         OnColourIndexSelected?.Invoke(index);
 
-      
+
+
     }
 
 

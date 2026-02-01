@@ -281,6 +281,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: textureSize
+      value: 512
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1262,7 +1266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e54f0c30d162f459b2ec0d3e5bef63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaintSurface_Quad
-  textureSize: 512
+  textureSize: 2048
   hardStamp: 0
   stampMat: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   legacyBrushSize: 64

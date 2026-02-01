@@ -23,7 +23,9 @@ public class PaintCore : MonoBehaviour
     [Tooltip("Used when Fixed World Brush Size is enabled")]
     public float fixedWorldBrushSize = 0.25f;
 
+    [Header("Palette")]
 
+    public PaintPalette palette;
     public enum PaintMode
     {
         Spray,
@@ -67,15 +69,18 @@ public class PaintCore : MonoBehaviour
     void Start()
     {
         if (!cam) cam = Camera.main;
-
-        // Same brush for both modes – hardness comes from texture
         brushTex = CreateBlobTexture(256);
+
+        if (palette != null)
+        {
+            palette.OnActiveColorChanged += SetPaintColor;
+        }
     }
 
     void Update()
     {
-       // HandleModeKeys();
-       // HandleFireModeToggle();
+        // HandleModeKeys();
+        // HandleFireModeToggle();
         HandleBrushSizing();
         HandlePaint();
     }
