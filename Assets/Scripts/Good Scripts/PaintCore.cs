@@ -209,7 +209,7 @@ public class PaintCore : MonoBehaviour
         if (Mathf.Abs(scroll) < 0.001f) return;
 
         brushWorldSize += scroll * 0.05f;
-        brushWorldSize = Mathf.Clamp(brushWorldSize, 0.01f, 2f);
+        brushWorldSize = Mathf.Clamp(brushWorldSize, 0.0025f, 2f);
     }
 
     Vector3 GetRandomConeDirection(Vector3 forward, float angle)
@@ -221,7 +221,7 @@ public class PaintCore : MonoBehaviour
         float y = Mathf.Sqrt(1 - z * z) * Mathf.Sin(theta);
         return Quaternion.LookRotation(forward) * new Vector3(x, y, z);
     }
-
+    /*
     //  THIS IS THE ONLY CHANGE 
     Texture2D CreateBlobTexture(int size)
     {
@@ -241,6 +241,34 @@ public class PaintCore : MonoBehaviour
                 float edge = 0.9f; // tweak 0.88 – 0.95
                 float a = Mathf.SmoothStep(1f, 0f,
                     Mathf.InverseLerp(edge, 1f, t));
+
+                tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
+            }
+
+        tex.Apply(false, false);
+        return tex;
+    }
+    */
+
+    Texture2D CreateBlobTexture(int size)
+    {
+        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.filterMode = FilterMode.Point;
+
+        Vector2 c = new Vector2((size - 1) * 0.5f, (size - 1) * 0.5f);
+        float r = size * 0.5f;
+
+        for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float d = Vector2.Distance(new Vector2(x, y), c) / r;
+
+                float a;
+                if (d < 0.85f)
+                    a = 1f; // solid core
+                else
+                    a = Mathf.SmoothStep(1f, 0f, Mathf.InverseLerp(0.85f, 1f, d));
 
                 tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
             }

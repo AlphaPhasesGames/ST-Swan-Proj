@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class PaintSurfaceBase : MonoBehaviour
 {
     [Header("Surface Paint")]
-    public int textureSize = 512;
+    public int textureSize = 2048;
 
     protected RenderTexture paintRT;
     protected Material paintMat;
@@ -176,7 +176,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         //int py = Mathf.RoundToInt(uv.y * paintRT.height);
         int px = Mathf.FloorToInt(uv.x * (paintRT.width - 1));
         int py = Mathf.FloorToInt(uv.y * (paintRT.height - 1));
-        int drawSize = Mathf.RoundToInt(size);
+        //int drawSize = Mathf.RoundToInt(size);
+        int drawSize = Mathf.Max(1, Mathf.CeilToInt(size));
         float half = drawSize * 0.5f;
 
         // float x = Mathf.Clamp(px - half, 0, paintRT.width - drawSize);
@@ -215,6 +216,16 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     public virtual void PaintAtWorld(Vector3 worldPos, Vector3 normal,
                          Texture2D brush, float size, Color paintColor)
     {
+        bool precision = size <= 2.5f;
+
+        SetRTFiltering(paintRT, precision);
+        SetRTFiltering(paintRT_PosX, precision);
+        SetRTFiltering(paintRT_NegX, precision);
+        SetRTFiltering(paintRT_PosY, precision);
+        SetRTFiltering(paintRT_NegY, precision);
+        SetRTFiltering(paintRT_PosZ, precision);
+        SetRTFiltering(paintRT_NegZ, precision);
+
         Vector3 nL = transform.InverseTransformDirection(normal).normalized;
 
         float wx = Mathf.Abs(nL.x);
@@ -304,7 +315,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
         int px = Mathf.RoundToInt(uv.x * targetRT.width);
         int py = Mathf.RoundToInt(uv.y * targetRT.height);
-        int drawSize = Mathf.RoundToInt(size);
+        //int drawSize = Mathf.RoundToInt(size);
+        int drawSize = Mathf.Max(1, Mathf.CeilToInt(size));
         float half = drawSize * 0.5f;
 
         //  clamp inside RT
@@ -426,5 +438,11 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     public float GetSurfaceBrushSize()
     {
         return Mathf.Max(0.001f, surfaceBrushWorldSize);
+    }
+
+    void SetRTFiltering(RenderTexture rt, bool precision)
+    {
+        if (!rt) return;
+        rt.filterMode = precision ? FilterMode.Point : FilterMode.Trilinear;
     }
 }

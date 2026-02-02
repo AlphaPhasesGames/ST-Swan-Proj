@@ -181,7 +181,7 @@ public class PaintMixManager : MonoBehaviour
         {
             mixedColor = PaintMixer.Mix(colorA, colorB, mixAmount);
         }
-
+        /*
         // DEBUG KEYS (optional dev shortcuts)
         if (Input.GetKeyDown(KeyCode.Alpha1))
             SaveSlotAColor();
@@ -191,6 +191,7 @@ public class PaintMixManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
             SaveMixColor();
+        */
     }
 
     // ============================
