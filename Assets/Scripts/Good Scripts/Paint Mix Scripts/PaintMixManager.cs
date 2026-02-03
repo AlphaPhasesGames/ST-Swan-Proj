@@ -10,10 +10,10 @@ public class PaintMixManager : MonoBehaviour
     // ============================
 
     [Header("Input Colours")]
-
+    public PaintPaletteSavedColoursUI paletteUI;
     // The paint stored in Slot A
     public PaintColour colorA;
-
+   
     // The paint stored in Slot B
     public PaintColour colorB;
 
@@ -33,6 +33,7 @@ public class PaintMixManager : MonoBehaviour
     // Button that commits the mixed colour to the palette
     public Button selectNewColour;
 
+    public Button replaceColourButton;
     // ============================
     // MIX PANEL STATE
     // ============================
@@ -45,6 +46,10 @@ public class PaintMixManager : MonoBehaviour
 
     // Tracks whether the panel is currently open
     public bool mixPanelOpen;
+
+    [Header("Palette Actions")]
+    public Button saveColourButton;
+
 
     // ============================
     // PALETTE REFERENCE
@@ -137,9 +142,10 @@ public class PaintMixManager : MonoBehaviour
         slotAButton.onClick.AddListener(SelectSlotA);
         slotBButton.onClick.AddListener(SelectSlotB);
         mixColours.onClick.AddListener(MixPaints);
-        selectNewColour.onClick.AddListener(SaveMixColor);
+        selectNewColour.onClick.AddListener(SelectMixedColour);
+        saveColourButton.onClick.AddListener(SaveActiveColour);
         openMixPanel.onClick.AddListener(OpenMixPanalFunction);
-
+        replaceColourButton.onClick.AddListener(ReplaceSelectedSlot);
         // Panel starts closed
         mixPanelOpen = false;
     }
@@ -221,17 +227,7 @@ public class PaintMixManager : MonoBehaviour
         palette.SetActiveColor(committed);
     }
 
-    public void SaveMixColor()
-    {
-        if (mixedColor == null || palette == null)
-            return;
-
-        PaintColour committed = new PaintColour(mixedColor.value, mixedColor.name);
-        palette.AddColor(committed);
-        palette.SetActiveColor(committed);
-
-        OnMixedColorCreated?.Invoke(committed);
-    }
+   
 
     // ============================
     // COLOUR ASSIGNMENT (THE IMPORTANT BIT)
@@ -239,9 +235,11 @@ public class PaintMixManager : MonoBehaviour
 
     public void AssignColor(PaintColour color)
     {
+        Debug.Log($"AssignColor called | panelOpen={mixPanelOpen} | slot={activeSlot}");
+
         // Do nothing if panel is closed
-        if (!mixPanelOpen)
-            return;
+        //if (!mixPanelOpen)
+        //    return;
 
         // Do nothing if no slot is armed
         if (activeSlot == MixSlot.None)
@@ -317,7 +315,7 @@ public class PaintMixManager : MonoBehaviour
         UpdateMixedUI();
     }
 
-    void ResetMixed()
+    public void ResetMixed()
     {
         hasMixed = false;
         mixedColor = null;
@@ -365,5 +363,59 @@ public class PaintMixManager : MonoBehaviour
 
         slotAFilled = false;
         slotBFilled = false;
+    }
+
+    public PaintColour GetCurrentPreviewColour()
+    {
+        if (mixedColor != null)
+            return mixedColor;
+
+        if (colorA != null && !slotBFilled)
+            return colorA;
+
+        return null;
+    }
+
+    public void ReplaceSelectedSlot()
+    {
+        if (palette == null)
+            return;
+
+        if (palette.selectedReplaceSlot < 0)
+            return;
+
+        PaintColour replacement =
+            mixedColor != null
+                ? mixedColor          //  use mixed preview FIRST
+                : palette.activeColor; // fallback only
+
+        if (replacement == null)
+            return;
+
+        palette.AddOrReplaceColor(
+            replacement,
+            palette.selectedReplaceSlot
+        );
+
+        paletteUI.Rebuild();
+    }
+
+    public void SaveActiveColour()
+    {
+        if (palette == null || palette.activeColor == null)
+            return;
+
+        palette.AddColor(palette.activeColor);
+        paletteUI.Rebuild();
+    }
+
+
+    public void SelectMixedColour()
+    {
+        if (mixedColor == null || palette == null)
+            return;
+
+        // Assign to brush ONLY (no saving)
+        palette.SetActiveColor(mixedColor);
     }
 }

@@ -1,10 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 
 [System.Serializable]
 public class SavedPaintColor
 {
     public float r, g, b;
     public string name;
+
+
+
 
     public SavedPaintColor(PaintColour color)
     {
@@ -19,5 +24,7 @@ public class SavedPaintColor
         return new PaintColour(new Color(r, g, b), name);
     }
 }
+
+
 
 
