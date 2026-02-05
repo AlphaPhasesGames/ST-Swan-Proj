@@ -1,0 +1,248 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7111985489321740092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3848956404778133165}
+  - component: {fileID: 7696016568687127689}
+  - component: {fileID: 2772229636637039814}
+  - component: {fileID: 2357442652043188385}
+  - component: {fileID: 7853082064378726514}
+  - component: {fileID: 3272046002116200220}
+  - component: {fileID: 1050068758588490944}
+  - component: {fileID: 1856594413713912203}
+  - component: {fileID: 4887250055160618422}
+  - component: {fileID: 867149118753635236}
+  - component: {fileID: 3247911443797162182}
+  - component: {fileID: 3812842906478967310}
+  m_Layer: 0
+  m_Name: Game manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3848956404778133165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.40524, y: -0, z: 0.328}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7696016568687127689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dea36513eaecdba4d8b6df635fd44068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardSoftSettings: {fileID: 0}
+  stampSpraySettings: {fileID: 0}
+  paintCore: {fileID: 0}
+  legacySize: {fileID: 0}
+  spraySize: {fileID: 0}
+--- !u!114 &2772229636637039814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc0e35625dd2e248a6cde59af90a248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paintCore: {fileID: 0}
+  mLook: {fileID: 0}
+  colourWheelUI: {fileID: 0}
+  toggleWheelKey: 9
+  precisionKey: 49
+  sprayKey: 50
+  fireModeKey: 324
+  toggleWheelButton: ToggleWheel
+  precisionButton: PrecisionMode
+  sprayButton: SprayMode
+  fireButton: Fire
+--- !u!114 &2357442652043188385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3057773bdcb78a44a62d39bfbc53c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  canvasSurface: {fileID: 0}
+  paintFileName: CanvasPainting.png
+--- !u!114 &7853082064378726514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efdd8eb3fefda3b41aa79f3931e13d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaintTransferTest
+  sourceBig: {fileID: 0}
+  targetSmall: {fileID: 0}
+--- !u!114 &3272046002116200220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a02089bfb397504bb92a9b0d2d3e42a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  paletteUI: {fileID: 1856594413713912203}
+  colorA:
+    value: {r: 1, g: 0, b: 0, a: 0}
+    name: 
+  colorB:
+    value: {r: 1, g: 0, b: 0, a: 0}
+    name: 
+  slotAButton: {fileID: 0}
+  slotBButton: {fileID: 0}
+  mixColours: {fileID: 0}
+  selectNewColour: {fileID: 0}
+  replaceColourButton: {fileID: 0}
+  paintMixPanalObject: {fileID: 0}
+  openMixPanel: {fileID: 0}
+  mixPanelOpen: 0
+  saveColourButton: {fileID: 0}
+  palette: {fileID: 1050068758588490944}
+  colourSelected1: {fileID: 0}
+  colourSelected2: {fileID: 0}
+  finalMixedColours: {fileID: 0}
+  mixValueText: {fileID: 0}
+  valueSlider: {fileID: 0}
+  slotAFilled: 0
+  slotBFilled: 0
+  mixAmount: 0.665
+  mixedColor:
+    value: {r: 0, g: 0, b: 0, a: 0}
+    name: 
+  wheel: {fileID: 0}
+  activeSlot: 0
+--- !u!114 &1050068758588490944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f7fee57baa4b448b894ffbd83149fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxSlots: 6
+  colors: []
+  activeColor:
+    value: {r: 0, g: 0, b: 0, a: 0}
+    name: 
+  mixer: {fileID: 3272046002116200220}
+  wheel: {fileID: 0}
+  selectedReplaceSlot: -1
+--- !u!114 &1856594413713912203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7febc2ecfcffaaa4c96f277d39544d79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  palette: {fileID: 1050068758588490944}
+  buttonContainer: {fileID: 0}
+  colorButtonPrefab: {fileID: 7751538851135213009, guid: 29bd87b1e905df542ab3726fba243ced, type: 3}
+--- !u!114 &4887250055160618422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e43fa16468c987d4e939b99dd2a2d945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  palette: {fileID: 1050068758588490944}
+  paletteUI: {fileID: 1856594413713912203}
+--- !u!114 &867149118753635236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b93a5a3d3cb7b843aa4d7a7852b9527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClearSavedColoursManager
+  clearColoursPanal: {fileID: 0}
+  yesClearButton: {fileID: 0}
+  noDontClearButton: {fileID: 0}
+  closePanal: {fileID: 0}
+  saveSystemForPaint: {fileID: 4887250055160618422}
+--- !u!114 &3247911443797162182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2517cfe124ce9a945a0eedafa23cd59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  toggleEraseButton: {fileID: 0}
+  pCore: {fileID: 0}
+--- !u!114 &3812842906478967310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7111985489321740092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d9408b6652d6248bf3d02545f0bf28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  openTools: {fileID: 0}
+  toolPanel: {fileID: 0}

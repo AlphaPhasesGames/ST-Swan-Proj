@@ -227,7 +227,7 @@ public class PaintCore : MonoBehaviour
             surface.textureSize * 0.25f
         );
 
-        surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor());
+        surface.PaintAtWorld(hit,brushTex,size,GetFinalPaintColor(),isErasing);
     }
 
     // ---------------- UTIL ----------------

@@ -121,6 +121,9 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     public void PaintAtUV(Vector2 uv, Texture2D brush, float size, Color color, bool erase)
     {
+        bool precision = size <= 2.5f;
+        SetRTFiltering(paintRT, precision);
+
         Stamp(paintRT, uv, brush, size, color, erase);
     }
 

@@ -11,10 +11,8 @@ Shader "Custom/PaintStampErase"
         ZWrite Off
         Cull Off
 
-        // Alpha only
+        // Alpha-only, multiplicative erase
         ColorMask A
-
-        // newA = oldA * (1 - srcA)
         Blend Zero OneMinusSrcAlpha
 
         Pass
@@ -48,9 +46,8 @@ Shader "Custom/PaintStampErase"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                // IMPORTANT: output brush alpha (not 1-a)
                 float a = tex2D(_MainTex, i.uv).a;
-                return fixed4(0,0,0,a);
+                return fixed4(0, 0, 0, a);
             }
             ENDCG
         }
