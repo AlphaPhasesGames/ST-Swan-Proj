@@ -1,82 +1,47 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+
 public class SpraySettingsUI : MonoBehaviour
 {
+    public PaintCore paintCore;
 
     public TextMeshProUGUI hardSoftSettings;
     public TextMeshProUGUI stampSpraySettings;
-
-    public PaintCore paintCore;
-
     public TextMeshProUGUI legacySize;
     public TextMeshProUGUI spraySize;
 
+    void Start()
+    {
+        paintCore.OnPaintModeChanged += HandlePaintMode;
+        paintCore.OnFireModeChanged += HandleFireMode;
+        paintCore.OnBrushSizeChanged += HandleBrushSize;
 
+        // Initial sync
+        HandlePaintMode(paintCore.paintMode);
+        HandleFireMode(paintCore.fireMode);
+        HandleBrushSize(paintCore.brushWorldSize);
+    }
 
-   // public TextMeshProUGUI gunType; // Shotgun / Rifle
-
-    private void Update()
+    void Update()
     {
         var surface = paintCore.GetSurfaceUnderCrosshairPublic();
+        legacySize.text = surface ? surface.legacyBrushSize.ToString("0") : "-";
+    }
 
-        if (surface != null)
-            legacySize.text = surface.legacyBrushSize.ToString("0");
-        else
-            legacySize.text = "-";
-
-        spraySize.text = paintCore.brushWorldSize.ToString("0.00");
-
+    void HandlePaintMode(PaintCore.PaintMode mode)
+    {
         stampSpraySettings.text =
-        paintCore.paintSystem == PaintCore.PaintSystem.Precision
-        ? "Rifle"
-        : "Shotgun";
-
-        hardSoftSettings.text = paintCore.fireMode == PaintCore.FireMode.Once
-        ? "Single Shot"
-        : "Automatic";
-
-       // gunType.text = paintCore.spraySizeMode == PaintCore.SpraySizeMode.Constant
-        //? "Rifle"
-       // : "Shotgun";
+            mode == PaintCore.PaintMode.Precision ? "Rifle" : "Shotgun";
     }
 
-
-    public void SetPaintToHard()
+    void HandleFireMode(PaintCore.FireMode mode)
     {
-        if (paintCore.paintSystem == PaintCore.PaintSystem.Precision)
-        {
-
-            hardSoftSettings.text = ("Hard paint");
-        }
-
-        if (paintCore.paintSystem == PaintCore.PaintSystem.SprayCone)
-        {
-
-            hardSoftSettings.text = ("Soft Paint");
-        }
-
+        hardSoftSettings.text =
+            mode == PaintCore.FireMode.Once ? "Single Shot" : "Automatic";
     }
 
-    public void SetPaintToSpray()
+    void HandleBrushSize(float size)
     {
-
-        if (paintCore.fireMode == PaintCore.FireMode.Once)
-        {
-
-            stampSpraySettings.text = ("Stamp");
-        }
-
-        if (paintCore.fireMode == PaintCore.FireMode.Hold)
-        {
-
-            stampSpraySettings.text = ("Spray");
-        }
-
+        spraySize.text = size.ToString("0.00");
     }
-
-
-
 }
-
-

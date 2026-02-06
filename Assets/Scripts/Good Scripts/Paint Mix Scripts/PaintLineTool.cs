@@ -13,7 +13,7 @@ public class PaintLineTool : MonoBehaviour
     [Header("Line Settings")]
     [Range(0.001f, 0.1f)]
     public float lineThickness = 0.02f;
-
+    /*
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -21,8 +21,8 @@ public class PaintLineTool : MonoBehaviour
             TryPlacePoint();
         }
     }
-
-    void TryPlacePoint()
+    */
+    public void TryPlacePoint()
     {
         Ray ray = paintCore.cam.ScreenPointToRay(Input.mousePosition);
 
@@ -85,5 +85,10 @@ public class PaintLineTool : MonoBehaviour
 
             surface.PaintAtUV(uv, brush, size, color);
         }
+    }
+
+    public void CancelLine()
+    {
+        hasFirstPoint = false;
     }
 }
