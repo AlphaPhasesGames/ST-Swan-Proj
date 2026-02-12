@@ -21,6 +21,8 @@ public class ColorWheelCenterToggle : MonoBehaviour//, IPointerDownHandler
     public ColorWheelSelectorOuter outerWheel;
     bool IsInColourMode => currentMode == Mode.Colour;
 
+    [Header("Mixing")]
+    public PaintMixManager mixManager;
     enum Mode
     {
         Black,
@@ -74,34 +76,30 @@ public class ColorWheelCenterToggle : MonoBehaviour//, IPointerDownHandler
     // -----------------------------
     public void SetBlack()
     {
-        // Explicit override ONLY
         currentMode = Mode.Black;
 
-        paintCore.SetPaintColor(Color.black);
+        if (mixManager != null)
+            mixManager.AssignRawColor(Color.black, "Black");
+        else
+            paintCore.SetPaintColor(Color.black); // fallback
 
         UpdateIcons();
-
-        if (outerWheel && outerWheel.highlightRect)
-            outerWheel.highlightRect.gameObject.SetActive(false);
-
-        if (outerSelector)
-            outerSelector.SetActive(false);
+        DisableOuter();
     }
 
     public void SetWhite()
     {
         currentMode = Mode.White;
 
-        paintCore.SetPaintColor(Color.white);
+        if (mixManager != null)
+            mixManager.AssignRawColor(Color.white, "White");
+        else
+            paintCore.SetPaintColor(Color.white); // fallback
 
         UpdateIcons();
-
-        if (outerWheel && outerWheel.highlightRect)
-            outerWheel.highlightRect.gameObject.SetActive(false);
-
-        if (outerSelector)
-            outerSelector.SetActive(false);
+        DisableOuter();
     }
+
 
     // -----------------------------
     // CALLED BY OUTER WHEEL
@@ -141,5 +139,14 @@ public class ColorWheelCenterToggle : MonoBehaviour//, IPointerDownHandler
             blackIcon.SetActive(true);
         else if (currentMode == Mode.White)
             whiteIcon.SetActive(true);
+    }
+
+    void DisableOuter()
+    {
+        if (outerWheel && outerWheel.highlightRect)
+            outerWheel.highlightRect.gameObject.SetActive(false);
+
+        if (outerSelector)
+            outerSelector.SetActive(false);
     }
 }

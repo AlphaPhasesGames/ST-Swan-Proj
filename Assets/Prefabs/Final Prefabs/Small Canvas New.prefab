@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 791096703368604445}
   - component: {fileID: 8548204503846389025}
   - component: {fileID: 203628151489886205}
+  - component: {fileID: 7479147475158107337}
   m_Layer: 0
   m_Name: Small Canvas New
-  m_TagString: Untagged
+  m_TagString: Painting
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,8 +99,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoldablePainting
   isHeld: 0
-  inRange: 0
-  pickupRange: 2
 --- !u!65 &203628151489886205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -121,6 +120,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 4, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7479147475158107337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2579813064691402114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 841c2ff3e04068d48987b8255f3844b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PaintingInstance
+  size: 0
+  paintFileName: 
 --- !u!1 &5522288771248514487
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,8 +268,8 @@ GameObject:
   - component: {fileID: 3240463118989135206}
   - component: {fileID: 1953047860808255743}
   - component: {fileID: 6968810405735626988}
-  - component: {fileID: 52804326362347228}
-  - component: {fileID: 1295120197971152699}
+  - component: {fileID: 4589725137931255675}
+  - component: {fileID: 2849726911637193459}
   m_Layer: 0
   m_Name: Wall Cube Paintable
   m_TagString: Untagged
@@ -336,7 +349,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &52804326362347228
+--- !u!64 &4589725137931255675
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,7 +371,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1295120197971152699
+--- !u!114 &2849726911637193459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -370,9 +383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e54f0c30d162f459b2ec0d3e5bef63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PaintSurface_Quad
-  textureSize: 512
+  textureSize: 2048
   hardStamp: 0
-  stampMat: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   legacyBrushSize: 64
   legacyMinSize: 1
   legacyMaxSize: 256
@@ -381,6 +393,8 @@ MonoBehaviour:
   triplanarTiling: 1
   overrideBrushSize: 0
   surfaceBrushWorldSize: 0.25
+  stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+  stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
 --- !u!1 &7864835316784959643
 GameObject:
   m_ObjectHideFlags: 0

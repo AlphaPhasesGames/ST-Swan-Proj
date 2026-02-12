@@ -6,6 +6,7 @@ public class InputControllerForPaint : MonoBehaviour
     [Header("References")]
     public PaintCore paintCore;
     public MouseLook mLook;
+    public PaintballGun paintballGunLogic;
     public PaintLineTool lineDraw;
     public GameObject colourWheelUI;
 
@@ -15,9 +16,17 @@ public class InputControllerForPaint : MonoBehaviour
     public Button spackleSprayButton;   // Spackle spray
     public Button pencilButton;       // Single Ray
     public Button blobBrushButton;    // Blob Shape
+    public Button shapesBrushButton;  // Square Shape
     public Button squareBrushButton;  // Square Shape
+    public Button starBrushButton;  // Square Shape
+    public Button splatBrushButton;  // Square Shape
     public Button eraseButton;        // Erase toggle
     public Button lineModeButton;
+    public Button calligraphyModeButton;
+    public Button setSpraySizeButton;
+    public Button setSprayAngleButton;
+    public Button shapesClosePanal;
+    public Button paintBallGunButon;
     public GameObject lineModeHighlight;
     [Header("Keyboard")]
     public KeyCode toggleWheelKey = KeyCode.Tab;
@@ -28,8 +37,13 @@ public class InputControllerForPaint : MonoBehaviour
     public KeyCode squareBrushKey = KeyCode.Alpha5;
     public KeyCode eraseKey = KeyCode.R;
     public KeyCode fireModeKey = KeyCode.Mouse1;
-
+    public KeyCode calligraphyKey = KeyCode.Alpha6;
+    public KeyCode paintBallGunKey = KeyCode.Alpha7;
     bool wheelOpen;
+
+    [Header("Panels")]
+    public GameObject shapesPanel;
+    public GameObject shapesOverlay;
 
     [Header("Selectors")]
     public RectTransform toolSelector;
@@ -40,7 +54,11 @@ public class InputControllerForPaint : MonoBehaviour
     Vector2 toolSelectorTarget;
     Vector2 shapeSelectorTarget;
 
-
+    [Header("PaintToolModels")]
+    public GameObject paintballGun;
+    public GameObject paintBrushFine;
+    public GameObject sprayCan;
+    public GameObject paintBrushSuperFine;
     [Header("Draw Mode")]
     public DrawMode currentDrawMode = DrawMode.Paint;
 
@@ -59,11 +77,18 @@ public class InputControllerForPaint : MonoBehaviour
         spackleSprayButton?.onClick.AddListener(SetSpackleSpray);
         pencilButton?.onClick.AddListener(SetSingleRay);
 
+        shapesBrushButton?.onClick.AddListener(OpenShapesPanel);
         blobBrushButton?.onClick.AddListener(SetBlobBrush);
         squareBrushButton?.onClick.AddListener(SetSquareBrush);
-
+        starBrushButton?.onClick.AddListener(SetStarBrush);
+        splatBrushButton?.onClick.AddListener(SetSplatBrush);
+        shapesClosePanal?.onClick.AddListener(CloseShapesPanel);
         eraseButton?.onClick.AddListener(ToggleErase);
         lineModeButton?.onClick.AddListener(ToggleLineMode);
+        calligraphyModeButton?.onClick.AddListener(SetCalligraphy);
+        setSprayAngleButton.onClick.AddListener(SetSprayAngle);
+        setSpraySizeButton.onClick.AddListener(SetSpraySize);
+        paintBallGunButon.onClick.AddListener(EnablePaintballGun);
     }
 
     void Start()
@@ -123,7 +148,9 @@ public class InputControllerForPaint : MonoBehaviour
         if (Input.GetKeyDown(eraseKey)) ToggleErase();
         if (Input.GetKeyDown(fireModeKey)) paintCore.ToggleFireMode();
         if (Input.GetKeyDown(toggleWheelKey)) ToggleColourWheel();
-
+        if (Input.GetKeyDown(calligraphyKey)) SetCalligraphy();
+        if (Input.GetKeyDown(paintBallGunKey)) EnablePaintballGun();
+        //if(Input.GetKeyDown(star))
 
 
     }
@@ -134,25 +161,73 @@ public class InputControllerForPaint : MonoBehaviour
     {
         DisableErase();
         DisableLineMode();
+
+        SetBrushModel(paintBrushFine);
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Normal);
         paintCore.SetPaintMode(PaintCore.PaintMode.Precision);
+
         MoveToolSelectorTo(brushButton);
     }
+
 
     void SetSpray()
     {
         DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(null); // hides both brushes
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Normal);
         paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
+        paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.SprayCan);
+
         ForceBlobBrush();
         MoveToolSelectorTo(sprayButton);
     }
 
+
     void SetSingleRay()
     {
         DisableErase();
+        DisableLineMode();
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Normal);
         paintCore.SetPaintMode(PaintCore.PaintMode.SingleRay);
+        SetBrushModel(paintBrushSuperFine);
         ForceBlobBrush();
         MoveToolSelectorTo(pencilButton);
     }
+    void EnablePaintballGun()
+    {
+        DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(null); //  THIS is the missing piece
+
+        paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
+        paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.PaintballGun);
+
+        MoveToolSelectorTo(paintBallGunButon);
+    }
+
+
+
+    void SetCalligraphy()
+    {
+        DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(paintBrushSuperFine);
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Calligraphy);
+        paintCore.SetPaintMode(PaintCore.PaintMode.SingleRay);
+
+        ForceBlobBrush();
+        MoveToolSelectorTo(calligraphyModeButton);
+    }
+
+
 
     // ---------------- BRUSH SHAPES ----------------
 
@@ -172,13 +247,49 @@ public class InputControllerForPaint : MonoBehaviour
         DisableLineMode();
     }
 
+    void SetSplatBrush()
+    {
+        DisableErase();
+        paintCore.SetBrushShape(PaintCore.BrushShape.Splat);
+        MoveShapeSelectorTo(splatBrushButton);
+        DisableLineMode();
+    }
+
+    void SetStarBrush()
+    {
+        DisableErase();
+        paintCore.SetBrushShape(PaintCore.BrushShape.Star);
+        MoveShapeSelectorTo(starBrushButton);
+        DisableLineMode();
+    }
+
     void ForceBlobBrush()
     {
         paintCore.SetBrushShape(PaintCore.BrushShape.Blob);
         MoveShapeSelectorTo(blobBrushButton);
 
     }
+    public void OpenShapesPanel()
+    {
+        shapesOverlay.SetActive(true);
+        shapesPanel.SetActive(true);
+    }
 
+    public void CloseShapesPanel()
+    {
+        shapesPanel.SetActive(false);
+        shapesOverlay.SetActive(false);
+    }
+
+    void SetSprayAngle()
+    {
+        paintCore.SetScrollMode(PaintCore.ScrollMode.SpraySpread);
+    }
+
+    void SetSpraySize()
+    {
+        paintCore.SetScrollMode(PaintCore.ScrollMode.BrushSize);
+    }
     // ---------------- ERASE ----------------
 
     void ToggleErase()
@@ -232,6 +343,13 @@ public class InputControllerForPaint : MonoBehaviour
         Cursor.lockState = open ? CursorLockMode.None : CursorLockMode.Locked;
 
         if (mLook) mLook.enabled = !open;
+
+        //  HARD KILL TOOLTIPS WHEN UI CLOSES
+        if (!open && TooltipController.Instance != null)
+        {
+            TooltipController.Instance.ForceHide();
+        }
+
         ApplyDrawMode();
     }
 
@@ -243,7 +361,7 @@ public class InputControllerForPaint : MonoBehaviour
 
         if (lineModeHighlight)
             lineModeHighlight.SetActive(enableLine);
-
+        SetBrushModel(paintBrushSuperFine);
         if (!enableLine && lineDraw)
             lineDraw.CancelLine();
         DisableErase();
@@ -280,7 +398,10 @@ public class InputControllerForPaint : MonoBehaviour
         DisableLineMode();
 
         paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
-        paintCore.SetSprayStyle(PaintCore.SprayStyle.Normal); //  if you have this
+        paintCore.SetSprayStyle(PaintCore.SprayStyle.Normal);
+
+        //  THIS is the only thing that matters
+        paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.SprayCan);
 
         ForceBlobBrush();
         MoveToolSelectorTo(sprayButton);
@@ -296,6 +417,15 @@ public class InputControllerForPaint : MonoBehaviour
 
         ForceBlobBrush();
         MoveToolSelectorTo(spackleSprayButton);
+    }
+
+    void SetBrushModel(GameObject activeBrush)
+    {
+        paintBrushFine.SetActive(false);
+        paintBrushSuperFine.SetActive(false);
+
+        if (activeBrush != null)
+            activeBrush.SetActive(true);
     }
 
 }

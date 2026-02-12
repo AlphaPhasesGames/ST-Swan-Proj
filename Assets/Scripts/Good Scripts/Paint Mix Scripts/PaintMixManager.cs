@@ -243,7 +243,12 @@ public class PaintMixManager : MonoBehaviour
 
         // Do nothing if no slot is armed
         if (activeSlot == MixSlot.None)
+        {
+            if (palette != null)
+                palette.SetActiveColor(color);
+
             return;
+        }
 
         if (color == null)
             return;
@@ -417,5 +422,10 @@ public class PaintMixManager : MonoBehaviour
 
         // Assign to brush ONLY (no saving)
         palette.SetActiveColor(mixedColor);
+    }
+
+    public void AssignRawColor(Color c, string name)
+    {
+        AssignColor(new PaintColour(c, name));
     }
 }

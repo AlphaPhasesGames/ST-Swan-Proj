@@ -9,7 +9,7 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     protected RenderTexture paintRT;
     protected Material paintMat;
-
+    public abstract RenderTexture GetPaintRT();
     [Header("Stamp Mode")]
     public bool hardStamp = false;
 
@@ -45,9 +45,15 @@ public abstract class PaintSurfaceBase : MonoBehaviour
 
     protected virtual void Awake()
     {
+        if (!stampMatPaint)
+            stampMatPaint = Resources.Load<Material>("Paint/Stamp_Paint");
+
+        if (!stampMatErase)
+            stampMatErase = Resources.Load<Material>("Paint/Stamp_Erase");
+
         if (!stampMatPaint || !stampMatErase)
         {
-            Debug.LogError($"{name}: Stamp materials not assigned (Paint + Erase required).");
+            Debug.LogError($"{name}: Stamp materials missing (Paint + Erase)");
             enabled = false;
             return;
         }

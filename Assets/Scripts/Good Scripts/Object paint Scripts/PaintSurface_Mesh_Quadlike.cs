@@ -34,4 +34,8 @@ public class PaintSurface_Mesh_QuadLike : PaintSurfaceBase
     {
         PaintAtUV(hit.textureCoord2, brush, size, paintColor);
     }
+    public override RenderTexture GetPaintRT()
+    {
+        return paintRT;
+    }
 }

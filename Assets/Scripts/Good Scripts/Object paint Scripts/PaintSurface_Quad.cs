@@ -36,7 +36,7 @@ public class PaintSurface_Quad : PaintSurfaceBase
     }
 
     //  ADD THIS BACK
-    public RenderTexture GetPaintRT()
+    public override RenderTexture GetPaintRT()
     {
         return paintRT;
     }

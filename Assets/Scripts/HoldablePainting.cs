@@ -5,34 +5,60 @@ public class HoldablePainting : MonoBehaviour
     public bool isHeld;
 
     Rigidbody rb;
-    Transform originalParent;
+    Transform holdPoint;
+
+    [SerializeField] float holdDistance = 0.6f;
+    [SerializeField] float wallPadding = 0.05f;
+    [SerializeField] LayerMask collisionMask = ~0; // everything by default
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (rb == null)
+            Debug.LogError($"{name} has no Rigidbody!", this);
     }
 
-    public void PickUp(Transform holdPoint)
+    void Update()
     {
-        if (isHeld) return;
+        if (!isHeld || holdPoint == null) return;
+
+        Vector3 origin = holdPoint.position;
+        Vector3 dir = holdPoint.forward;
+
+        Vector3 targetPos = origin + dir * holdDistance;
+
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, holdDistance, collisionMask, QueryTriggerInteraction.Ignore))
+        {
+            targetPos = hit.point - dir * wallPadding;
+        }
+
+        transform.position = targetPos;
+        transform.rotation = holdPoint.rotation;
+    }
+
+    public void PickUp(Transform newHoldPoint)
+    {
+        if (newHoldPoint == null) return;
 
         isHeld = true;
-        originalParent = transform.parent;
+        holdPoint = newHoldPoint;
 
-        rb.isKinematic = true;
-
-        transform.SetParent(holdPoint);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.detectCollisions = false; // optional: prevents weird overlap pushes
+        }
     }
 
     public void Drop()
     {
-        if (!isHeld) return;
-
         isHeld = false;
+        holdPoint = null;
 
-        transform.SetParent(originalParent);
-        //rb.isKinematic = false;
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.detectCollisions = true;
+        }
     }
 }

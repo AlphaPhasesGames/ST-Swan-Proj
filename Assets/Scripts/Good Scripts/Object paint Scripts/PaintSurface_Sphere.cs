@@ -10,4 +10,9 @@ public class PaintSurface_Sphere : PaintSurfaceBase
         float facing = Vector3.Dot(hit.normal, -rayDir);
         return facing > facingThreshold;
     }
+
+    public override RenderTexture GetPaintRT()
+    {
+        return paintRT;
+    }
 }

@@ -7,4 +7,9 @@ public class PaintSurface_Mesh : PaintSurfaceBase
         // Default mesh behaviour
         return Vector3.Dot(hit.normal, -rayDir) > 0f;
     }
+
+    public override RenderTexture GetPaintRT()
+    {
+        return paintRT;
+    }
 }

@@ -5,7 +5,7 @@ public class PaintBallObject : MonoBehaviour
     public Texture2D brushTex;
     public float worldBrushSize = 0.25f;
     public int textureSize = 512;
-
+    public float maxDistance;
     [Header("Paint")]
     public Color paintColor = Color.black;
 
@@ -17,7 +17,7 @@ public class PaintBallObject : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
         ContactPoint contact = col.contacts[0];
-
+       
         PaintSurfaceBase surface =
             col.collider.GetComponent<PaintSurfaceBase>()
             ?? col.collider.GetComponentInParent<PaintSurfaceBase>();

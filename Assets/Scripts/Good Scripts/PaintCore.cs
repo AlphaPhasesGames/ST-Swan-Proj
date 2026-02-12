@@ -2,64 +2,87 @@ using UnityEngine;
 
 public class PaintCore : MonoBehaviour
 {
+    // =======================
+    // SPRAY
+    // =======================
     [Header("Spray Cone")]
     public int sprayRayCount = 12;
     public float sprayAngle = 3.5f;
-    public float sprayDistance = 5f;
 
+    [Header("Paint Distances")]
+    public float brushDistance = 15f;        // Precision / SingleRay / Calligraphy
+    public float sprayDistance = 5f;         // Spray can
+    public float paintballDistance = 25f;    // Paintball gun (used by PaintballGun script, not PaintCore)
+
+
+    // =======================
+    // TEXTURE / SIZE
+    // =======================
     [Header("RT (Legacy Access)")]
     public int textureSize = 512;
 
     [Header("World Brush Size")]
     public float brushWorldSize = 0.25f;
 
-    [Header("Input")]
-    public Camera cam;
-
-    [Header("Erase Mode")]
-    public bool isErasing = false;
-
     [Header("Brush Size Mode")]
     public bool useFixedWorldBrushSize = false;
     public float fixedWorldBrushSize = 0.25f;
 
+    // =======================
+    // INPUT
+    // =======================
+    [Header("Input")]
+    public Camera cam;
+
+    // =======================
+    // ERASE
+    // =======================
+    [Header("Erase Mode")]
+    public bool isErasing = false;
+
+    // =======================
+    // BRUSH SHAPES
+    // =======================
     [Header("Brush Shapes")]
     public Texture2D circleBrush;
     public Texture2D squareBrush;
+    public Texture2D starBrush;
+    public Texture2D splatBrush;
 
+    // =======================
+    // PALETTE
+    // =======================
     [Header("Palette")]
     public PaintPalette palette;
 
+    // =======================
+    // FIRE RATE
+    // =======================
     [Header("Fire Rate")]
-    [Tooltip("Paint strokes per second")]
-    public float fireRate = 30f; // strokes per second
+    public float fireRate = 30f;          // Normal spray
+    public float spackleFireRate = 8f;    // Spackle spray (slower, chunkier)
     float fireAccumulator = 0f;
-    // -------- EVENTS --------
+
+    // =======================
+    // EVENTS (RESTORED)
+    // =======================
     public event System.Action<PaintMode> OnPaintModeChanged;
     public event System.Action<FireMode> OnFireModeChanged;
     public event System.Action<float> OnBrushSizeChanged;
     public event System.Action<bool> OnEraseModeChanged;
-    // -------- MODES --------
+    public event System.Action<float> OnSprayAngleChanged;
+    public event System.Action<BrushBehaviour> OnBrushBehaviourChanged;
+
+    // =======================
+    // MODES
+    // =======================
     public enum PaintMode { Spray, Precision, SingleRay }
     public PaintMode paintMode = PaintMode.Spray;
 
     public enum FireMode { Hold, Once }
     public FireMode fireMode = FireMode.Hold;
 
-    // -------- LEGACY COMPAT --------
     public enum PaintSystem { SprayCone, Precision, SingleRay }
-    public enum SprayStyle
-    {
-        Normal,
-        Spackle
-    }
-
-    public SprayStyle currentSprayStyle = SprayStyle.Normal;
-
-    public void SetSprayStyle(SprayStyle style)
-    {
-        currentSprayStyle = style;
-    }
 
     public PaintSystem paintSystem =>
         paintMode switch
@@ -69,30 +92,294 @@ public class PaintCore : MonoBehaviour
             _ => PaintSystem.SprayCone
         };
 
-    // -------- PAINT --------
-    public Color CurrentPaintColor { get; private set; } = Color.black;
+    public enum SprayStyle { Normal, Spackle }
+    public SprayStyle currentSprayStyle = SprayStyle.Normal;
+
+    public enum ScrollMode { BrushSize, SpraySpread }
+    public ScrollMode scrollMode;
+
+    // =======================
+    // BRUSH BEHAVIOUR
+    // =======================
+    public enum BrushBehaviour { Normal, Calligraphy }
+
+    [Header("Brush Behaviour")]
+    public BrushBehaviour brushBehaviour = BrushBehaviour.Normal;
+
+    // =======================
+    // CALLIGRAPHY (ISOLATED)
+    // =======================
+    [Header("Calligraphy")]
+    public float minCalligraphyScale = 0.05f;
+    public float maxCalligraphyScale = 1.5f;
+    public float slowSpeed = 0.05f;
+    public float fastSpeed = 0.6f;
+    public float calligraphySmoothing = 12f;
+
+    Vector3 lastCalligraphyHit;
+    bool hasLastCalligraphyHit;
+    float currentCalligraphyScale = 1f;
+
+    // =======================
+    // INTERNAL STATE
+    // =======================
+    Ray lastPaintRay;
+    bool hasLastRay;
 
     Texture2D brushTex;
+    public Color CurrentPaintColor { get; private set; } = Color.black;
 
-    public enum BrushShape { Blob, Square }
+    public enum BrushShape { Blob, Square, Star, Splat }
     public BrushShape brushShape = BrushShape.Blob;
 
+    // =======================
+    // UNITY
+    // =======================
     void Start()
     {
         if (!cam) cam = Camera.main;
-
         UpdateBrushTexture();
 
         if (palette != null)
             palette.OnActiveColorChanged += SetPaintColor;
     }
 
-    // -------- PUBLIC API --------
+    void Update()
+    {
+        HandleScroll();
+        HandlePaint();
+    }
+
+    // =======================
+    // INPUT
+    // =======================
+    void HandleScroll()
+    {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scroll) < 0.001f) return;
+
+        if (scrollMode == ScrollMode.BrushSize)
+        {
+            brushWorldSize = Mathf.Clamp(brushWorldSize + scroll * 0.05f, 0.0025f, 2f);
+            OnBrushSizeChanged?.Invoke(brushWorldSize);
+        }
+        else if (scrollMode == ScrollMode.SpraySpread)
+        {
+            sprayAngle = Mathf.Clamp(sprayAngle + scroll * 2f, 0.5f, 25f);
+            OnSprayAngleChanged?.Invoke(sprayAngle);
+        }
+    }
+
+    void HandlePaint()
+    {
+        if (fireMode == FireMode.Once)
+        {
+            if (Input.GetMouseButtonDown(0))
+                FireByPaintMode(GetCenterRay());
+            return;
+        }
+
+        if (!Input.GetMouseButton(0))
+        {
+            hasLastRay = false;
+            fireAccumulator = 0f;
+            ResetCalligraphy();
+            return;
+        }
+
+        Ray ray = GetCenterRay();
+
+        if (paintMode == PaintMode.Spray)
+        {
+                float rate =
+                currentSprayStyle == SprayStyle.Spackle
+                ? spackleFireRate
+                : fireRate;
+
+            fireAccumulator += Time.deltaTime * rate;
+            int fires = Mathf.FloorToInt(fireAccumulator);
+            fireAccumulator -= fires;
+
+            for (int i = 0; i < fires; i++)
+                FireByPaintMode(ray);
+
+            return;
+        }
+
+        if (brushBehaviour == BrushBehaviour.Calligraphy)
+            UpdateCalligraphy(ray);
+
+        if (!hasLastRay)
+        {
+            FireByPaintMode(ray);
+            lastPaintRay = ray;
+            hasLastRay = true;
+            return;
+        }
+
+        float dist = Vector3.Distance(lastPaintRay.origin, ray.origin);
+        float step = brushWorldSize * 0.5f;
+
+        // BASE CALLIGRAPHY DENSITY BOOST (your original logic)
+        if (brushBehaviour == BrushBehaviour.Calligraphy)
+        {
+            step *= 0.00f;
+        }
+
+        float minStep = 0.0025f;
+
+        if (brushBehaviour == BrushBehaviour.Calligraphy)
+        {
+            minStep *= 0.25f;
+        }
+
+        step = Mathf.Max(step, minStep);
+
+        if (brushBehaviour == BrushBehaviour.Calligraphy)
+        {
+            step *= Mathf.Lerp(0.25f, 1f, currentCalligraphyScale);
+        }
+
+        int steps = Mathf.CeilToInt(dist / step);
+
+        for (int i = 1; i <= steps; i++)
+        {
+            float t = i / (float)steps;
+            Ray lerpRay = new Ray(
+                Vector3.Lerp(lastPaintRay.origin, ray.origin, t),
+                Vector3.Slerp(lastPaintRay.direction, ray.direction, t)
+            );
+            FireByPaintMode(lerpRay);
+        }
+
+        lastPaintRay = ray;
+    }
+
+    // =======================
+    // CALLIGRAPHY
+    // =======================
+    void UpdateCalligraphy(Ray ray)
+    {
+        // Calligraphy uses BRUSH distance (as requested)
+        if (!Physics.Raycast(ray, out RaycastHit hit, brushDistance))
+            return;
+
+        if (!hasLastCalligraphyHit)
+        {
+            lastCalligraphyHit = hit.point;
+            hasLastCalligraphyHit = true;
+            return;
+        }
+
+        float dist = Vector3.Distance(lastCalligraphyHit, hit.point);
+        float speed = dist / Mathf.Max(Time.deltaTime, 0.0001f);
+
+        float normalizedSpeed = Mathf.Clamp01((speed - slowSpeed) / (fastSpeed - slowSpeed));
+        float t = 1f - normalizedSpeed;
+        t = Mathf.Pow(t, 50f);
+
+        float target = Mathf.Lerp(minCalligraphyScale, maxCalligraphyScale, t);
+
+        float growSpeed = 0.8f;
+        float shrinkSpeed = 0.8f;
+        float speedcal = target > currentCalligraphyScale ? growSpeed : shrinkSpeed;
+
+        currentCalligraphyScale = Mathf.MoveTowards(
+            currentCalligraphyScale,
+            target,
+            speedcal * Time.deltaTime
+        );
+
+        lastCalligraphyHit = hit.point;
+    }
+
+    void ResetCalligraphy()
+    {
+        hasLastCalligraphyHit = false;
+        currentCalligraphyScale = 1f;
+    }
+
+    // =======================
+    // SIZE
+    // =======================
+    float GetFinalBrushSize(PaintSurfaceBase surface)
+    {
+        float baseWorld = GetBrushSizeForSurface(surface);
+
+        if (brushBehaviour == BrushBehaviour.Calligraphy &&
+            paintMode != PaintMode.Spray)
+        {
+            return baseWorld * currentCalligraphyScale * surface.textureSize;
+        }
+
+        return baseWorld * surface.textureSize;
+    }
+
+    float GetBrushSizeForSurface(PaintSurfaceBase surface)
+    {
+        if (surface.overrideBrushSize)
+            return surface.GetSurfaceBrushSize();
+
+        return useFixedWorldBrushSize ? fixedWorldBrushSize : brushWorldSize;
+    }
+
+    public float BrushWorldRadius
+    {
+        get
+        {
+            if (paintSystem == PaintSystem.SprayCone)
+                return Mathf.Tan(sprayAngle * Mathf.Deg2Rad) * sprayDistance; // spray can radius uses sprayDistance
+
+            return useFixedWorldBrushSize ? fixedWorldBrushSize : brushWorldSize;
+        }
+    }
+
+    // =======================
+    // FIRE
+    // =======================
+    void FireSingleRay(Ray ray)
+    {
+        // Precision / SingleRay / Calligraphy all use brushDistance
+        if (!Physics.Raycast(ray, out RaycastHit hit, brushDistance)) return;
+
+        PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
+        if (!surface || !surface.CanPaintHit(hit, ray.direction)) return;
+
+        surface.PaintAtWorld(hit, brushTex, GetFinalBrushSize(surface), GetFinalPaintColor(), isErasing);
+    }
+
+    void FireSpray(Ray ray)
+    {
+        // Spray uses sprayDistance
+        for (int i = 0; i < sprayRayCount; i++)
+        {
+            Vector3 dir = GetRandomConeDirection(ray.direction, sprayAngle);
+            if (!Physics.Raycast(ray.origin, dir, out RaycastHit hit, sprayDistance)) continue;
+
+            PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
+            if (!surface || !surface.CanPaintHit(hit, dir)) continue;
+
+            float size = GetBrushSizeForSurface(surface) * surface.textureSize * 0.6f;
+            surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor(), isErasing);
+        }
+    }
+
+    void FireByPaintMode(Ray ray)
+    {
+        if (paintMode == PaintMode.Spray)
+            FireSpray(ray);
+        else
+            FireSingleRay(ray);
+    }
+
+    // =======================
+    // PUBLIC API (RESTORED)
+    // =======================
     public void SetPaintColor(Color c) => CurrentPaintColor = c;
+    public void SetPaintColour(Color c) => SetPaintColor(c);
 
     public void SetPaintMode(PaintMode mode)
     {
-        if (paintMode == mode) return;
         paintMode = mode;
         OnPaintModeChanged?.Invoke(mode);
     }
@@ -105,180 +392,61 @@ public class PaintCore : MonoBehaviour
 
     public void SetBrushShape(BrushShape shape)
     {
-        if (brushShape == shape) return;
         brushShape = shape;
         UpdateBrushTexture();
     }
 
+    public void SetBrushBehaviour(BrushBehaviour behaviour)
+    {
+        brushBehaviour = behaviour;
+        ResetCalligraphy();
+        OnBrushBehaviourChanged?.Invoke(behaviour);
+    }
+
+    public void SetScrollMode(ScrollMode mode) => scrollMode = mode;
+
+    public void SetEraseMode(bool erase)
+    {
+        isErasing = erase;
+        OnEraseModeChanged?.Invoke(isErasing);
+    }
+
+    public void SetSprayStyle(SprayStyle style) => currentSprayStyle = style;
+
+    public Texture2D GetBrushTexture() => brushTex;
+
     public PaintSurfaceBase GetSurfaceUnderCrosshairPublic()
     {
-        Ray ray = cam.ScreenPointToRay(
-            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f)
-        );
-
-        if (Physics.Raycast(ray, out RaycastHit hit, sprayDistance))
+        float dist = GetRaycastDistance();
+        if (Physics.Raycast(GetCenterRay(), out RaycastHit hit, dist))
             return hit.collider.GetComponentInParent<PaintSurfaceBase>();
-
         return null;
     }
 
-    // -------- UPDATE --------
-    void Update()
+    // =======================
+    // DISTANCE HELPERS
+    // =======================
+    float GetRaycastDistance()
     {
-        HandleBrushSizing();
-        HandlePaint();
+        // Spray mode uses sprayDistance
+        if (paintMode == PaintMode.Spray)
+            return sprayDistance;
+
+        // Precision / SingleRay / Calligraphy use brushDistance
+        return brushDistance;
     }
 
-    // -------- PAINTING --------
-    void HandlePaint()
-    {
-        bool inputHeld =
-            fireMode == FireMode.Once
-                ? Input.GetMouseButtonDown(0)
-                : Input.GetMouseButton(0);
+    // Optional: makes it easy for PaintballGun to query this
+    public float GetPaintballDistance() => paintballDistance;
 
-        if (!inputHeld)
-        {
-            fireAccumulator = 0f;
-            return;
-        }
+    // =======================
+    // UTILS
+    // =======================
+    Ray GetCenterRay() =>
+        cam.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
 
-        // Accumulate time
-        fireAccumulator += Time.deltaTime * fireRate;
-
-        int firesThisFrame = Mathf.FloorToInt(fireAccumulator);
-        if (firesThisFrame <= 0)
-            return;
-
-        fireAccumulator -= firesThisFrame;
-
-        Ray ray = cam.ScreenPointToRay(
-            new Vector3(Screen.width * 0.5f, Screen.height * 0.5f)
-        );
-
-        for (int i = 0; i < firesThisFrame; i++)
-        {
-            switch (paintMode)
-            {
-                case PaintMode.Precision:
-                    FirePrecision(ray);
-                    break;
-
-                case PaintMode.SingleRay:
-                    FireSingleRay(ray);
-                    break;
-
-                case PaintMode.Spray:
-                default:
-                    if (currentSprayStyle == SprayStyle.Normal)
-                        FireSprayCone(ray);
-                    else
-                        FireSprayConeSingleFire(ray); // spackle = chunky / sparse
-                    break;
-
-
-            }
-        }
-
-
-    }
-
-
-    Color GetFinalPaintColor()
-    {
-        return isErasing ? new Color(0, 0, 0, 0) : new Color(CurrentPaintColor.r, CurrentPaintColor.g, CurrentPaintColor.b, 1f);
-    }
-
-    void FireSingleRay(Ray ray)
-    {
-        if (!Physics.Raycast(ray, out RaycastHit hit, sprayDistance)) return;
-
-        PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
-        if (!surface || !surface.CanPaintHit(hit, ray.direction)) return;
-
-        float size = GetBrushSizeForSurface(surface) * surface.textureSize;
-        surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor(), isErasing);
-    }
-
-    void FirePrecision(Ray ray)
-    {
-        Vector3 o = ray.origin;
-        Vector3 f = ray.direction;
-        float off = 0.01f;
-
-        FirePrecisionRay(o, f);
-        FirePrecisionRay(o, f + cam.transform.right * off);
-        FirePrecisionRay(o, f - cam.transform.right * off);
-        FirePrecisionRay(o, f + cam.transform.up * off);
-        FirePrecisionRay(o, f - cam.transform.up * off);
-    }
-
-    void FirePrecisionRay(Vector3 o, Vector3 d)
-    {
-        if (!Physics.Raycast(o, d, out RaycastHit hit, sprayDistance)) return;
-
-        PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
-        if (!surface || !surface.CanPaintHit(hit, d)) return;
-
-        float size = Mathf.Clamp(
-            GetBrushSizeForSurface(surface) * surface.textureSize,
-            1f,
-            surface.textureSize * 0.25f
-        );
-
-        surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor(), isErasing);
-    }
-
-    void FireSprayConeSingleFire(Ray ray)
-    {
-        for (int i = 0; i < sprayRayCount; i++)
-        {
-            Vector3 dir = GetRandomConeDirection(ray.direction, sprayAngle);
-            if (!Physics.Raycast(ray.origin, dir, out RaycastHit hit, sprayDistance)) continue;
-
-            PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
-            if (!surface || !surface.CanPaintHit(hit, dir)) continue;
-
-            float size = GetBrushSizeForSurface(surface) * surface.textureSize * 0.6f;
-            surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor(), isErasing);
-            break;
-        }
-    }
-
-    void FireSprayCone(Ray ray)
-    {
-        for (int i = 0; i < sprayRayCount; i++)
-        {
-            Vector3 dir = GetRandomConeDirection(ray.direction, sprayAngle);
-
-            if (!Physics.Raycast(ray.origin, dir, out RaycastHit hit, sprayDistance))
-                continue;
-
-            PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
-            if (!surface || !surface.CanPaintHit(hit, dir))
-                continue;
-
-            float size = GetBrushSizeForSurface(surface) * surface.textureSize * 0.6f;
-            surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor(), isErasing);
-        }
-    }
-
-
-    // -------- UTIL --------
-    void HandleBrushSizing()
-    {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (Mathf.Abs(scroll) < 0.001f) return;
-
-        brushWorldSize = Mathf.Clamp(brushWorldSize + scroll * 0.05f, 0.0025f, 2f);
-        OnBrushSizeChanged?.Invoke(brushWorldSize);
-    }
-
-    float GetBrushSizeForSurface(PaintSurfaceBase surface)
-    {
-        if (surface.overrideBrushSize) return surface.GetSurfaceBrushSize();
-        return useFixedWorldBrushSize ? fixedWorldBrushSize : brushWorldSize;
-    }
+    Color GetFinalPaintColor() =>
+        isErasing ? Color.clear : new Color(CurrentPaintColor.r, CurrentPaintColor.g, CurrentPaintColor.b, 1f);
 
     Vector3 GetRandomConeDirection(Vector3 forward, float angle)
     {
@@ -292,48 +460,12 @@ public class PaintCore : MonoBehaviour
 
     void UpdateBrushTexture()
     {
-        brushTex = brushShape == BrushShape.Blob
-            ? CreateBlobTexture(256)
-            : squareBrush;
+        brushTex = brushShape switch
+        {
+            BrushShape.Square => squareBrush,
+            BrushShape.Star => starBrush,
+            BrushShape.Splat => splatBrush,
+            _ => circleBrush
+        };
     }
-
-    Texture2D CreateBlobTexture(int size)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false, true);
-        tex.wrapMode = TextureWrapMode.Clamp;
-        tex.filterMode = FilterMode.Point;
-
-        Vector2 c = new Vector2(size * 0.5f, size * 0.5f);
-        float r = size * 0.5f;
-
-        for (int y = 0; y < size; y++)
-            for (int x = 0; x < size; x++)
-            {
-                float d = Vector2.Distance(new Vector2(x, y), c) / r;
-                float a = d < 0.85f ? 1f : Mathf.SmoothStep(1f, 0f, Mathf.InverseLerp(0.85f, 1f, d));
-                tex.SetPixel(x, y, new Color(1, 1, 1, a));
-            }
-
-        tex.Apply();
-        return tex;
-    }
-
-    public Texture2D GetBrushTexture()
-    {
-        if (!brushTex)
-            Debug.LogWarning("[PaintCore] Brush texture requested but not initialised.");
-
-        return brushTex;
-    }
-
-
-    public void SetEraseMode(bool erase)
-    {
-        if (isErasing == erase) return;
-
-        isErasing = erase;
-        Debug.Log("[PaintCore] Erase mode: " + isErasing);
-        OnEraseModeChanged?.Invoke(isErasing);
-    }
-
 }
