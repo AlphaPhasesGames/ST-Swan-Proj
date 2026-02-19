@@ -203,9 +203,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1561540145}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1561540148}
   m_SourcePrefab: {fileID: 100100000, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
 --- !u!224 &51119833 stripped
 RectTransform:
@@ -708,6 +705,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &388230403
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -774,6 +773,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 0}
+  stampMatDilute: {fileID: 0}
 --- !u!114 &428082521 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5923705730178544826, guid: 1682bc56b43331e47803af05fe0ffc1f, type: 3}
@@ -1432,9 +1433,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de349c57036bc8a48ad1e7442522d203, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1906838943}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: de349c57036bc8a48ad1e7442522d203, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1906838942}
   m_SourcePrefab: {fileID: 100100000, guid: de349c57036bc8a48ad1e7442522d203, type: 3}
 --- !u!1 &788009010
 GameObject:
@@ -1693,9 +1691,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1700251100}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1700251103}
   m_SourcePrefab: {fileID: 100100000, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
 --- !u!114 &1191450425 stripped
 MonoBehaviour:
@@ -1977,9 +1972,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1337693894}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1337693893}
   m_SourcePrefab: {fileID: 100100000, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
 --- !u!1 &1337693891 stripped
 GameObject:
@@ -1991,30 +1983,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
   m_PrefabInstance: {fileID: 1335585213}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1337693893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1337693891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 974a98c183216bb489b0d060a61ef5ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PaintSurface_Mesh_QuadLike
-  textureSize: 512
-  hardStamp: 0
-  legacyBrushSize: 64
-  legacyMinSize: 1
-  legacyMaxSize: 256
-  allowLegacyPaint: 1
-  allowSprayPaint: 1
-  triplanarTiling: 1
-  overrideBrushSize: 0
-  surfaceBrushWorldSize: 0.25
-  stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
-  stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
 --- !u!64 &1337693894
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2216,30 +2184,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5236826827143632767, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
---- !u!114 &1561540148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561540142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07e54f0c30d162f459b2ec0d3e5bef63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PaintSurface_Quad
-  textureSize: 512
-  hardStamp: 0
-  legacyBrushSize: 64
-  legacyMinSize: 1
-  legacyMaxSize: 256
-  allowLegacyPaint: 1
-  allowSprayPaint: 1
-  triplanarTiling: 1
-  overrideBrushSize: 0
-  surfaceBrushWorldSize: 0.25
-  stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
-  stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
 --- !u!1001 &1561563847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2345,30 +2289,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5236826827143632767, guid: f639bd6dc48e100439d7cd552922bb9e, type: 3}
---- !u!114 &1700251103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1700251097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3a53c70e875ada45b2ef0a9dd4b4165, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PaintSurface_Mesh
-  textureSize: 512
-  hardStamp: 0
-  legacyBrushSize: 64
-  legacyMinSize: 1
-  legacyMaxSize: 256
-  allowLegacyPaint: 1
-  allowSprayPaint: 1
-  triplanarTiling: 1
-  overrideBrushSize: 0
-  surfaceBrushWorldSize: 0.25
-  stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
-  stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
 --- !u!1001 &1749447676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2591,30 +2511,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: de349c57036bc8a48ad1e7442522d203, type: 3}
   m_PrefabInstance: {fileID: 782614424}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1906838942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906838940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07e54f0c30d162f459b2ec0d3e5bef63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PaintSurface_Quad
-  textureSize: 1024
-  hardStamp: 0
-  legacyBrushSize: 64
-  legacyMinSize: 1
-  legacyMaxSize: 256
-  allowLegacyPaint: 1
-  allowSprayPaint: 1
-  triplanarTiling: 1
-  overrideBrushSize: 0
-  surfaceBrushWorldSize: 0.25
-  stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
-  stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
 --- !u!64 &1906838943
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2953,6 +2849,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paintCore: {fileID: 144600084}
   mLook: {fileID: 198853390}
+  paintballGunLogic: {fileID: 0}
   lineDraw: {fileID: 7672858247045702762}
   colourWheelUI: {fileID: 1221642570}
   brushButton: {fileID: 568448546}
@@ -2966,9 +2863,14 @@ MonoBehaviour:
   splatBrushButton: {fileID: 1221642563}
   eraseButton: {fileID: 568448549}
   lineModeButton: {fileID: 1221642568}
+  calligraphyModeButton: {fileID: 0}
   setSpraySizeButton: {fileID: 568448547}
   setSprayAngleButton: {fileID: 568448548}
   shapesClosePanal: {fileID: 1221642567}
+  paintBallGunButon: {fileID: 0}
+  smudgeButton: {fileID: 0}
+  waterColourButton: {fileID: 0}
+  diluteButton: {fileID: 0}
   lineModeHighlight: {fileID: 815260425}
   toggleWheelKey: 9
   precisionKey: 49
@@ -2978,12 +2880,20 @@ MonoBehaviour:
   squareBrushKey: 53
   eraseKey: 114
   fireModeKey: 324
+  calligraphyKey: 54
+  paintBallGunKey: 55
+  smudgeKey: 56
+  waterColourKey: 57
   shapesPanel: {fileID: 1561243864}
   shapesOverlay: {fileID: 1561243864}
   toolSelector: {fileID: 508991277}
   shapeSelector: {fileID: 29481009}
   eraseHighlight: {fileID: 1869637001}
   selectorLerpSpeed: 15
+  paintballGun: {fileID: 0}
+  paintBrushFine: {fileID: 0}
+  sprayCan: {fileID: 0}
+  paintBrushSuperFine: {fileID: 0}
   currentDrawMode: 0
 --- !u!4 &2990379694010576793
 Transform:
@@ -3041,7 +2951,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: fc01c6e4de930b44bb3084fc6ac35613, type: 3}
+  - {fileID: -876546973899608171, guid: f63d574838ccfb44f84acc05fed0af48, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

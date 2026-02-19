@@ -11,23 +11,28 @@ public class InputControllerForPaint : MonoBehaviour
     public GameObject colourWheelUI;
 
     [Header("UI Buttons")]
-    public Button brushButton;        // Precision
-    public Button sprayButton;          // Normal spray
-    public Button spackleSprayButton;   // Spackle spray
-    public Button pencilButton;       // Single Ray
-    public Button blobBrushButton;    // Blob Shape
-    public Button shapesBrushButton;  // Square Shape
-    public Button squareBrushButton;  // Square Shape
-    public Button starBrushButton;  // Square Shape
-    public Button splatBrushButton;  // Square Shape
-    public Button eraseButton;        // Erase toggle
+    public Button brushButton;
+    public Button sprayButton;
+    public Button spackleSprayButton;
+    public Button pencilButton;
+    public Button blobBrushButton;
+    public Button shapesBrushButton;
+    public Button squareBrushButton;
+    public Button starBrushButton;
+    public Button splatBrushButton;
+    public Button eraseButton;
     public Button lineModeButton;
     public Button calligraphyModeButton;
     public Button setSpraySizeButton;
     public Button setSprayAngleButton;
     public Button shapesClosePanal;
     public Button paintBallGunButon;
+    public Button smudgeButton;
+    public Button waterColourButton;
+    public Button diluteButton;
+
     public GameObject lineModeHighlight;
+
     [Header("Keyboard")]
     public KeyCode toggleWheelKey = KeyCode.Tab;
     public KeyCode precisionKey = KeyCode.Alpha1;
@@ -39,6 +44,9 @@ public class InputControllerForPaint : MonoBehaviour
     public KeyCode fireModeKey = KeyCode.Mouse1;
     public KeyCode calligraphyKey = KeyCode.Alpha6;
     public KeyCode paintBallGunKey = KeyCode.Alpha7;
+    public KeyCode smudgeKey = KeyCode.Alpha8;
+    public KeyCode waterColourKey = KeyCode.Alpha9;
+
     bool wheelOpen;
 
     [Header("Panels")]
@@ -59,16 +67,22 @@ public class InputControllerForPaint : MonoBehaviour
     public GameObject paintBrushFine;
     public GameObject sprayCan;
     public GameObject paintBrushSuperFine;
-    [Header("Draw Mode")]
+
     public DrawMode currentDrawMode = DrawMode.Paint;
 
-    // ---------------- SETUP ----------------
+    public enum DrawMode { Paint, Line }
 
-    public enum DrawMode
-    {
-        Paint,
-        Line
-    }
+    [SerializeField] private ParticleSystem hoseCore;
+    [SerializeField] private ParticleSystem hoseSpread;
+
+    [Header("Hose Materials")]
+    [SerializeField] private Material hoseTrailMaterial;
+    [SerializeField] private Material hoseBlobMaterial;
+
+    [Header("Hose Blobs")]
+    [SerializeField] private PaintBlob hoseBlobPrefab;
+    public Transform hoseMuzzle;
+    [SerializeField] private float hoseStartSpeed = 50f;
 
     void Awake()
     {
@@ -83,18 +97,25 @@ public class InputControllerForPaint : MonoBehaviour
         starBrushButton?.onClick.AddListener(SetStarBrush);
         splatBrushButton?.onClick.AddListener(SetSplatBrush);
         shapesClosePanal?.onClick.AddListener(CloseShapesPanel);
+
         eraseButton?.onClick.AddListener(ToggleErase);
         lineModeButton?.onClick.AddListener(ToggleLineMode);
         calligraphyModeButton?.onClick.AddListener(SetCalligraphy);
+
         setSprayAngleButton.onClick.AddListener(SetSprayAngle);
         setSpraySizeButton.onClick.AddListener(SetSpraySize);
+
         paintBallGunButon.onClick.AddListener(EnablePaintballGun);
+        smudgeButton.onClick.AddListener(SetSmudge);
+        waterColourButton.onClick.AddListener(SetWatercolour);
+        diluteButton.onClick.AddListener(DilutePaint);
     }
 
     void Start()
     {
         ApplyWheelState(false);
         ApplyDrawMode();
+
         if (toolSelector)
             toolSelectorTarget = toolSelector.anchoredPosition;
 
@@ -103,59 +124,59 @@ public class InputControllerForPaint : MonoBehaviour
 
         if (eraseHighlight)
             eraseHighlight.SetActive(false);
-    }
 
-    // ---------------- UPDATE ----------------
+        paintCore.palette.OnActiveColorChanged += OnPaintColourChanged;
+    }
 
     void Update()
     {
+        if (Input.GetButtonDown("ToggleWheel"))
+            ToggleColourWheel();
+
         if (!paintCore) return;
 
-        // Smooth selector movement
+        bool fireHeld = Input.GetButton("Fire 1");
+        bool fireDown = Input.GetButtonDown("Fire 1");
+
+        paintCore.SetFireInput(fireHeld, fireDown);
+
+        HandleHoseVFX(fireHeld);
+
         if (toolSelector)
-        {
             toolSelector.anchoredPosition = Vector2.Lerp(
                 toolSelector.anchoredPosition,
                 toolSelectorTarget,
-                Time.unscaledDeltaTime * selectorLerpSpeed
-            );
-        }
+                Time.unscaledDeltaTime * selectorLerpSpeed);
+
+
 
         if (shapeSelector)
-        {
             shapeSelector.anchoredPosition = Vector2.Lerp(
                 shapeSelector.anchoredPosition,
                 shapeSelectorTarget,
-                Time.unscaledDeltaTime * selectorLerpSpeed
-            );
-        }
+                Time.unscaledDeltaTime * selectorLerpSpeed);
 
         if (Input.GetMouseButtonDown(0))
         {
             if (currentDrawMode == DrawMode.Line && lineDraw)
-            {
                 lineDraw.TryPlacePoint();
-            }
         }
 
-
-        // Keyboard input
         if (Input.GetKeyDown(precisionKey)) SetPrecision();
-        if (Input.GetKeyDown(sprayKey)) SetSpray();
+        if (Input.GetKeyDown(sprayKey)) SetNormalSpray();
         if (Input.GetKeyDown(singleRayKey)) SetSingleRay();
         if (Input.GetKeyDown(blobBrushKey)) SetBlobBrush();
         if (Input.GetKeyDown(squareBrushKey)) SetSquareBrush();
         if (Input.GetKeyDown(eraseKey)) ToggleErase();
         if (Input.GetKeyDown(fireModeKey)) paintCore.ToggleFireMode();
-        if (Input.GetKeyDown(toggleWheelKey)) ToggleColourWheel();
+        //if (Input.GetKeyDown(toggleWheelKey)) ToggleColourWheel();
         if (Input.GetKeyDown(calligraphyKey)) SetCalligraphy();
         if (Input.GetKeyDown(paintBallGunKey)) EnablePaintballGun();
-        //if(Input.GetKeyDown(star))
-
-
+        if (Input.GetKeyDown(smudgeKey)) SetSmudge();
+        if (Input.GetKeyDown(waterColourKey)) SetWatercolour();
     }
 
-    // ---------------- TOOL MODES ----------------
+    // ---------------- TOOLS ----------------
 
     void SetPrecision()
     {
@@ -170,22 +191,66 @@ public class InputControllerForPaint : MonoBehaviour
         MoveToolSelectorTo(brushButton);
     }
 
-
-    void SetSpray()
+    void SetNormalSpray()
     {
         DisableErase();
         DisableLineMode();
 
-        SetBrushModel(null); // hides both brushes
+        SetBrushModel(null);
 
         paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Normal);
         paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
+        paintCore.SetSprayStyle(PaintCore.SprayStyle.Normal);
+
         paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.SprayCan);
 
         ForceBlobBrush();
         MoveToolSelectorTo(sprayButton);
     }
 
+    void SetSpackleSpray()
+    {
+        DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(null);
+
+        paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
+        paintCore.SetSprayStyle(PaintCore.SprayStyle.Spackle);
+
+        paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.SprayCan);
+
+        ForceBlobBrush();
+        MoveToolSelectorTo(spackleSprayButton);
+    }
+
+    void DilutePaint()
+    {
+        DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(paintBrushFine);
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Dilute);
+        paintCore.SetPaintMode(PaintCore.PaintMode.SingleRay);
+
+        ForceBlobBrush();
+        MoveToolSelectorTo(diluteButton);
+    }
+
+    void SetSmudge()
+    {
+        DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(paintBrushSuperFine);
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Smudge);
+        paintCore.SetPaintMode(PaintCore.PaintMode.SingleRay);
+
+        ForceBlobBrush();
+        MoveToolSelectorTo(smudgeButton);
+    }
 
     void SetSingleRay()
     {
@@ -194,24 +259,25 @@ public class InputControllerForPaint : MonoBehaviour
 
         paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Normal);
         paintCore.SetPaintMode(PaintCore.PaintMode.SingleRay);
+
         SetBrushModel(paintBrushSuperFine);
         ForceBlobBrush();
+
         MoveToolSelectorTo(pencilButton);
     }
+
     void EnablePaintballGun()
     {
         DisableErase();
         DisableLineMode();
 
-        SetBrushModel(null); //  THIS is the missing piece
+        SetBrushModel(null);
 
         paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
         paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.PaintballGun);
 
         MoveToolSelectorTo(paintBallGunButon);
     }
-
-
 
     void SetCalligraphy()
     {
@@ -227,93 +293,63 @@ public class InputControllerForPaint : MonoBehaviour
         MoveToolSelectorTo(calligraphyModeButton);
     }
 
-
-
-    // ---------------- BRUSH SHAPES ----------------
+    // ---------------- SHAPES ----------------
 
     void SetBlobBrush()
     {
         DisableErase();
+        DisableLineMode();
         paintCore.SetBrushShape(PaintCore.BrushShape.Blob);
         MoveShapeSelectorTo(blobBrushButton);
-        DisableLineMode();
     }
 
     void SetSquareBrush()
     {
         DisableErase();
+        DisableLineMode();
         paintCore.SetBrushShape(PaintCore.BrushShape.Square);
         MoveShapeSelectorTo(squareBrushButton);
-        DisableLineMode();
     }
 
     void SetSplatBrush()
     {
         DisableErase();
+        DisableLineMode();
         paintCore.SetBrushShape(PaintCore.BrushShape.Splat);
         MoveShapeSelectorTo(splatBrushButton);
-        DisableLineMode();
     }
 
     void SetStarBrush()
     {
         DisableErase();
+        DisableLineMode();
         paintCore.SetBrushShape(PaintCore.BrushShape.Star);
         MoveShapeSelectorTo(starBrushButton);
-        DisableLineMode();
     }
 
     void ForceBlobBrush()
     {
         paintCore.SetBrushShape(PaintCore.BrushShape.Blob);
         MoveShapeSelectorTo(blobBrushButton);
-
     }
-    public void OpenShapesPanel()
+
+    // ---------------- WATERCOLOUR ----------------
+
+    void SetWatercolour()
     {
-        shapesOverlay.SetActive(true);
-        shapesPanel.SetActive(true);
+        DisableErase();
+        DisableLineMode();
+
+        SetBrushModel(paintBrushFine);
+
+        paintCore.SetBrushBehaviour(PaintCore.BrushBehaviour.Watercolour);
+        paintCore.SetPaintMode(PaintCore.PaintMode.SingleRay);
+
+        ForceBlobBrush();
+        MoveToolSelectorTo(waterColourButton);
     }
 
-    public void CloseShapesPanel()
-    {
-        shapesPanel.SetActive(false);
-        shapesOverlay.SetActive(false);
-    }
-
-    void SetSprayAngle()
-    {
-        paintCore.SetScrollMode(PaintCore.ScrollMode.SpraySpread);
-    }
-
-    void SetSpraySize()
-    {
-        paintCore.SetScrollMode(PaintCore.ScrollMode.BrushSize);
-    }
-    // ---------------- ERASE ----------------
-
-    void ToggleErase()
-    {
-        if (!paintCore) return;
-
-        bool newState = !paintCore.isErasing;
-        paintCore.SetEraseMode(newState);
-
-        if (eraseHighlight)
-            eraseHighlight.SetActive(newState);
-    }
-
-    void DisableErase()
-    {
-        if (paintCore.isErasing)
-        {
-            paintCore.SetEraseMode(false);
-            if (eraseHighlight)
-                eraseHighlight.SetActive(false);
-        }
-    }
-
-    // ---------------- SELECTOR HELPERS ----------------
+    // ---------------- UI / STATE ----------------
 
     void MoveToolSelectorTo(Button button)
     {
@@ -327,12 +363,26 @@ public class InputControllerForPaint : MonoBehaviour
         shapeSelectorTarget = button.GetComponent<RectTransform>().anchoredPosition;
     }
 
-    // ---------------- COLOUR WHEEL ----------------
-
-    void ToggleColourWheel()
+    void ToggleErase()
     {
-        ApplyWheelState(!wheelOpen);
+        bool newState = !paintCore.isErasing;
+        paintCore.SetEraseMode(newState);
+
+        if (eraseHighlight)
+            eraseHighlight.SetActive(newState);
     }
+
+    void DisableErase()
+    {
+        if (!paintCore.isErasing) return;
+
+        paintCore.SetEraseMode(false);
+
+        if (eraseHighlight)
+            eraseHighlight.SetActive(false);
+    }
+
+    void ToggleColourWheel() => ApplyWheelState(!wheelOpen);
 
     void ApplyWheelState(bool open)
     {
@@ -344,11 +394,8 @@ public class InputControllerForPaint : MonoBehaviour
 
         if (mLook) mLook.enabled = !open;
 
-        //  HARD KILL TOOLTIPS WHEN UI CLOSES
         if (!open && TooltipController.Instance != null)
-        {
             TooltipController.Instance.ForceHide();
-        }
 
         ApplyDrawMode();
     }
@@ -361,62 +408,35 @@ public class InputControllerForPaint : MonoBehaviour
 
         if (lineModeHighlight)
             lineModeHighlight.SetActive(enableLine);
+
         SetBrushModel(paintBrushSuperFine);
+
         if (!enableLine && lineDraw)
             lineDraw.CancelLine();
+
         DisableErase();
-        
         ApplyDrawMode();
     }
 
     void DisableLineMode()
     {
-        if (currentDrawMode == DrawMode.Line)
-        {
-            currentDrawMode = DrawMode.Paint;
-            if (lineModeHighlight)
-                lineModeHighlight.SetActive(false);
+        if (currentDrawMode != DrawMode.Line) return;
 
-            if (lineDraw)
-                lineDraw.CancelLine();
-        }
+        currentDrawMode = DrawMode.Paint;
+
+        if (lineModeHighlight)
+            lineModeHighlight.SetActive(false);
+
+        if (lineDraw)
+            lineDraw.CancelLine();
     }
 
     void ApplyDrawMode()
     {
-        if (!paintCore) return;
-
-        // Paint only when in Paint mode AND wheel is closed
-        paintCore.enabled =
+        paintCore.SetInputEnabled(
             currentDrawMode == DrawMode.Paint &&
-            !wheelOpen;
-    }
-
-    void SetNormalSpray()
-    {
-        DisableErase();
-        DisableLineMode();
-
-        paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
-        paintCore.SetSprayStyle(PaintCore.SprayStyle.Normal);
-
-        //  THIS is the only thing that matters
-        paintballGunLogic.SetSprayVisual(PaintballGun.SprayVisual.SprayCan);
-
-        ForceBlobBrush();
-        MoveToolSelectorTo(sprayButton);
-    }
-
-    void SetSpackleSpray()
-    {
-        DisableErase();
-        DisableLineMode();
-
-        paintCore.SetPaintMode(PaintCore.PaintMode.Spray);
-        paintCore.SetSprayStyle(PaintCore.SprayStyle.Spackle); // 
-
-        ForceBlobBrush();
-        MoveToolSelectorTo(spackleSprayButton);
+            !wheelOpen
+        );
     }
 
     void SetBrushModel(GameObject activeBrush)
@@ -427,5 +447,108 @@ public class InputControllerForPaint : MonoBehaviour
         if (activeBrush != null)
             activeBrush.SetActive(true);
     }
+
+    public void OpenShapesPanel()
+    {
+        shapesOverlay.SetActive(true);
+        shapesPanel.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void CloseShapesPanel()
+    {
+        shapesPanel.SetActive(false);
+        shapesOverlay.SetActive(false);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void SetSprayAngle()
+    {
+        paintCore.SetScrollMode(PaintCore.ScrollMode.SpraySpread);
+    }
+
+    void SetSpraySize()
+    {
+        paintCore.SetScrollMode(PaintCore.ScrollMode.BrushSize);
+    }
+
+    void HandleHoseVFX(bool isFiring)
+    {
+        if (!hoseCore) return;
+
+        if (isFiring)
+        {
+            if (!hoseCore.isEmitting) hoseCore.Play(true);
+            if (hoseSpread && !hoseSpread.isPlaying) hoseSpread.Play(true);
+        }
+        else
+        {
+            hoseCore.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+            if (hoseSpread)
+                hoseSpread.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
+    }
+    void SpawnBlob()
+    {
+        if (!hoseBlobPrefab || !hoseMuzzle) return;
+
+        PaintBlob blob = Instantiate(
+            hoseBlobPrefab,
+            hoseMuzzle.position,
+            hoseMuzzle.rotation
+        );
+
+        float size =
+            (paintCore.useFixedWorldBrushSize
+            ? paintCore.fixedWorldBrushSize
+            : paintCore.brushWorldSize)
+            * Random.Range(0.85f, 1.15f);
+
+        blob.Init(paintCore, size);
+        //blob.SetColor(paintCore.GetFinalPaintColor());
+        Rigidbody rb = blob.GetComponent<Rigidbody>();
+
+        Vector3 dir = hoseMuzzle.forward +
+                      Random.insideUnitSphere * 0.02f;
+
+        Vector3 velocity = dir.normalized * hoseStartSpeed;
+
+        rb.linearVelocity = velocity;
+    }
+
+    void ApplyColourToVFX(Color c)
+    {
+        //  Mesh particles  material colour
+        if (hoseBlobMaterial)
+            hoseBlobMaterial.SetColor("_BaseColor", c);
+
+        //  Trail material
+        if (hoseTrailMaterial)
+            hoseTrailMaterial.SetColor("_BaseColor", c);
+
+        //  OPTIONAL: if you still use StartColor for alpha control
+        if (hoseCore)
+        {
+            var main = hoseCore.main;
+            main.startColor = c;
+        }
+
+        if (hoseSpread)
+        {
+            var main = hoseSpread.main;
+            main.startColor = c;
+        }
+    }
+
+
+    void OnPaintColourChanged(Color _)
+    {
+        ApplyColourToVFX(paintCore.GetFinalPaintColor());
+    }
+
+
 
 }

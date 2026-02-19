@@ -19,7 +19,7 @@ public class PaintballGun : MonoBehaviour
     public GameObject brush;
     public GameObject sprayCan;
     public GameObject paintBallGun;
-
+    public string fire = "Fire 1";
     // ---------------- VISUAL STATE ----------------
     bool IsPaintballGunActive =>
     IsSprayMode &&
@@ -62,15 +62,15 @@ public class PaintballGun : MonoBehaviour
         // ---------------- SPRAY (both visuals)
         if (paintCore.fireMode == PaintCore.FireMode.Hold)
         {
-            if (Input.GetMouseButtonDown(0))
-                StartSpray();
+            if (Input.GetButtonDown(fire));
+            StartSpray();
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetButtonUp(fire))
                 StopSpray();
         }
         else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown(fire))
                 StartSpray();
         }
 
@@ -79,12 +79,12 @@ public class PaintballGun : MonoBehaviour
 
         if (paintCore.fireMode == PaintCore.FireMode.Hold)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetButtonDown(fire))
                 Fire();
         }
         else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown(fire))
                 FireSingleShot();
         }
     }

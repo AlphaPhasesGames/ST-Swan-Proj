@@ -16,26 +16,41 @@ public class MouseLook : MonoBehaviour
     public Transform playerBody;
     public Camera cam;
 
-    private float xRotation = 0f;
+    float xRotation = 0f;
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        LoadSensitivity();
+
+        if (!OptionsMenu.MenuOpen)
+            LockCursor();
     }
 
     void Update()
     {
+        //  Stop looking if menu is open
+        if (OptionsMenu.MenuOpen)
+            return;
+
         Look();
+    }
+
+    void LoadSensitivity()
+    {
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 150f);
+        controllerSensitivity = PlayerPrefs.GetFloat("ControllerSensitivity", 120f);
+    }
+
+    public void RefreshSensitivity()
+    {
+        LoadSensitivity();
     }
 
     void Look()
     {
-        // ---------- Mouse ----------
         float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // ---------- Controller ----------
         float stickX = Input.GetAxis(lookXAxis);
         float stickY = Input.GetAxis(lookYAxis);
 
@@ -45,16 +60,19 @@ public class MouseLook : MonoBehaviour
         stickX *= controllerSensitivity * Time.deltaTime;
         stickY *= controllerSensitivity * Time.deltaTime;
 
-        // ---------- Combined ----------
         float lookX = mouseX + stickX;
         float lookY = mouseY + stickY;
 
-        // ---------- Pitch (camera only) ----------
         xRotation -= lookY;
         xRotation = Mathf.Clamp(xRotation, -85f, 85f);
-        cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        // ---------- Yaw (player body only) ----------
+        cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * lookX);
+    }
+
+    void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }

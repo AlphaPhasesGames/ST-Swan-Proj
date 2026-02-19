@@ -312,6 +312,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoldablePainting
   isHeld: 0
+  holdDistance: 0.6
+  wallPadding: 0.05
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!65 &5061383291789468889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -485,3 +490,5 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}

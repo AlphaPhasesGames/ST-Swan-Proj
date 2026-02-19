@@ -61,6 +61,7 @@ public class PaintCoverageMesh : MonoBehaviour, IPaintCoverage
 
     public void RegisterPaintHit(RaycastHit hit)
     {
+        Debug.Log("REGISTER PAINT CALLED");
         if (IsComplete)
             return;
 

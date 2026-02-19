@@ -5,14 +5,14 @@ using UnityEngine;
 public abstract class PaintSurfaceBase : MonoBehaviour
 {
     [Header("Surface Paint")]
-    public int textureSize = 2048;
+    public int textureSize = 1024;
 
     protected RenderTexture paintRT;
     protected Material paintMat;
     public abstract RenderTexture GetPaintRT();
     [Header("Stamp Mode")]
     public bool hardStamp = false;
-
+    //public bool isDiluting;
     [Header("Legacy Paint")]
     public float legacyBrushSize = 64f;
     public float legacyMinSize = 1f;
@@ -40,6 +40,9 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     [Header("Stamp Materials (assign in inspector)")]
     [SerializeField] private Material stampMatPaint; // Custom/PaintStampColor
     [SerializeField] private Material stampMatErase; // Custom/PaintStampErase
+    [SerializeField] private Material stampMatWater;
+    [SerializeField] private Material stampMatDilute;
+    private Texture2D smudgeBuffer;
 
     // ------------------- UNITY LIFECYCLE -------------------
 
@@ -51,9 +54,12 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         if (!stampMatErase)
             stampMatErase = Resources.Load<Material>("Paint/Stamp_Erase");
 
-        if (!stampMatPaint || !stampMatErase)
+        if (!stampMatWater)
+            stampMatWater = Resources.Load<Material>("Paint/Stamp_Paint_Water");
+
+        if (!stampMatPaint || !stampMatErase || !stampMatWater || !stampMatDilute)
         {
-            Debug.LogError($"{name}: Stamp materials missing (Paint + Erase)");
+            Debug.LogError($"{name}: Stamp materials missing");
             enabled = false;
             return;
         }
@@ -128,9 +134,9 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     public void PaintAtUV(Vector2 uv, Texture2D brush, float size, Color color, bool erase)
     {
         bool precision = size <= 2.5f;
-        SetRTFiltering(paintRT, precision);
+        paintRT.filterMode = precision ? FilterMode.Trilinear : FilterMode.Bilinear;
 
-        Stamp(paintRT, uv, brush, size, color, erase);
+        Stamp(paintRT, uv, brush, size, color, erase, false);
     }
 
     public virtual void PaintAtWorld(
@@ -138,25 +144,28 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         Texture2D brush,
         float size,
         Color color,
-        bool erase
+        bool erase,
+        bool dilute
     )
     {
         if (TryGetPaintUV(hit, out var uv))
-            Stamp(paintRT, uv, brush, size, color, erase);
+            Stamp(paintRT, uv, brush, size, color, erase, dilute);
 
-        PaintAtWorld(hit.point, hit.normal, brush, size, color, erase);
+        PaintAtWorld(hit.point, hit.normal, brush, size, color, erase, dilute);
     }
 
     public virtual void PaintAtWorld(
-        Vector3 worldPos,
-        Vector3 normal,
-        Texture2D brush,
-        float size,
-        Color color,
-        bool erase
-    )
+    Vector3 worldPos,
+    Vector3 normal,
+    Texture2D brush,
+    float size,
+    Color color,
+    bool erase,
+    bool dilute
+)
     {
         bool precision = size <= 2.5f;
+
         SetRTFiltering(paintRT_PosX, precision);
         SetRTFiltering(paintRT_NegX, precision);
         SetRTFiltering(paintRT_PosY, precision);
@@ -172,12 +181,15 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         float sum = wx + wy + wz;
         if (sum < 0.0001f) return;
 
-        wx /= sum; wy /= sum; wz /= sum;
+        wx /= sum;
+        wy /= sum;
+        wz /= sum;
 
-        PaintOnPlane(nL.x >= 0 ? paintRT_PosX : paintRT_NegX, worldPos, Axis.X, nL, brush, size * wx, color, erase);
-        PaintOnPlane(nL.y >= 0 ? paintRT_PosY : paintRT_NegY, worldPos, Axis.Y, nL, brush, size * wy, color, erase);
-        PaintOnPlane(nL.z >= 0 ? paintRT_PosZ : paintRT_NegZ, worldPos, Axis.Z, nL, brush, size * wz, color, erase);
+        PaintOnPlane(nL.x >= 0 ? paintRT_PosX : paintRT_NegX, worldPos, Axis.X, nL, brush, size * wx, color, erase, dilute);
+        PaintOnPlane(nL.y >= 0 ? paintRT_PosY : paintRT_NegY, worldPos, Axis.Y, nL, brush, size * wy, color, erase, dilute);
+        PaintOnPlane(nL.z >= 0 ? paintRT_PosZ : paintRT_NegZ, worldPos, Axis.Z, nL, brush, size * wz, color, erase, dilute);
     }
+
 
     enum Axis { X, Y, Z }
 
@@ -189,7 +201,8 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         Texture2D brush,
         float size,
         Color color,
-        bool erase
+        bool erase,
+        bool dilute
     )
     {
         Vector3 localPos = transform.InverseTransformPoint(worldPos);
@@ -224,31 +237,43 @@ public abstract class PaintSurfaceBase : MonoBehaviour
                 break;
         }
 
-        Stamp(rt, uv, brush, size, color, erase);
+        Stamp(rt, uv, brush, size, color, erase, dilute);
     }
 
     // ------------------- CORE STAMP (FIXED) -------------------
 
-    void Stamp(
-        RenderTexture targetRT,
-        Vector2 uv,
-        Texture2D brush,
-        float size,
-        Color paintColor,
-        bool erase
-    )
+    void Stamp(RenderTexture targetRT, Vector2 uv, Texture2D brush,
+           float size, Color paintColor, bool erase, bool dilute)
     {
         if (!targetRT || !brush) return;
 
-        Material mat = erase ? stampMatErase : stampMatPaint;
+        Material mat;
+
+        if (erase)
+        {
+            mat = stampMatErase;
+        }
+        else if (dilute)
+        {
+            mat = stampMatDilute;
+        }
+        else if (paintColor.a < 1f) // watercolour
+        {
+            mat = stampMatWater;
+        }
+        else
+        {
+            mat = stampMatPaint;
+        }
         if (!mat) return;
 
         uv.x = Mathf.Clamp01(uv.x);
         uv.y = Mathf.Clamp01(uv.y);
 
-        int px = Mathf.RoundToInt(uv.x * targetRT.width);
-        int py = Mathf.RoundToInt(uv.y * targetRT.height);
-        int drawSize = Mathf.Max(1, Mathf.CeilToInt(size));
+        float px = uv.x * targetRT.width;
+        float py = uv.y * targetRT.height;
+
+        float drawSize = Mathf.Max(1f, size);
         float half = drawSize * 0.5f;
 
         Rect rect = new Rect(px - half, py - half, drawSize, drawSize);
@@ -289,13 +314,13 @@ public abstract class PaintSurfaceBase : MonoBehaviour
     }
 
     public virtual void PaintAtWorld(
-        RaycastHit hit,
-        Texture2D brush,
-        float size,
-        Color color
-    )
+     RaycastHit hit,
+     Texture2D brush,
+     float size,
+     Color color
+ )
     {
-        PaintAtWorld(hit, brush, size, color, false);
+        PaintAtWorld(hit, brush, size, color, false, false);
     }
 
     public virtual void PaintAtWorld(
@@ -306,7 +331,7 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         Color color
     )
     {
-        PaintAtWorld(worldPos, normal, brush, size, color, false);
+        PaintAtWorld(worldPos, normal, brush, size, color, false, false);
     }
 
 
@@ -349,4 +374,75 @@ public abstract class PaintSurfaceBase : MonoBehaviour
         if (!dst.IsCreated()) dst.Create();
         Graphics.Blit(src, dst);
     }
+
+    //Sampling colour from the canvas, then re-applying it slightly offset in the direction of movement.
+    public void ApplySmudgeAtUV(
+        Vector2 uv,
+        Vector2 delta,
+        float worldBrushSize,
+        float strength,
+        float sampleDistance,
+        float falloffPower)
+    {
+        if (paintRT == null) return;
+
+        int texSize = paintRT.width;
+
+        if (smudgeBuffer == null || smudgeBuffer.width != texSize)
+        {
+            smudgeBuffer = new Texture2D(texSize, texSize, TextureFormat.RGBA32, false);
+        }
+
+        var prev = RenderTexture.active;
+        RenderTexture.active = paintRT;
+
+        smudgeBuffer.ReadPixels(new Rect(0, 0, texSize, texSize), 0, 0);
+        smudgeBuffer.Apply();
+
+        int centerX = Mathf.RoundToInt(uv.x * texSize);
+        int centerY = Mathf.RoundToInt(uv.y * texSize);
+
+        int radius = Mathf.Max(1, Mathf.RoundToInt(worldBrushSize * texSize * 0.5f));
+
+        Vector2 pixelDelta = delta * texSize * sampleDistance;
+
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                int px = centerX + x;
+                int py = centerY + y;
+
+                if (px < 0 || px >= texSize || py < 0 || py >= texSize)
+                    continue;
+
+                float dist = Mathf.Sqrt(x * x + y * y);
+                float t = Mathf.Clamp01(1f - (dist / radius));
+                t = Mathf.Pow(t, falloffPower);
+
+                int sampleX = Mathf.Clamp(
+                    Mathf.RoundToInt(px - pixelDelta.x),
+                    0, texSize - 1
+                );
+
+                int sampleY = Mathf.Clamp(
+                    Mathf.RoundToInt(py - pixelDelta.y),
+                    0, texSize - 1
+                );
+
+                Color current = smudgeBuffer.GetPixel(px, py);
+                Color sampled = smudgeBuffer.GetPixel(sampleX, sampleY);
+
+                Color blended = Color.Lerp(current, sampled, strength * t);
+
+                smudgeBuffer.SetPixel(px, py, blended);
+            }
+        }
+
+        smudgeBuffer.Apply();
+        Graphics.Blit(smudgeBuffer, paintRT);
+
+        RenderTexture.active = prev;
+    }
+
 }

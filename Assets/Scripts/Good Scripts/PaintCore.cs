@@ -14,7 +14,6 @@ public class PaintCore : MonoBehaviour
     public float sprayDistance = 5f;         // Spray can
     public float paintballDistance = 25f;    // Paintball gun (used by PaintballGun script, not PaintCore)
 
-
     // =======================
     // TEXTURE / SIZE
     // =======================
@@ -73,11 +72,15 @@ public class PaintCore : MonoBehaviour
     public event System.Action<float> OnSprayAngleChanged;
     public event System.Action<BrushBehaviour> OnBrushBehaviourChanged;
 
+    public bool usePhysicsBlobs = false;
+
+    bool inputEnabled = true;
+
     // =======================
     // MODES
     // =======================
-    public enum PaintMode { Spray, Precision, SingleRay }
-    public PaintMode paintMode = PaintMode.Spray;
+    public enum PaintMode { None, Spray, Precision, SingleRay }
+    public PaintMode paintMode = PaintMode.None;
 
     public enum FireMode { Hold, Once }
     public FireMode fireMode = FireMode.Hold;
@@ -101,10 +104,19 @@ public class PaintCore : MonoBehaviour
     // =======================
     // BRUSH BEHAVIOUR
     // =======================
-    public enum BrushBehaviour { Normal, Calligraphy }
+    public enum BrushBehaviour { Normal, Calligraphy, Smudge, Watercolour, Dilute }
+
 
     [Header("Brush Behaviour")]
     public BrushBehaviour brushBehaviour = BrushBehaviour.Normal;
+
+    [Header("Smudge")]
+    public float smudgeStrength = 0.6f;       // 0–1 blend amount
+    public float smudgeSampleDistance = 1.5f; // how far back to sample
+    public float smudgeFalloff = 1f;          // edge softness
+
+    private Vector2 previousUV;
+    private bool hasPreviousUV = false;
 
     // =======================
     // CALLIGRAPHY (ISOLATED)
@@ -132,6 +144,43 @@ public class PaintCore : MonoBehaviour
     public enum BrushShape { Blob, Square, Star, Splat }
     public BrushShape brushShape = BrushShape.Blob;
 
+    [Header("Watercolour Speed Response")]
+    public float waterSlowSpeed = 0.05f;
+    public float waterFastSpeed = 0.6f;
+    public float waterMinScale = 0.3f;
+    public float waterMaxScale = 1.3f;
+    public float waterSizeSmoothing = 10f;
+
+    float currentWaterScale = 1f;
+    Vector3 lastWaterHit;
+    bool hasLastWaterHit;
+
+    bool fireHeld;
+    bool fireDown;
+
+    public void SetFireInput(bool held, bool down)
+    {
+        fireHeld = held;
+        fireDown = down;
+    }
+
+    // =======================
+    // TEXTURED BRUSH FEATURE
+    // =======================
+    // [Header("Textured Brush")]
+    // public bool useTextureBrush = false;
+    //public Texture2D brushTextureMask;
+    // [Range(0f, 1f)]
+    // public float textureStrength = 1f;
+    // public float textureTiling = 1f;
+
+    [Header("Watercolour")]
+    public float waterPigmentMax = 1f;
+    public float waterPigmentDrainSpeed = 0.8f;
+    public float waterMinAlpha = 0.02f;
+
+    float currentPigment;
+
     // =======================
     // UNITY
     // =======================
@@ -142,13 +191,21 @@ public class PaintCore : MonoBehaviour
 
         if (palette != null)
             palette.OnActiveColorChanged += SetPaintColor;
+        if (paintMode == PaintMode.None)
+            return;
+        currentPigment = waterPigmentMax;
     }
 
     void Update()
     {
+        if (!enabled)
+            Debug.Log("PaintCore disabled");
+
         HandleScroll();
         HandlePaint();
+
     }
+
 
     // =======================
     // INPUT
@@ -172,22 +229,61 @@ public class PaintCore : MonoBehaviour
 
     void HandlePaint()
     {
+        if (!inputEnabled)
+            return;
+
+        if (usePhysicsBlobs)
+            return;
+
+        // Reload watercolour on new stroke
+        if (brushBehaviour == BrushBehaviour.Watercolour && fireDown)
+        {
+            currentPigment = waterPigmentMax;
+        }
+
+
         if (fireMode == FireMode.Once)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (fireDown)
                 FireByPaintMode(GetCenterRay());
             return;
         }
 
-        if (!Input.GetMouseButton(0))
+        if (!fireHeld)
         {
             hasLastRay = false;
             fireAccumulator = 0f;
             ResetCalligraphy();
+            hasPreviousUV = false;
+
+            hasLastWaterHit = false;
+            currentWaterScale = 1f;
+
             return;
         }
 
+
         Ray ray = GetCenterRay();
+
+        // --- Watercolour logic ---
+        if (brushBehaviour == BrushBehaviour.Watercolour)
+        {
+            // Drain pigment
+            currentPigment -= waterPigmentDrainSpeed * Time.deltaTime;
+            currentPigment = Mathf.Clamp01(currentPigment);
+
+            // Snap near zero
+            if (currentPigment <= 0.05f)
+                currentPigment = 0f;
+
+            // Update size based on speed
+            UpdateWatercolourScale(ray);
+
+            // If dry, stop painting
+            if (currentPigment <= 0f)
+                return;
+        }
+
 
         if (paintMode == PaintMode.Spray)
         {
@@ -209,6 +305,8 @@ public class PaintCore : MonoBehaviour
         if (brushBehaviour == BrushBehaviour.Calligraphy)
             UpdateCalligraphy(ray);
 
+        
+
         if (!hasLastRay)
         {
             FireByPaintMode(ray);
@@ -219,7 +317,10 @@ public class PaintCore : MonoBehaviour
 
         float dist = Vector3.Distance(lastPaintRay.origin, ray.origin);
         float step = brushWorldSize * 0.5f;
-
+        if (brushBehaviour == BrushBehaviour.Watercolour)
+        {
+            step = Mathf.Max(step, brushWorldSize * 0.01f);
+        }
         // BASE CALLIGRAPHY DENSITY BOOST (your original logic)
         if (brushBehaviour == BrushBehaviour.Calligraphy)
         {
@@ -253,6 +354,8 @@ public class PaintCore : MonoBehaviour
         }
 
         lastPaintRay = ray;
+       
+
     }
 
     // =======================
@@ -311,6 +414,11 @@ public class PaintCore : MonoBehaviour
         {
             return baseWorld * currentCalligraphyScale * surface.textureSize;
         }
+        if (brushBehaviour == BrushBehaviour.Watercolour)
+        {
+            baseWorld *= currentWaterScale;
+        }
+
 
         return baseWorld * surface.textureSize;
     }
@@ -344,8 +452,24 @@ public class PaintCore : MonoBehaviour
 
         PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
         if (!surface || !surface.CanPaintHit(hit, ray.direction)) return;
+        var coverage = hit.collider.GetComponentInParent<IPaintCoverage>();
+        coverage?.RegisterPaintHit(hit);
 
-        surface.PaintAtWorld(hit, brushTex, GetFinalBrushSize(surface), GetFinalPaintColor(), isErasing);
+        bool dilute = brushBehaviour == BrushBehaviour.Dilute;
+        bool erase = isErasing && !dilute;
+
+        float size = GetFinalBrushSize(surface);
+
+        surface.PaintAtWorld(
+            hit,
+            brushTex,
+            size,
+            GetFinalPaintColor(),
+            erase,
+            dilute
+        );
+
+
     }
 
     void FireSpray(Ray ray)
@@ -358,14 +482,31 @@ public class PaintCore : MonoBehaviour
 
             PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
             if (!surface || !surface.CanPaintHit(hit, dir)) continue;
-
+            var coverage = hit.collider.GetComponentInParent<IPaintCoverage>();
+            coverage?.RegisterPaintHit(hit);
             float size = GetBrushSizeForSurface(surface) * surface.textureSize * 0.6f;
-            surface.PaintAtWorld(hit, brushTex, size, GetFinalPaintColor(), isErasing);
+            bool dilute = brushBehaviour == BrushBehaviour.Dilute;
+
+            surface.PaintAtWorld(
+                hit,
+                brushTex,
+                size,
+                GetFinalPaintColor(),
+                isErasing,
+                dilute
+            );
+
         }
     }
 
     void FireByPaintMode(Ray ray)
     {
+        if (brushBehaviour == BrushBehaviour.Smudge)
+        {
+            FireSmudge(ray);
+            return;
+        }
+
         if (paintMode == PaintMode.Spray)
             FireSpray(ray);
         else
@@ -445,8 +586,28 @@ public class PaintCore : MonoBehaviour
     Ray GetCenterRay() =>
         cam.ScreenPointToRay(new Vector3(Screen.width * 0.5f, Screen.height * 0.5f));
 
-    Color GetFinalPaintColor() =>
-        isErasing ? Color.clear : new Color(CurrentPaintColor.r, CurrentPaintColor.g, CurrentPaintColor.b, 1f);
+    public Color GetFinalPaintColor()
+    {
+        if (isErasing)
+            return Color.clear;
+
+        if (brushBehaviour == BrushBehaviour.Watercolour)
+        {
+            float pigmentFactor = Mathf.Pow(currentPigment, 2f);
+
+            float alpha = pigmentFactor * 0.4f;
+
+            Color c = CurrentPaintColor;
+            c.a = alpha;
+
+            return c;
+        }
+
+        if (brushBehaviour == BrushBehaviour.Dilute)
+            return new Color(0, 0, 0, 0); // colour is ignored by dilute shader
+
+        return new Color(CurrentPaintColor.r, CurrentPaintColor.g, CurrentPaintColor.b, 1f);
+    }
 
     Vector3 GetRandomConeDirection(Vector3 forward, float angle)
     {
@@ -468,4 +629,119 @@ public class PaintCore : MonoBehaviour
             _ => circleBrush
         };
     }
+
+    void HandleSmudge(PaintSurfaceBase surface, RaycastHit hit)
+    {
+        Vector2 currentUV = hit.textureCoord;
+
+        if (!hasPreviousUV)
+        {
+            previousUV = currentUV;
+            hasPreviousUV = true;
+            return;
+        }
+
+        Vector2 delta = currentUV - previousUV;
+        previousUV = currentUV;
+
+        surface.ApplySmudgeAtUV(
+            currentUV,
+            delta,
+            brushWorldSize,
+            smudgeStrength,
+            smudgeSampleDistance,
+            smudgeFalloff
+        );
+    }
+
+    void FireSmudge(Ray ray)
+    {
+        if (!Physics.Raycast(ray, out RaycastHit hit, brushDistance))
+            return;
+
+        PaintSurfaceBase surface = hit.collider.GetComponentInParent<PaintSurfaceBase>();
+        if (!surface)
+            return;
+
+        Vector2 currentUV = hit.textureCoord;
+
+        if (!hasPreviousUV)
+        {
+            previousUV = currentUV;
+            hasPreviousUV = true;
+            return;
+        }
+
+        Vector2 delta = currentUV - previousUV;
+        previousUV = currentUV;
+
+        surface.ApplySmudgeAtUV(
+            currentUV,
+            delta,
+            brushWorldSize,
+            smudgeStrength,
+            smudgeSampleDistance,
+            smudgeFalloff
+        );
+    }
+    /*
+    void ApplyTextureBrushSettings(Material mat)
+    {
+        if (useTextureBrush && brushTextureMask != null)
+        {
+            mat.SetFloat("_UseBrushMask", 1f);
+            mat.SetTexture("_BrushMaskTex", brushTextureMask);
+            mat.SetFloat("_MaskStrength", textureStrength);
+            mat.SetFloat("_MaskTiling", textureTiling);
+        }
+        else
+        {
+            mat.SetFloat("_UseBrushMask", 0f);
+        }
+    }
+    */
+
+    void UpdateWatercolourScale(Ray ray)
+    {
+        if (!Physics.Raycast(ray, out RaycastHit hit, brushDistance))
+            return;
+
+        if (!hasLastWaterHit)
+        {
+            lastWaterHit = hit.point;
+            hasLastWaterHit = true;
+            currentWaterScale = waterMinScale; // always start small
+            return;
+        }
+
+        float dist = Vector3.Distance(lastWaterHit, hit.point);
+        float speed = dist / Mathf.Max(Time.deltaTime, 0.0001f);
+
+        // Normalize speed
+        float normalizedSpeed = Mathf.Clamp01(
+            (speed - waterSlowSpeed) / (waterFastSpeed - waterSlowSpeed)
+        );
+
+        // If moving slow  grow
+        // If moving fast  shrink
+        float targetScale = Mathf.Lerp(
+            waterMaxScale,  // slow  big
+            waterMinScale,  // fast  small
+            normalizedSpeed
+        );
+
+        currentWaterScale = Mathf.Lerp(
+            currentWaterScale,
+            targetScale,
+            waterSizeSmoothing * Time.deltaTime
+        );
+
+        lastWaterHit = hit.point;
+    }
+
+    public void SetInputEnabled(bool value)
+    {
+        inputEnabled = value;
+    }
+
 }

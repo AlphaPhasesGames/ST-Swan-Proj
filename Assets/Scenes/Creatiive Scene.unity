@@ -119,6 +119,276 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1529756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1529757}
+  - component: {fileID: 1529761}
+  - component: {fileID: 1529760}
+  - component: {fileID: 1529759}
+  - component: {fileID: 1529758}
+  m_Layer: 5
+  m_Name: Smudge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1529757
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529756}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.55959934, y: 0.39882085, z: 0.55959934}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3253610107954058617}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -17.9, y: -33.3}
+  m_SizeDelta: {x: 26.0769, y: 37.4271}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1529758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388e3b648d85f12428ac0b69a008e98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  tooltipText: 'Smudge Tool
+
+'
+--- !u!114 &1529759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1529760}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1529760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: be156da7041186e49a6d32f8809e63df, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1529761
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529756}
+  m_CullTransparentMesh: 1
+--- !u!1 &7821636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7821637}
+  - component: {fileID: 7821641}
+  - component: {fileID: 7821640}
+  - component: {fileID: 7821639}
+  - component: {fileID: 7821638}
+  m_Layer: 5
+  m_Name: Noise
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &7821637
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.47851, y: 0.47851, z: 0.47851}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3253610107954058617}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -17.8, y: -32.9}
+  m_SizeDelta: {x: 30.7499, y: 31.5717}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7821638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388e3b648d85f12428ac0b69a008e98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  tooltipText: Noise Pattern
+--- !u!114 &7821639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 7821640}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7821640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 3e451d876548a4b4eacff9920a826db3, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &7821641
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821636}
+  m_CullTransparentMesh: 1
 --- !u!1001 &9321440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +409,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.12230015
@@ -522,6 +800,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &63475044
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -725,6 +1005,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.0641003
@@ -1114,6 +1402,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &109541592
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1329,6 +1619,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &145401202
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1687,6 +1979,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.0700002
@@ -2037,6 +2337,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.1923003
@@ -2344,6 +2652,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.0641003
@@ -2454,6 +2770,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.7369998
@@ -2644,6 +2968,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &249277274
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2691,6 +3017,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.2258997
@@ -2855,6 +3189,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &284316155
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3016,6 +3352,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &291508571
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3078,6 +3416,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.1239998
@@ -3335,6 +3681,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &311381100
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3660,6 +4008,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &363779480
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3845,6 +4195,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4188901376478978, guid: 47c1117653f1e70468f072b7f4a90a9d, type: 3}
   m_PrefabInstance: {fileID: 343159190}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &382489314 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 6610970754381850148, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+  m_PrefabInstance: {fileID: 1671659721}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &388384784
 GameObject:
   m_ObjectHideFlags: 0
@@ -3996,6 +4351,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.1864004
@@ -4368,6 +4731,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &417944666
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4762,7 +5127,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 01e2590d877251e4da8122b82b3e0b77, type: 2}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: textureSize
-      value: 4096
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: stampMatErase
@@ -4772,6 +5137,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.74367
@@ -5056,6 +5429,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &519503806
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5363,6 +5738,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &549372381
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5564,6 +5941,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &572761192
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5846,6 +6225,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &623732143
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5969,6 +6350,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &624850258
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6850,6 +7233,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.9418001
@@ -7271,6 +7662,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.4058995
@@ -7597,6 +7996,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &798034166
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7624,6 +8025,142 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c02b6a0380095364e90614962e728003, type: 3}
   m_PrefabInstance: {fileID: 992112035}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &812761204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 812761205}
+  - component: {fileID: 812761209}
+  - component: {fileID: 812761208}
+  - component: {fileID: 812761207}
+  - component: {fileID: 812761206}
+  m_Layer: 5
+  m_Name: Water Colour
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &812761205
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812761204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.55959934, y: 0.39882085, z: 0.55959934}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3253610107954058617}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -18.6, y: 19.4}
+  m_SizeDelta: {x: 26.0769, y: 37.4271}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &812761206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812761204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388e3b648d85f12428ac0b69a008e98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  tooltipText: 'Dilute
+
+'
+--- !u!114 &812761207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812761204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 812761208}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &812761208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812761204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 09c9d23aaa85db748abaca07230db931, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &812761209
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812761204}
+  m_CullTransparentMesh: 1
 --- !u!4 &818758689 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
@@ -7734,6 +8271,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &826177498
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8080,6 +8619,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &867831392
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8509,6 +9050,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &890602343
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8714,6 +9257,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &892434716
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8766,6 +9311,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.1424
@@ -8898,7 +9451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: textureSize
-      value: 2048
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: stampMatErase
@@ -8908,6 +9461,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.96714306
@@ -9120,6 +9681,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &942888487
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9726,6 +10289,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1020849252
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9882,6 +10447,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1026049293
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9961,6 +10528,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.3417995
@@ -10072,6 +10647,140 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 21bbf4ad3ab304a49b81c5c9716d1309, type: 3}
   m_PrefabInstance: {fileID: 1043600298}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1044117385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1044117386}
+  - component: {fileID: 1044117390}
+  - component: {fileID: 1044117389}
+  - component: {fileID: 1044117388}
+  - component: {fileID: 1044117387}
+  m_Layer: 5
+  m_Name: Dilute/Darken
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1044117386
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044117385}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.55959934, y: 0.39882085, z: 0.55959934}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3253610107954058617}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.4, y: 19.6}
+  m_SizeDelta: {x: 26.0769, y: 37.4271}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1044117387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044117385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388e3b648d85f12428ac0b69a008e98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  tooltipText: Darken
+--- !u!114 &1044117388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044117385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1044117389}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1044117389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044117385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 173eebd2d5fc6134b8fbb377f7771174, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1044117390
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044117385}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1046419728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10096,6 +10805,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.0059001
@@ -10669,6 +11386,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1108074297
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10725,6 +11444,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1108120714
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10939,6 +11660,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.653
@@ -11156,6 +11885,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1148498989
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11727,6 +12458,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1180126076
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11783,6 +12516,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1188780188
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11825,6 +12560,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.47
@@ -12415,6 +13158,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1240927445
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12471,6 +13216,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1243953336
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12637,6 +13384,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1266201614
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12792,6 +13541,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1276238243
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12848,6 +13599,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1280873906
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13257,6 +14010,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.29
@@ -13336,6 +14097,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1323109023
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13557,7 +14320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: textureSize
-      value: 2048
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: stampMatErase
@@ -13567,6 +14330,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4670649
@@ -13725,6 +14496,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1345698365
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13984,6 +14757,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1365859365
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14166,6 +14941,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1387890809
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14301,6 +15078,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1393182430
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14814,6 +15593,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1452740514
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15026,6 +15807,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1476184496
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15526,6 +16309,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.097699
@@ -21110,6 +21901,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1584894794
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21373,6 +22166,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.0641003
@@ -21438,6 +22239,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.7369998
@@ -21633,6 +22442,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.2776995
@@ -21761,6 +22578,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1657621877
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21913,6 +22732,18 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5928880226399870878, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: capsule
+      value: 
+      objectReference: {fileID: 382489314}
+    - target: {fileID: 5928880226399870878, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: moveSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5928880226399870878, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1385462638}
+    - target: {fileID: 5928880226399870878, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
       propertyPath: paintingHoldPoint
       value: 
       objectReference: {fileID: 1019817498}
@@ -22058,7 +22889,7 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 97f49438b48029e43a1b1c1d20f2f4da, type: 3}
     - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
       propertyPath: textureSize
-      value: 2048
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
       propertyPath: brushDistance
@@ -22069,12 +22900,44 @@ PrefabInstance:
       value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
-      propertyPath: spackleFireRate
-      value: 5
+      propertyPath: waterMaxScale
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: waterMinAlpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: waterMinScale
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: waterFastSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: waterSlowSpeed
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: spackleFireRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: brushTextureMask
+      value: 
+      objectReference: {fileID: 2800000, guid: 3df10369578959043ac541f68ef11c8b, type: 3}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
       propertyPath: paintballDistance
-      value: 50
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: waterSizeSmoothing
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679342759595502067, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
+      propertyPath: waterPigmentDrainSpeed
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7834536817019579793, guid: 6a2832bb31a9ceb4ab87cd2b8d5098ad, type: 3}
@@ -22237,6 +23100,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1695794224
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22391,6 +23256,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1703623590
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22514,6 +23381,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1711919495
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22637,6 +23506,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1712690051
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22679,6 +23550,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.1617994
@@ -23115,6 +23994,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1801161279
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23342,6 +24223,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -23882,6 +24771,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1851130279
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24278,6 +25169,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1873089967
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24523,6 +25416,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1901501112
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24579,6 +25474,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1904316730
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24721,6 +25618,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.1282003
@@ -24889,6 +25794,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1950046977
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25191,6 +26098,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1969503163
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25247,6 +26156,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &1973955034
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25339,6 +26250,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.29
@@ -25481,6 +26400,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.5341
@@ -25551,6 +26478,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.663
@@ -25641,6 +26576,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &2009307593
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26195,7 +27132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: textureSize
-      value: 2048
+      value: 1024
       objectReference: {fileID: 0}
     - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: stampMatErase
@@ -26205,6 +27142,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6593981
@@ -26404,6 +27349,8 @@ MonoBehaviour:
   surfaceBrushWorldSize: 0.25
   stampMatPaint: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
   stampMatErase: {fileID: 2100000, guid: 155c52694600a1c41a74dd32e284cd89, type: 2}
+  stampMatWater: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+  stampMatDilute: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
 --- !u!64 &2100229408
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27130,14 +28077,31 @@ PrefabInstance:
       propertyPath: mixManager
       value: 
       objectReference: {fileID: 1539527720}
+    - target: {fileID: 9198143008531843002, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9198143008531843002, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3505850722302189678, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
+      insertIndex: 8
+      addedObject: {fileID: 7821637}
+    - targetCorrespondingSourceObject: {fileID: 3505850722302189678, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
+      insertIndex: 10
+      addedObject: {fileID: 812761205}
+    - targetCorrespondingSourceObject: {fileID: 3505850722302189678, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
       insertIndex: 11
-      addedObject: {fileID: 406174517}
+      addedObject: {fileID: 1044117386}
+    - targetCorrespondingSourceObject: {fileID: 3505850722302189678, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
+      insertIndex: 12
+      addedObject: {fileID: 1529757}
     - targetCorrespondingSourceObject: {fileID: 3505850722302189678, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
       insertIndex: 14
+      addedObject: {fileID: 406174517}
+    - targetCorrespondingSourceObject: {fileID: 3505850722302189678, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
+      insertIndex: 17
       addedObject: {fileID: 878400336}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bd78344081aad04bbb9df1a76ef6426, type: 3}
@@ -28410,6 +29374,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3759041950934484266}
     - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
+      propertyPath: noiseButton
+      value: 
+      objectReference: {fileID: 7821639}
+    - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
       propertyPath: shapesPanal
       value: 
       objectReference: {fileID: 1411582676}
@@ -28422,6 +29390,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1605551505}
     - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
+      propertyPath: diluteButton
+      value: 
+      objectReference: {fileID: 1044117388}
+    - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
       propertyPath: paintBallGun
       value: 
       objectReference: {fileID: 406174519}
@@ -28433,6 +29405,10 @@ PrefabInstance:
       propertyPath: pencilButton
       value: 
       objectReference: {fileID: 1406032100}
+    - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
+      propertyPath: smudgeButton
+      value: 
+      objectReference: {fileID: 1529759}
     - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
       propertyPath: toolSelector
       value: 
@@ -28501,6 +29477,10 @@ PrefabInstance:
       propertyPath: squareBrushButton
       value: 
       objectReference: {fileID: 1956186224}
+    - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
+      propertyPath: waterColourButton
+      value: 
+      objectReference: {fileID: 812761207}
     - target: {fileID: 2772229636637039814, guid: 117e8b0b7b13d864ba8510295cacef75, type: 3}
       propertyPath: setSpraySizeButton
       value: 
@@ -28927,6 +29907,14 @@ PrefabInstance:
       propertyPath: stampMatPaint
       value: 
       objectReference: {fileID: 2100000, guid: f7f684a0c4cb62b4c9e32fd624990def, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatWater
+      value: 
+      objectReference: {fileID: 2100000, guid: abd269855ed613841b3b560bee34b717, type: 2}
+    - target: {fileID: 7310128748035468128, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
+      propertyPath: stampMatDilute
+      value: 
+      objectReference: {fileID: 2100000, guid: 643e685f404b364429071cac804c4eaa, type: 2}
     - target: {fileID: 7980199562025502235, guid: 2ad02a7d78eddca488710ba1431ccca0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
